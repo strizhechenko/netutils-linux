@@ -1,7 +1,21 @@
 irq-utils
-=========
-
+======
 It's just a bunch of utils to simplify linux network troubleshooting and performance tuning.
+
+Project state
+======
+Alpha, raw alpha. Six script were gathered together, shortly documented and packet into python package.
+
+Some were cleaned up, some - not. Most of them was being written in bash, not python, maybe they'll be ported later.
+
+Installation
+======
+.. code :: shell
+
+   pip install netutils-linux
+
+Utils
+======
 
 irqtop
 ------
