@@ -1,0 +1,19 @@
+#!/bin/bash
+
+mkdir -p /root/missed
+while :; do
+	date=$(date +%s)
+	for i in eth{1,2,3,4,5}; do
+		echo -n "$i "
+		ethtool -S $i | grep missed | awk '{print $2}'
+	done > /root/missed/$date
+	prev=$(ls /root/missed | tail -n 2 | head -n 1)
+	last=$(ls /root/missed | tail -n 1)
+	prev_md5="$(md5sum < $prev | awk '{print $1}')"
+	last_md5="$(md5sum < $last | awk '{print $1}')"
+	[ "$prev_md5" == "$last_md5" ] && rm -f $last
+	if [ "$1" = 'oneshot' ]; then
+		exit
+	fi
+	sleep 1
+done

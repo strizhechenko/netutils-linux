@@ -1,0 +1,9 @@
+#!/bin/bash
+
+while sleep 1; do
+	prev="${cur:-0}"
+	prev_pkt="${cur_pkt:-0}"
+	cur="$(grep "${1:-eth1}:" /proc/net/dev | cut -d ':' -f2 | awk '{print $1}')"
+	cur_pkt="$(grep "${1:-eth1}:" /proc/net/dev | cut -d ':' -f2 | awk '{print $2}')"
+	echo "$(((cur-prev)/1024/1024*8)) mbit/s $((cur_pkt-prev_pkt)) pps"
+done | tail -n +3

@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+
+from os import getenv, system
+from time import sleep
+from copy import deepcopy
+
+
+class InterruptDiff(object):
+
+    def __init__(self):
+        self.filename = '/proc/interrupts'
+        self.previous = []
+        self.current = []
+        self.interval = int(getenv('INTERVAL', 1))
+        self.diff = []
+        self.iterations = int(getenv('ITERATIONS', 60))
+        self.skipzero = bool(getenv('SKIPZERO', True))
+        self.ignore_limit = int(getenv('IGNORE_LE', 80))
+
+    def parse(self):
+        with open(self.filename) as file_fd:
+            return [line.strip().split() for line in file_fd.readlines()]
+
+    def eval(self):
+        self.diff = deepcopy(self.current)
+        changes = []
+        for ln, line in enumerate(self.diff):
+            changed = False
+            for cn, column in enumerate(line):
+                if column.isdigit():
+                    new_value = int(column) - int(self.previous[ln][cn])
+                    if new_value > 0:
+                        changed = True
+                    self.diff[ln][cn] = str(new_value)
+
+            changes.append(changed)
+
+    def __print__(self):
+        def is_changed(line):
+            return any(int(x) > self.ignore_limit for x in line if x.isdigit())
+        line = []
+        system('clear')
+        print
+        cpucount = len(self.diff[0]) - 1
+        total = ['Total:'] + [sum(int(x[column]) for x in self.diff if len(x)
+                                  > cpucount + 1) for column in xrange(1, cpucount + 2)]
+        print "\t".join(str(x) for x in total)
+
+        for line in self.diff:
+            if line[0] == 'CPU0':
+                line.insert(0, ' ')
+            elif self.skipzero and not is_changed(line):
+                continue
+            print "\t".join(line)
+
+    def run(self):
+        while self.iterations > -1:
+            self.iterations -= 1
+            sleep(self.interval)
+            self.previous = self.current
+            self.current = self.parse()
+            if not all((self.previous, self.current)):
+                continue
+            self.eval()
+            self.__print__()
+
+
+if __name__ == '__main__':
+    try:
+        InterruptDiff().run()
+    except KeyboardInterrupt as kbd:
+        exit(0)
