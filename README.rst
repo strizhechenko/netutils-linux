@@ -1,4 +1,4 @@
-irq-utils
+netutils-linux
 ======
 It's just a bunch of utils to simplify linux network troubleshooting and performance tuning.
 
@@ -12,7 +12,7 @@ Installation
 ======
 .. code :: shell
 
-   pip install netutils-linux
+  pip install netutils-linux
 
 Utils
 ======
