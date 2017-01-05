@@ -23,8 +23,9 @@ interrtupts() {
 set_affinity() {
 	local dev="$1"
 	local cpu_bound="$2"
-	local n irq queue cpu
-	while read n irq $(socket_cpu_list $cpu_bound | sed 's/.*/cpu&/') _ queue cpu _; do
+	local irq queue cpu
+	# shellcheck disable=SC2046
+	while read _ irq $(socket_cpu_list $cpu_bound | sed 's/.*/cpu&/') _ queue cpu _; do
 		irq="${irq//:}"
 		echo "  - $dev: irq $irq $queue -> $cpu"
 		echo $cpu > /proc/irq/$irq/smp_affinity_list

@@ -1,29 +1,29 @@
 #!/bin/bash
 
-TMPDIR=/tmp/reductor/
-PREV=$TMPDIR/2
-NEW=$TMPDIR/1
-DIFF=$TMPDIR/3
+TMPDIR=/tmp/softirq-net-rx-top/
+CUR=$TMPDIR/cur
+PREV=$TMPDIR/prev
+DIFF=$TMPDIR/diff
 
 mkdir -p $TMPDIR
-rm -f $NEW $PREV $DIFF
+rm -f $CUR $PREV $DIFF
 
 while sleep 1; do
 	for i in $(grep NET_RX /proc/softirqs); do
 		echo $i
-	done | grep [0-9] > $NEW
+	done | grep [0-9] > $CUR
 
 	if [ ! -f $PREV ]; then
-		mv $NEW $PREV
+		mv $CUR $PREV
 		continue
 	fi
 
-	for i in $(seq 1 $(wc -l < $NEW)); do
-		printf "%s\t%s\n" $i $(($(sed -n "${i}p" $NEW) - $(sed -n "${i}p" $PREV)))
+	for i in $(seq 1 $(wc -l < $CUR)); do
+		printf "%s\t%s\n" $i $(($(sed -n "${i}p" $CUR) - $(sed -n "${i}p" $PREV)))
 	done > $DIFF
 
 	echo
 	uptime  | sed 's/.*://g'
 	cat $DIFF
-	mv $NEW $PREV
+	mv $CUR $PREV
 done
