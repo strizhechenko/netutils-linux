@@ -2,6 +2,21 @@
 
 set -eu
 
+# Local development/debug/testing:
+# uncomment:
+#
+# readonly INTERRUPTS=interrupts
+# lscpu() {
+#	cat lscpu_output
+# }
+#
+# below:
+# set driver=ixgbe
+#
+# put files:
+# - cat /proc/interrupts -> ./interrupts
+# - lscpu --extended=CPU,SOCKET -> ./lscpu_output
+
 usage() {
 	echo "Usage: $0 <dev> [cpu socket]"
 	echo "Example: $0 eth1"
@@ -9,23 +24,41 @@ usage() {
 	echo "Example: $0 eth2 1"
 }
 
-socket_cpu_list() {
+__socket_cpu_list() {
 	local socket="$1"
 	lscpu --extended=CPU,SOCKET | grep -v CPU | egrep "[0-9]+[ ]+$socket$" | awk '{print $1}'
+}
+
+cpus_list_all() {
+	lscpu --extended=CPU,SOCKET | grep -v CPU | awk '{print $1}'
+}
+
+socket_cpu_list() {
+	local socket="$1"
+	local queue_count="$2"
+	local cpus times=4
+	cpus=( $(__socket_cpu_list $socket) )
+	for _ in $(seq $times); do
+		__socket_cpu_list $socket
+	done > /tmp/cpus.$socket
+	head -n $queue_count /tmp/cpus.$socket
+	rm -f /tmp/cpus.$socket
 }
 
 interrtupts() {
 	local dev="$1"
 	local postfix="$2"
-	grep "$dev$postfix" /proc/interrupts
+	grep "$dev$postfix" $INTERRUPTS
 }
 
 set_affinity() {
 	local dev="$1"
 	local cpu_bound="$2"
-	local irq queue cpu
+	local queue_count="$3"
+	local irq queue cpu cpus
+	cpus="$(cpus_list_all | sed 's/.*/cpu&/')"
 	# shellcheck disable=SC2046
-	while read _ irq $(socket_cpu_list $cpu_bound | sed 's/.*/cpu&/') _ queue cpu _; do
+	while read _ irq $cpus _ queue cpu _; do
 		irq="${irq//:}"
 		echo "  - $dev: irq $irq $queue -> $cpu"
 		echo $cpu > /proc/irq/$irq/smp_affinity_list
@@ -36,11 +69,13 @@ tune() {
 	local dev="$1"
 	local cpu_bound="$2"
 	local postfix="$3"
+	local queue_count
 	echo "- Распределение прерываний $dev на сокете $cpu_bound"
 	interrtupts "$dev" "$postfix" | cat -n > /tmp/interrupts.$dev
-	socket_cpu_list $cpu_bound | cat -n > /tmp/cpu.$cpu_bound
+	queue_count="$(wc -l < /tmp/interrupts.$dev)"
+	socket_cpu_list "$cpu_bound" "$queue_count" | cat -n > /tmp/cpu.$cpu_bound
 	join /tmp/interrupts.$dev /tmp/cpu.$cpu_bound > /tmp/irq.$dev
-	set_affinity "$dev" "$cpu_bound" < /tmp/irq.$dev
+	set_affinity "$dev" "$cpu_bound" "$queue_count" < /tmp/irq.$dev
 }
 
 igb() {
