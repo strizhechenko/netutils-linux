@@ -8,7 +8,7 @@ It's just a bunch of utils to simplify linux network troubleshooting and perform
 
 Project state
 ======
-Alpha, raw alpha. Six script were gathered together, shortly documented and packet into python package.
+Beta. Six script were gathered together, shortly documented, one has tests and packed into python package.
 
 Some were cleaned up, some - not. Most of them was being written in bash, not python, maybe they'll be ported later.
 
