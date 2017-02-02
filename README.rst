@@ -2,6 +2,7 @@ netutils-linux
 ======
 
 .. image:: https://travis-ci.org/strizhechenko/netutils-linux.svg?branch=master
+   :target: https://travis-ci.org/strizhechenko/netutils-linux
 
 It's just a bunch of utils to simplify linux network troubleshooting and performance tuning.
 
