@@ -1,5 +1,8 @@
 netutils-linux
 ======
+
+.. image:: https://travis-ci.org/strizhechenko/netutils-linux.svg?branch=master
+
 It's just a bunch of utils to simplify linux network troubleshooting and performance tuning.
 
 Project state
