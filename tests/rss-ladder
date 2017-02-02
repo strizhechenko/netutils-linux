@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+testdata=./tests/rss-ladder.tests/
+
+run_test() {
+	local name="$1"
+	local rc=0
+	local params
+	echo -n "# $name "
+	cp $testdata/$name/interrupts ./interrupts || return 1
+	cp $testdata/$name/lscpu_output ./lscpu_output || return 2
+	read -a params < $testdata/$name/params
+	rss-ladder "${params[@]}" > ./output || return 3
+	cmp -s $testdata/$name/expected output || rc=$?
+	[ "$rc" = '0' ] && echo OK || echo FAIL
+	return "$rc"
+}
+
+retval=0
+for test in ixgbe.E5645; do
+	run_test $test || retval=1
+done
+rm -f interrupts lscpu_output output
+exit $retval

@@ -1,0 +1,9 @@
+- Распределение прерываний eth1 на сокете 1
+  - eth1: irq 75 eth1-TxRx-0 -> 6
+  - eth1: irq 76 eth1-TxRx-1 -> 7
+  - eth1: irq 77 eth1-TxRx-2 -> 8
+  - eth1: irq 78 eth1-TxRx-3 -> 9
+  - eth1: irq 79 eth1-TxRx-4 -> 10
+  - eth1: irq 80 eth1-TxRx-5 -> 11
+  - eth1: irq 81 eth1-TxRx-6 -> 6
+  - eth1: irq 82 eth1-TxRx-7 -> 7

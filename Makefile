@@ -12,10 +12,7 @@ env:
 	virtualenv env && \
 	. env/bin/activate && \
 	pip install setuptools --upgrade && \
-	make deps
-
-deps:
-	pip install -r requirements.txt --use-mirrors
+	python setup.py install
 
 clean:
 	rm -fr build
@@ -30,8 +27,9 @@ lint:
 coverage:
 	nosetests --with-coverage --cover-package=twitter
 
-test:
-	nosetests
+test: env
+	. env/bin/activate && \
+		./tests/rss-ladder
 
 build: clean
 	python setup.py sdist

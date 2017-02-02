@@ -1,21 +1,27 @@
 #!/bin/bash
 
-set -eu
+set -euo pipefail
+
+DRYRUN=0
 
 # Local development/debug/testing:
-# uncomment:
-#
-# readonly INTERRUPTS=interrupts
-# lscpu() {
-#	cat lscpu_output
-# }
-#
-# below:
-# set driver=ixgbe
-#
+# rss-ladder --test ixgbe eth1 1
 # put files:
 # - cat /proc/interrupts -> ./interrupts
 # - lscpu --extended=CPU,SOCKET -> ./lscpu_output
+
+if [ "${1:-}" = '--test' ]; then
+	readonly INTERRUPTS=interrupts
+	lscpu() {
+		cat lscpu_output
+	}
+	__driver__="$2"
+	ethtool() {
+		echo driver "$__driver__"
+	}
+	shift 2
+	DRYRUN=1
+fi
 
 usage() {
 	echo "Usage: $0 <dev> [cpu socket]"
@@ -61,7 +67,9 @@ set_affinity() {
 	while read _ irq $cpus _ queue cpu _; do
 		irq="${irq//:}"
 		echo "  - $dev: irq $irq $queue -> $cpu"
-		echo $cpu > /proc/irq/$irq/smp_affinity_list
+		if [ "$DRYRUN" = 0 ]; then
+			echo $cpu > /proc/irq/$irq/smp_affinity_list
+		fi
 	done
 }
 
@@ -92,15 +100,23 @@ vmxnet3() {
 
 # mlnx eth2-0 eth2-1 eth2-2 eth2-3
 
-main() {
-	local dev="$1"
-	local cpu_bound="${2:-0}"
-	local driver
-	local postfix
-	if [ "$dev" = '--help' ]; then
+parse_params() {
+	if [ "$1" == '--dry-run' ]; then
+		DRYRUN=1
+		shift
+	fi
+	if [ "$1" = '--help' ]; then
 		usage
 		exit 0
 	fi
+	dev="$1"
+	cpu_bound="${2:-0}"
+}
+
+main() {
+	local driver
+	local postfix
+	parse_params "$@"
 	driver="$(ethtool -i "$dev" | grep driver | awk '{print $2}')"
 	case $driver in
 		igb | ixgbe | vmxnet3 )
