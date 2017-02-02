@@ -3,15 +3,16 @@
 set -euo pipefail
 
 DRYRUN=0
+INTERRUPTS=/proc/interrupts
 
 # Local development/debug/testing:
-# rss-ladder --test ixgbe eth1 1
 # put files:
 # - cat /proc/interrupts -> ./interrupts
 # - lscpu --extended=CPU,SOCKET -> ./lscpu_output
+# rss-ladder --test ixgbe eth1 1
 
 if [ "${1:-}" = '--test' ]; then
-	readonly INTERRUPTS=interrupts
+	INTERRUPTS=interrupts
 	lscpu() {
 		cat lscpu_output
 	}
@@ -22,6 +23,7 @@ if [ "${1:-}" = '--test' ]; then
 	shift 2
 	DRYRUN=1
 fi
+
 
 usage() {
 	echo "Usage: $0 <dev> [cpu socket]"
