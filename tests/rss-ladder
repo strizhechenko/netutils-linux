@@ -14,7 +14,12 @@ run_test() {
 	read -a params < $testdata/$name/params
 	rss-ladder "${params[@]}" > ./output || return 3
 	cmp -s $testdata/$name/expected output || rc=$?
-	[ "$rc" = '0' ] && echo OK || echo FAIL
+	if [ "$rc" = '0' ]; then
+		echo OK
+	else
+		diff -U 0 $testdata/$name/expected output
+		echo FAIL
+	fi
 	return "$rc"
 }
 

@@ -1,3 +1,6 @@
+test: env
+	. env/bin/activate && \
+		./tests/rss-ladder
 
 help:
 	@echo "  env         create a development environment using virtualenv"
@@ -26,10 +29,6 @@ lint:
 
 coverage:
 	nosetests --with-coverage --cover-package=twitter
-
-test: env
-	. env/bin/activate && \
-		./tests/rss-ladder
 
 build: clean
 	python setup.py sdist

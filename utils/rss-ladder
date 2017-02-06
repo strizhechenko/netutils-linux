@@ -16,17 +16,13 @@ if [ "${1:-}" = '--test' ]; then
 	lscpu() {
 		cat lscpu_output
 	}
-	__driver__="$2"
-	ethtool() {
-		echo driver "$__driver__"
-	}
-	shift 2
+	shift
 	DRYRUN=1
 fi
 
 
 usage() {
-	echo "Usage: [PREFIX=-<rx|tx|RxTx|TxRX>-] $0 [--dry-run] [--test <driver>] <dev> [cpu socket]"
+	echo "Usage: [PREFIX=-<rx|tx|RxTx|TxRX>-] $0 [--dry-run] [--test] <dev> [cpu socket]"
 	echo
 	echo "# 90% use-case:"
 	echo "Example: $0 eth1"
@@ -91,27 +87,13 @@ tune() {
 	local cpu_bound="$2"
 	local postfix="$3"
 	local queue_count
-	echo "- Распределение прерываний $dev на сокете $cpu_bound"
+	echo "- Распределение прерываний $dev ($postfix) на сокете $cpu_bound"
 	interrtupts "$dev" "$postfix" | cat -n > /tmp/interrupts.$dev
 	queue_count="$(wc -l < /tmp/interrupts.$dev)"
 	socket_cpu_list "$cpu_bound" "$queue_count" | cat -n > /tmp/cpu.$cpu_bound
 	join /tmp/interrupts.$dev /tmp/cpu.$cpu_bound > /tmp/irq.$dev
 	set_affinity "$dev" "$cpu_bound" "$queue_count" < /tmp/irq.$dev
 }
-
-igb() {
-	tune "$1" "$2" "${PREFIX:--TxRx-}"
-}
-
-ixgbe() {
-	tune "$1" "$2" "${PREFIX:--TxRx-}"
-}
-
-vmxnet3() {
-	tune "$1" "$2" "${PREFIX:--rxtx-}"
-}
-
-# mlnx eth2-0 eth2-1 eth2-2 eth2-3
 
 parse_params() {
 	if [ "$1" == '--dry-run' ]; then
@@ -126,20 +108,16 @@ parse_params() {
 	cpu_bound="${2:-0}"
 }
 
+detect_postfixes() {
+	grep -o "$1-.*" "$INTERRUPTS" | sed "s/$1//g" | tr -d '[0-9]' | sort -u
+}
+
 main() {
-	local driver
 	local postfix
 	parse_params "$@"
-	driver="$(ethtool -i "$dev" | grep driver | awk '{print $2}')"
-	case $driver in
-		igb | ixgbe | vmxnet3 )
-			$driver $dev $cpu_bound
-			;;
-		* )
-			echo "Driver $driver for dev $dev not supported"
-			exit 1
-			;;
-	esac
+	for postfix in $(detect_postfixes $dev); do
+		tune $dev $cpu_bound $postfix
+	done
 }
 
 main "$@"
