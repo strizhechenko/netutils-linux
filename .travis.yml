@@ -1,0 +1,10 @@
+language: python
+
+os: linux
+
+python:
+  - "2.7"
+
+install: make env
+
+script: make test
