@@ -19,7 +19,7 @@ run_test() {
 }
 
 retval=0
-for test in ixgbe.E5645; do
+for test in ixgbe.E5645 igb.E5606; do
 	run_test $test || retval=1
 done
 rm -f interrupts lscpu_output output

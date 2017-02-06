@@ -1,0 +1,5 @@
+- Распределение прерываний eth0 на сокете 0
+  - eth0: irq 58 eth0-rx-0 -> 0
+  - eth0: irq 59 eth0-rx-1 -> 1
+  - eth0: irq 60 eth0-rx-2 -> 2
+  - eth0: irq 61 eth0-rx-3 -> 3

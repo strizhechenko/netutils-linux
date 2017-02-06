@@ -1,0 +1,79 @@
+            CPU0       CPU1       CPU2       CPU3       
+   0:       4099          0          0          0   IO-APIC-edge      timer
+   1:          2          0          0          0   IO-APIC-edge      i8042
+   8:          1          0          0          0   IO-APIC-edge      rtc0
+   9:          0          0          0          0   IO-APIC-fasteoi   acpi
+  12:          4          0          0          0   IO-APIC-edge      i8042
+  16:          0          0          0          0   IO-APIC-fasteoi   uhci_hcd:usb3
+  18:          0          0          0          0   IO-APIC-fasteoi   ehci_hcd:usb1, uhci_hcd:usb8
+  19:          0          0          0          0   IO-APIC-fasteoi   uhci_hcd:usb5, uhci_hcd:usb7
+  21:          0          0          0          0   IO-APIC-fasteoi   uhci_hcd:usb4
+  23:        120          0          0          0   IO-APIC-fasteoi   ehci_hcd:usb2, uhci_hcd:usb6
+  48:   51063509          0          0          0   PCI-MSI-edge      ahci
+  49:          3          0          0          0   PCI-MSI-edge      ioat-msix
+  50:          3          0          0          0   PCI-MSI-edge      ioat-msix
+  51:          3          0          0          0   PCI-MSI-edge      ioat-msix
+  52:          3          0          0          0   PCI-MSI-edge      ioat-msix
+  53:          3          0          0          0   PCI-MSI-edge      ioat-msix
+  54:          3          0          0          0   PCI-MSI-edge      ioat-msix
+  55:          3          0          0          0   PCI-MSI-edge      ioat-msix
+  56:          3          0          0          0   PCI-MSI-edge      ioat-msix
+  57:          1          0          0          0   PCI-MSI-edge      eth0
+  58:    4251905          0          0          0   PCI-MSI-edge      eth0-rx-0
+  59:    2819389       4036          0          0   PCI-MSI-edge      eth0-rx-1
+  60:    3474520          0       7671          0   PCI-MSI-edge      eth0-rx-2
+  61:    5004747          0          0       8803   PCI-MSI-edge      eth0-rx-3
+  62:    3369818          0          0          0   PCI-MSI-edge      eth0-tx-0
+  63:    3357743       8999          0          0   PCI-MSI-edge      eth0-tx-1
+  64:   19184759          0      29818          0   PCI-MSI-edge      eth0-tx-2
+  65:    3361794          0          0       6106   PCI-MSI-edge      eth0-tx-3
+  66:          2          0          0          0   PCI-MSI-edge      eth1
+  67: 1389886576          0          0          0   PCI-MSI-edge      eth1-rx-0
+  68: 1191531191   10889906          0          0   PCI-MSI-edge      eth1-rx-1
+  69: 1194747388          0   11134993          0   PCI-MSI-edge      eth1-rx-2
+  70: 1194327397          0          0   10470059   PCI-MSI-edge      eth1-rx-3
+  71:    1176772          0          0          0   PCI-MSI-edge      eth1-tx-0
+  72:    1176657          0          0          0   PCI-MSI-edge      eth1-tx-1
+  73:    1176657          0          0          0   PCI-MSI-edge      eth1-tx-2
+  74:    1176657          0          0          0   PCI-MSI-edge      eth1-tx-3
+  84:          1          0          0          0   PCI-MSI-edge      eth3
+  85: 3620697921          0          0          0   PCI-MSI-edge      eth3-rx-0
+  86: 3764296364       2170          0          0   PCI-MSI-edge      eth3-rx-1
+  87: 4275928888          0       2170          0   PCI-MSI-edge      eth3-rx-2
+  88: 4270637084          0          0       2170   PCI-MSI-edge      eth3-rx-3
+  89:    1191247          0          0          0   PCI-MSI-edge      eth3-tx-0
+  90:    1191241          0          0          0   PCI-MSI-edge      eth3-tx-1
+  91:    1191241          0          0          0   PCI-MSI-edge      eth3-tx-2
+  92:    1191241          0          0          0   PCI-MSI-edge      eth3-tx-3
+  93:          4          0          0          0   PCI-MSI-edge      eth4
+  94: 1340295528          0          0          0   PCI-MSI-edge      eth4-rx-0
+  95: 1281088992 1212753288          0          0   PCI-MSI-edge      eth4-rx-1
+  96: 1274692825          0 1149685730          0   PCI-MSI-edge      eth4-rx-2
+  97: 1275143167          0          0 1144794732   PCI-MSI-edge      eth4-rx-3
+  98:    1178183          0          0          0   PCI-MSI-edge      eth4-tx-0
+  99:    1178058          0          0          0   PCI-MSI-edge      eth4-tx-1
+ 100:    1178058          0          0          0   PCI-MSI-edge      eth4-tx-2
+ 101:    1178058          0          0          0   PCI-MSI-edge      eth4-tx-3
+ 102:          4          0          0          0   PCI-MSI-edge      eth5
+ 103: 2072097067          0          0          0   PCI-MSI-edge      eth5-rx-0
+ 104: 3467233485 4068168199          0          0   PCI-MSI-edge      eth5-rx-1
+ 105: 2965726602          0 3949384289          0   PCI-MSI-edge      eth5-rx-2
+ 106: 3577790075          0          0   10617424   PCI-MSI-edge      eth5-rx-3
+ 107:    1178061          0          0          0   PCI-MSI-edge      eth5-tx-0
+ 108:    1178055          0          0          0   PCI-MSI-edge      eth5-tx-1
+ 109:    1178055          0          0          0   PCI-MSI-edge      eth5-tx-2
+ 110:    1178055          0          0          0   PCI-MSI-edge      eth5-tx-3
+ NMI:     719109     186157     207424     191975   Non-maskable interrupts
+ LOC:  231573422   94053427   92559897   85621885   Local timer interrupts
+ SPU:          0          0          0          0   Spurious interrupts
+ PMI:     719109     186157     207424     191975   Performance monitoring interrupts
+ IWI:          0          0          0          0   IRQ work interrupts
+ RES:    2388680    1154836    1311658    1602677   Rescheduling interrupts
+ CAL:         37        165        166        175   Function call interrupts
+ TLB:     488379     940548     554026     427187   TLB shootdowns
+ TRM:          0          0          0          0   Thermal event interrupts
+ THR:          0          0          0          0   Threshold APIC interrupts
+ MCE:          0          0          0          0   Machine check exceptions
+ MCP:       3972       3972       3972       3972   Machine check polls
+ ERR:          0
+ MIS:          0
