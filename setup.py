@@ -15,7 +15,7 @@ def read(*paths):
 
 setup(
     name='netutils-linux',
-    version='0.2.1',
+    version='0.2.2',
     author='Oleg Strizhechenko',
     author_email='oleg.strizhechenko@gmail.com',
     license='MIT',

@@ -26,10 +26,21 @@ fi
 
 
 usage() {
-	echo "Usage: $0 <dev> [cpu socket]"
+	echo "Usage: [PREFIX=-<rx|tx|RxTx|TxRX>-] $0 [--dry-run] [--test <driver>] <dev> [cpu socket]"
+	echo
+	echo "# 90% use-case:"
 	echo "Example: $0 eth1"
+	echo
+	echo "# You may be like to have 'dry run' before really change affinities:"
+	echo "Example: $0 --dry-run eth1"
+	echo
+	echo "# On multiprocessor machine it's better to explicitely define which socket will be used"
 	echo "Example: $0 eth1 0"
 	echo "Example: $0 eth2 1"
+	echo
+	echo "# Sometimes queue-prefix differs even for one driver. If so, you can redefine it:"
+	echo "Example: PREFIX=-rx- $0 eth3"
+	echo "Example: PREFIX=-tx- $0 eth3"
 }
 
 __socket_cpu_list() {
@@ -89,15 +100,15 @@ tune() {
 }
 
 igb() {
-	tune "$1" "$2" "-TxRx-"
+	tune "$1" "$2" "${PREFIX:--TxRx-}"
 }
 
 ixgbe() {
-	tune "$1" "$2" "-TxRx-"
+	tune "$1" "$2" "${PREFIX:--TxRx-}"
 }
 
 vmxnet3() {
-	tune "$1" "$2" "-rxtx-"
+	tune "$1" "$2" "${PREFIX:--rxtx-}"
 }
 
 # mlnx eth2-0 eth2-1 eth2-2 eth2-3
