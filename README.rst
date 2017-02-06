@@ -50,8 +50,7 @@ Automatically set smp_affinity_list for IRQ of NIC rx/tx queues for ixgbe/igb/vm
 
 Based on lscpu's output.
 
-Later, there will be a support for double/quad ladder in case of multiprocessor systems.
-
+It also supports double/quad ladder in case of multiprocessor systems (but you better explicitely specify queue count == core per socket as NIC's driver's param).
 
 autorps
 ------
