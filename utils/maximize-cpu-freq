@@ -13,6 +13,11 @@ parse_params() {
 		echo "Usage: $0 [--dry-run]"
 		exit 0
 	fi
+	
+	if [ "$UID" = '0' ]; then
+		echo "You should run this util as root. Use sudo/su."
+		exit 1
+	fi
 }
 
 set_governor_performance() {
