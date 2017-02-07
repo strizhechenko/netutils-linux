@@ -16,8 +16,9 @@ parse_params() {
 }
 
 set_governor_performance() {
+	local gov_state
 	local cpu="$1"
-	gov=$cpu/cpufreq/scaling_governor
+	local gov=$cpu/cpufreq/scaling_governor
 	if [ ! -f $gov ]; then
 		echo "$cpu have no scaling_governor."
 		continue
@@ -33,9 +34,9 @@ set_governor_performance() {
 
 maximize_freq() {
 	local cpu="$1"
-	max=$cpu/cpufreq/scaling_max_freq
-	min=$cpu/cpufreq/scaling_min_freq
-	cur=$cpu/cpufreq/scaling_cur_freq
+	local max=$cpu/cpufreq/scaling_max_freq
+	local min=$cpu/cpufreq/scaling_min_freq
+	local cur=$cpu/cpufreq/scaling_cur_freq
 	if [ ! -f $min ] || [ ! -f $max ]; then
 		echo "$cpu doesn't support cpu scaling (and it's good)."
 		continue
@@ -47,6 +48,7 @@ maximize_freq() {
 }
 
 main() {
+	local cpu
 	parse_params "$@"
 	for cpu in $(find /sys/devices/system/cpu/ -maxdepth 1 -type d | egrep 'cpu[0-9]+'); do
 		set_governor_performance "$cpu"
