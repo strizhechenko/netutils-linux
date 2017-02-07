@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+parse_params() {
+	DRYRUN=0
+	if [ "${1:-}" == '--dry-run' ]; then
+		DRYRUN=1
+		shift
+	fi
+
+	if [ "${1:-}" == '--help' ]; then
+		echo "Usage: $0 [--dry-run]"
+		exit 0
+	fi
+}
+
+set_governor_performance() {
+	local cpu="$1"
+	gov=$cpu/cpufreq/scaling_governor
+	if [ ! -f $gov ]; then
+		echo "$cpu have no scaling_governor."
+		continue
+	fi
+	read gov_state < $gov
+	[ "$gov_state" = 'performance' ] || echo 'performance' > $gov
+}
+
+maximize_freq() {
+	local cpu="$1"
+	max=$cpu/cpufreq/scaling_max_freq
+	min=$cpu/cpufreq/scaling_min_freq
+	cur=$cpu/cpufreq/scaling_cur_freq
+	if [ ! -f $min ] || [ ! -f $max ]; then
+		echo "$cpu doesn't support cpu scaling (and it's good)."
+		continue
+	fi
+	echo "- set $cpu minimal freq ($(<$min)) to maximum ($(<$max))"
+	if [ "$DRYRUN" = '0' ]; then
+		cat $max > $min
+	fi
+}
+
+main() {
+	parse_params "$@"
+	for cpu in $(find /sys/devices/system/cpu/ -maxdepth 1 -type d | egrep 'cpu[0-9]+'); do
+		set_governor_performance "$cpu"
+		maximize_freq "$cpu"
+	done
+}
+
+main "$@"

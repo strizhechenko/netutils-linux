@@ -57,3 +57,7 @@ autorps
 Enables RPS of NIC on all available CPUs. It may be good for small servers with cheap network cards or bunch of VLAN.
 
 Later, there will be a support for enable RPS only for subgroup of CPUs based on L3 caches.
+
+maximize-cpu-freq
+------
+Sets every CPU scaling governor mode to performance and set max scaling value for min scaling value. So you will be able to use all power of your processor (useful for latency sensible systems).
