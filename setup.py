@@ -15,7 +15,7 @@ def read(*paths):
 
 setup(
     name='netutils-linux',
-    version='0.3.1',
+    version='0.3.2',
     author='Oleg Strizhechenko',
     author_email='oleg.strizhechenko@gmail.com',
     license='MIT',
@@ -31,6 +31,7 @@ setup(
         'utils/missed-pkts-monitor',
         'utils/rss-ladder',
         'utils/softirq-net-rx-top',
+        'utils/maximize-cpu-freq',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
