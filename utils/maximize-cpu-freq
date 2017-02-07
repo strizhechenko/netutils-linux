@@ -23,7 +23,12 @@ set_governor_performance() {
 		continue
 	fi
 	read gov_state < $gov
-	[ "$gov_state" = 'performance' ] || echo 'performance' > $gov
+	if [ "$DRYRUN" = '0' ]; then
+		if [ "$gov_state" != 'performance' ]; then
+			echo "Set performance mode for $cpu governor"
+			echo 'performance' > $gov
+		fi
+	fi
 }
 
 maximize_freq() {
