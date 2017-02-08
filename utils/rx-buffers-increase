@@ -1,0 +1,84 @@
+#!/usr/bin/env python
+
+from sys import argv
+from os import popen, getenv
+from unittest import TestCase
+from unittest import main as test_main
+
+__author__ = 'Oleg Strizhechenko <oleg.strizhechenko@gmail.com>'
+
+
+class RxBuffersIncrease(object):
+
+    def __init__(self, dev=None, rx_upper_bound=2048):
+        self.dev = dev
+        self.rx_upper_bound = rx_upper_bound
+        self.rx_current = 0
+        self.rx_maximum = 0
+
+    def rx_cur_and_max(self):
+        extract_value = lambda s: int(s.strip('RX:\t\n'))
+        with popen('ethtool -g {0}'.format(self.dev)) as ethtool_buffers:
+            ethtool_buffers_data_strings = ethtool_buffers.readlines()
+            ethtool_buffers.close()
+        if len(ethtool_buffers_data_strings) == 1:
+            raise LookupError, 'Ring buffers ops is not supported'
+        self.rx_maximum = extract_value(ethtool_buffers_data_strings[2])
+        self.rx_current = extract_value(ethtool_buffers_data_strings[7])
+
+    def rx_eval_prefered(self, current=None, maximum=None):
+        if not current:
+            current = self.rx_current
+        if not maximum:
+            maximum = self.rx_maximum
+        if current > self.rx_upper_bound:
+            return current
+        if maximum < self.rx_upper_bound:
+            return maximum
+        return max(current, min(self.rx_upper_bound, maximum / 2))
+
+    def rx_set_prefered(self):
+        self.rx_cur_and_max()
+        prefered = self.rx_eval_prefered()
+        if prefered == self.rx_current:
+            return
+        command = 'ethtool -G {0} rx {1}'.format(self.dev, prefered)
+        with popen(command) as set_output:
+            print set_output.read()
+            set_output.close()
+
+
+class RxBuffersIncreaseTest(TestCase):
+
+    def setUp(self):
+        self.rxbi = RxBuffersIncrease(rx_upper_bound=2048)
+
+    def test_broken(self):
+        pass
+
+    def test_4096(self):
+        self.assertEqual(self.rxbi.rx_eval_prefered(256, 4096), 2048)
+        self.assertEqual(self.rxbi.rx_eval_prefered(512, 4096), 2048)
+        self.assertEqual(self.rxbi.rx_eval_prefered(2048, 4096), 2048)
+        self.assertEqual(self.rxbi.rx_eval_prefered(3072, 4096), 3072)
+        self.assertEqual(self.rxbi.rx_eval_prefered(4096, 4096), 4096)
+
+    def test_511(self):
+        self.assertEqual(self.rxbi.rx_eval_prefered(200, 511), 511)
+        self.assertEqual(self.rxbi.rx_eval_prefered(511, 511), 511)
+        self.assertEqual(self.rxbi.rx_eval_prefered(400, 511), 511)
+
+    def test_8096(self):
+        self.assertEqual(self.rxbi.rx_eval_prefered(200, 8096), 2048)
+        self.assertEqual(self.rxbi.rx_eval_prefered(2048, 8096), 2048)
+        self.assertEqual(self.rxbi.rx_eval_prefered(3000, 8096), 3000)
+        self.assertEqual(self.rxbi.rx_eval_prefered(8096, 8096), 8096)
+
+
+def main():
+    RBI = RxBuffersIncrease(dev=argv[1].split(';')[0],
+                            rx_upper_bound=int(getenv('RX_UPPER_BOUND', '2048')))
+    RBI.rx_set_prefered()
+
+if __name__ == '__main__':
+    len(argv) == 1 and test_main() or main()

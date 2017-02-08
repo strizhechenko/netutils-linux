@@ -1,6 +1,7 @@
 test: env
 	. env/bin/activate && \
-		./tests/rss-ladder
+		./tests/rss-ladder && \
+		./utils/rx-buffers-increase
 
 help:
 	@echo "  env         create a development environment using virtualenv"
