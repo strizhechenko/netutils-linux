@@ -24,7 +24,7 @@ setup(
     description='Bunch of utils to simplify linux network troubleshooting and performance tuning.',
     long_description=(read('README.rst')),
     packages=find_packages(exclude=['tests*']),
-    scripts = [os.path.join('utils/', script) for script in os.listdir('utils/')]
+    scripts = [os.path.join('utils/', script) for script in os.listdir('utils/')],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
