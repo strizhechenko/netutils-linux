@@ -4,6 +4,8 @@ from sys import argv
 from os import popen, getenv
 from unittest import TestCase
 from unittest import main as test_main
+from subprocess import Popen, PIPE
+from re import findall
 
 __author__ = 'Oleg Strizhechenko <oleg.strizhechenko@gmail.com>'
 
@@ -18,13 +20,14 @@ class RxBuffersIncrease(object):
 
     def rx_cur_and_max(self):
         extract_value = lambda s: int(s.strip('RX:\t\n'))
-        with popen('ethtool -g {0}'.format(self.dev)) as ethtool_buffers:
-            ethtool_buffers_data_strings = ethtool_buffers.readlines()
-            ethtool_buffers.close()
-        if len(ethtool_buffers_data_strings) == 1:
-            raise LookupError, 'Ring buffers ops is not supported'
-        self.rx_maximum = extract_value(ethtool_buffers_data_strings[2])
-        self.rx_current = extract_value(ethtool_buffers_data_strings[7])
+        ethtool_buffers = Popen(['ethtool', '-g', self.dev], stdout=PIPE)
+        ethtool_buffers_data_strings = ethtool_buffers.communicate()
+        try:
+            ethtool_buffers_data_strings = findall('[RX:]{3}\\t\\t\d+\\n', ethtool_buffers_data_strings[0])
+            self.rx_maximum = extract_value(ethtool_buffers_data_strings[0])
+            self.rx_current = extract_value(ethtool_buffers_data_strings[1])
+        except:
+            pass
 
     def rx_eval_prefered(self, current=None, maximum=None):
         if not current:
@@ -42,11 +45,8 @@ class RxBuffersIncrease(object):
         prefered = self.rx_eval_prefered()
         if prefered == self.rx_current:
             return
-        command = 'ethtool -G {0} rx {1}'.format(self.dev, prefered)
-        with popen(command) as set_output:
-            print set_output.read()
-            set_output.close()
-
+        set_output = set_output = Popen(['ethtool', '-G', self.dev, 'rx', str(prefered)], stdout=PIPE)
+        set_output.communicate()
 
 class RxBuffersIncreaseTest(TestCase):
 
