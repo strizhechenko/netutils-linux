@@ -15,7 +15,7 @@ def read(*paths):
 
 setup(
     name='netutils-linux',
-    version='0.3.3',
+    version='0.3.4',
     author='Oleg Strizhechenko',
     author_email='oleg.strizhechenko@gmail.com',
     license='MIT',
@@ -24,15 +24,7 @@ setup(
     description='Bunch of utils to simplify linux network troubleshooting and performance tuning.',
     long_description=(read('README.rst')),
     packages=find_packages(exclude=['tests*']),
-    scripts=[
-        'utils/autorps',
-        'utils/irqtop',
-        'utils/link-rx-rate',
-        'utils/missed-pkts-monitor',
-        'utils/rss-ladder',
-        'utils/softirq-net-rx-top',
-        'utils/maximize-cpu-freq',
-    ],
+    scripts = [os.path.join('utils/', script) for script in os.listdir('utils/')]
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
