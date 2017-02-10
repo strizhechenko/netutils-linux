@@ -61,3 +61,7 @@ Later, there will be a support for enable RPS only for subgroup of CPUs based on
 maximize-cpu-freq
 ------
 Sets every CPU scaling governor mode to performance and set max scaling value for min scaling value. So you will be able to use all power of your processor (useful for latency sensible systems).
+
+rx-buffers-increase
+------
+rx-buffers-increase utils, that finds and sets compromise-value between avoiding dropped/missing pkts and keeping a latency low.
