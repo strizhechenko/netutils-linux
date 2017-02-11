@@ -8,9 +8,11 @@ It's just a bunch of utils to simplify linux network troubleshooting and perform
 
 Project state
 ======
-Beta. Six script were gathered together, shortly documented, one has tests and packed into python package.
+Beta. Few script were gathered together, shortly documented, one has tests and packed into python package.
 
 Some were cleaned up, some - not. Most of them was being written in bash, not python, maybe they'll be ported later.
+
+In next few weeks it receive something like a 'tuned' with autodetection of best settings for all the system feature.
 
 Installation
 ======
