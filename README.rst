@@ -4,15 +4,15 @@ netutils-linux
 .. image:: https://travis-ci.org/strizhechenko/netutils-linux.svg?branch=master
    :target: https://travis-ci.org/strizhechenko/netutils-linux
 
-It's just a bunch of utils to simplify linux network troubleshooting and performance tuning.
+It's just a bunch of utils to simplify Linux network troubleshooting and performance tuning.
 
 Project state
 ======
-Beta. Few script were gathered together, shortly documented, one has tests and packed into python package.
+Beta. Few script were gathered together, shortly documented, one has some tests and packed into python package.
 
-Some were cleaned up, some - not. Most of them was being written in bash, not python, maybe they'll be ported later.
+Some were cleaned up, some - not. Most of them were being written in bash, not python, maybe they'll be ported later.
 
-In next few weeks it receive something like a 'tuned' with autodetection of best settings for all the system feature.
+In next few weeks, it will receive something like a 'tuned' with autodetection of best settings for all the system feature.
 
 Installation
 ======
@@ -27,7 +27,7 @@ irqtop
 ------
 - Show you a rate of interrupts
 - based on /proc/interrupts file
-- Hides interrupts with small rate to show a better picture.
+- Hides the interrupts with small rate to show a better picture.
 
 softirq-net-rx-top
 ------
@@ -39,7 +39,7 @@ missed-pkts-monitor
 ------
 - Detects when were packets missed (maybe it will give some idea of correlation with something)
 - Easy to use in tactical, not strategic debug, without deployment of graphite/influxdb
-- Based on ip -s -s link output
+- Based on `ip -s -s link` output
 
 link-rx-rate
 ------
@@ -48,17 +48,17 @@ link-rx-rate
 
 rss-ladder
 ------
-Automatically set smp_affinity_list for IRQ of NIC rx/tx queues for ixgbe/igb/vmxnet3 drivers (they usually work on CPU0 out of box).
+Automatically set `smp_affinity_list` for IRQ of NIC rx/tx queues for ixgbe/igb/vmxnet3 drivers (they usually work on CPU0 out of the box).
 
 Based on lscpu's output.
 
-It also supports double/quad ladder in case of multiprocessor systems (but you better explicitely specify queue count == core per socket as NIC's driver's param).
+It also supports double/quad ladder in case of multiprocessor systems (but you better explicitly specify queue count == core per socket as NIC's driver's param).
 
 autorps
 ------
-Enables RPS of NIC on all available CPUs. It may be good for small servers with cheap network cards or bunch of VLAN.
+Enables RPS of NIC on all available CPUs. It may be good for small servers with cheap network cards or a bunch of VLAN.
 
-Later, there will be a support for enable RPS only for subgroup of CPUs based on L3 caches.
+Later, there will be a support for enabling RPS only for a subgroup of CPUs based on L3 caches.
 
 maximize-cpu-freq
 ------
@@ -66,4 +66,4 @@ Sets every CPU scaling governor mode to performance and set max scaling value fo
 
 rx-buffers-increase
 ------
-rx-buffers-increase utils, that finds and sets compromise-value between avoiding dropped/missing pkts and keeping a latency low.
+rx-buffers-increase is util, that finds and sets compromise value between avoiding dropped/missing pkts and keeping a latency low.
