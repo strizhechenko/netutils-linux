@@ -29,6 +29,10 @@ class RxBuffersIncreaser(object):
         self.maximum = 0
         self.prefered = None
 
+    def __str__(self):
+        attrs = ('dev', 'upper_bound', 'current', 'maximum', 'prefered')
+        return str(dict((attr, self.__getattribute__(attr)) for attr in attrs))
+
     def investigate(self):
         """ get maximum and current rx ring buffers values via ethtool """
         extract_value = lambda s: int(s.strip('RX:\t\n'))
@@ -55,13 +59,21 @@ class RxBuffersIncreaser(object):
     def apply(self):
         """ doing all the job, applying new buffer's size if required """
         self.investigate()
-        self.determine()
+        self.prefered = self.determine()
         if self.prefered == self.current:
+            print "{0}'s rx ring buffer already has fine size.".format(self.dev)
             return
-        system('ethtool -G {0} rx {1}'.format(self.dev, self.prefered))
+        assert self.prefered, "Can't eval prefered rx buffer size."
+        command = 'ethtool -G {0} rx {1}'.format(self.dev, self.prefered)
+        print 'run:', command
+        system(command)
 
 
 class RxBuffersIncreaserTest(TestCase):
+    """
+    Just in-memory test of evaluation rx-buffer's size.
+    No device's settings changed.
+    """
 
     def setUp(self):
         self.rxbi = RxBuffersIncreaser(upper_bound=2048)
@@ -86,6 +98,7 @@ class RxBuffersIncreaserTest(TestCase):
 
 
 def main():
+    """ Tune NIC's buffers if given in args """
     upper_bound = int(getenv('RX_UPPER_BOUND', '2048'))
     dev = argv[1].split(';')[0]
     RxBuffersIncreaser(dev, upper_bound).apply()
