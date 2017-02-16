@@ -1,0 +1,70 @@
+#!/bin/bash
+
+set -euo pipefail
+
+log() {
+	echo "$(date +"%Y-%m-%d %H:%M:%S") $HOSTNAME ${0##*/}[${PPID:-0}:$$]: $*"
+}
+
+mirror_devices_bridge() {
+	brctl show | tail -n +2 | awk '{print $4}'
+}
+
+mirror_devices() {
+	local MIRRORCONF_CR7=/usr/local/Reductor/userinfo/mirror_info.conf
+	local MIRRORCONF_CR8_INNER=/cfg/userinfo/mirror_info.conf
+	local MIRRORCONF_CR8_OUTER=/app/reductor/$MIRRORCONF_CR8_INNER
+	local MIRROR_CONF conf
+	for conf in $MIRRORCONF_CR7 $MIRRORCONF_CR8_INNER $MIRRORCONF_CR8_OUTER; do
+		[ -f $conf ] || continue
+		MIRROR_CONF=$conf
+		break
+	done
+	if [ -n "$MIRROR_CONF" ]; then
+		awk '{print $1}' $MIRROR_CONF | sort -u
+	else
+		mirror_devices_bridge
+	fi
+}
+
+manual_tuned() {
+	local HOOKDIR_CR7=/usr/local/Reductor/userinfo/hooks/
+	local HOOKDIR_CR7_INNER=/cfg/userinfo/hooks/
+	local HOOKDIR_CR7_OUTER=/app/reductor/$HOOKDIR_CR7_INNER
+	local HOOKDIR hookdir
+	for hookdir in $HOOKDIR_CR7 $HOOKDIR_CR7_INNER $HOOKDIR_CR7_OUTER; do
+		[ -d $hookdir ] || continue
+		HOOKDIR=$hookdir
+		break
+	done
+	set +x
+	if find /etc/sysconfig/network-scripts/ -type f -name "ifcfg-*" | fgrep ETHTOOL_OPTS; then
+		return 0
+	fi
+	if [ -x $HOOKDIR/start.sh ] && fgrep irq $HOOKDIR/start.sh; then
+		return 0
+	fi
+	return 1
+}
+
+tune() {
+	local dev="$1"
+	log "Automatically sets best performance options for $dev:"
+	autorps "$dev" || true
+	rx-buffers-increase "$dev" || true
+}
+
+main() {
+	if manual_tuned; then
+		log "One of the performance tunings is already done by hands. Autotune skipped."
+		return 0
+	fi
+	log "Disabling CPU freq scaling:"
+	maximize-cpu-freq
+	# shellcheck disable=SC1073
+	for device in $(mirror_devices); do
+		tune $device
+	done
+}
+
+main "$@"
