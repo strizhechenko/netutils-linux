@@ -20,7 +20,7 @@ mirror_devices() {
 		MIRROR_CONF=$conf
 		break
 	done
-	if [ -n "$MIRROR_CONF" ]; then
+	if [ -n "${MIRROR_CONF:-}" ]; then
 		awk '{print $1}' $MIRROR_CONF | sort -u
 	else
 		mirror_devices_bridge
@@ -41,7 +41,7 @@ manual_tuned() {
 	if find /etc/sysconfig/network-scripts/ -type f -name "ifcfg-*" | fgrep ETHTOOL_OPTS; then
 		return 0
 	fi
-	if [ -x $HOOKDIR/start.sh ] && fgrep irq $HOOKDIR/start.sh; then
+	if [ -n "${HOOKDIR:-}" ] && [ -x "$HOOKDIR/start.sh" ] && fgrep "irq" "$HOOKDIR/start.sh"; then
 		return 0
 	fi
 	return 1

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+trap usage EXIT
+
+usage() {
+	echo "$0:"
+	echo
+	echo "Cuts TCP_STREAM from big pcap-file into smaller one."
+	echo "Useful if you have small amount of RAM on your PC."
+	echo
+	echo "Usage: $0 <TCP_STREAM_ID> <PCAP_INPUT> <PCAP_OUT>"
+	echo "TCP_STREAM_ID - tcp.stream id in PCAP_INPUT"
+	echo "PCAP_INPUT - big original pcap-file"
+	echo "PCAP_OUTPUT - small pcap-file where we'll put packets with TCP_STREAM_ID"
+}
+
+STREAM_ID="$1"
+PCAP_IN="$2"
+PCAP_OUT="$3"
+tshark -2 -R "tcp.stream eq $STREAM_ID" -r "$PCAP_IN" -w "$PCAP_OUT"

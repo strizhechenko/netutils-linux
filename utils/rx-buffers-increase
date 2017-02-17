@@ -5,7 +5,7 @@ rx-buffers-increase utils, that finds and sets compromise-value
 between avoiding dropped/missing pkts and keeping a latency low.
 """
 
-from sys import argv
+import sys
 from os import getenv, system
 from unittest import TestCase
 from unittest import main as test_main
@@ -36,10 +36,15 @@ class RxBuffersIncreaser(object):
     def investigate(self):
         """ get maximum and current rx ring buffers values via ethtool """
         extract_value = lambda s: int(s.strip('RX:\t\n'))
+        process = Popen(['ethtool', '-i', self.dev], stdout=PIPE, stderr=PIPE)
+        _, _ = process.communicate()
+        # silent fail if called for vlan/bridge/etc
+        if process.returncode != 0:
+            exit(0)
         process = Popen(['ethtool', '-g', self.dev], stdout=PIPE, stderr=PIPE)
         ethtool_buffers, stderr = process.communicate()
         if process.returncode != 0:
-            raise LookupError, stderr
+            exit(1)
         ethtool_buffers = ethtool_buffers.split('\n')
         self.maximum = extract_value(ethtool_buffers[2])
         self.current = extract_value(ethtool_buffers[7])
@@ -100,12 +105,12 @@ class RxBuffersIncreaserTest(TestCase):
 def main():
     """ Tune NIC's buffers if given in args """
     upper_bound = int(getenv('RX_UPPER_BOUND', '2048'))
-    dev = argv[1].split(';')[0]
+    dev = sys.argv[1].split(';')[0]
     RxBuffersIncreaser(dev, upper_bound).apply()
 
 
 if __name__ == '__main__':
-    if len(argv) == 1:
+    if len(sys.argv) == 1:
         test_main()
     else:
         main()
