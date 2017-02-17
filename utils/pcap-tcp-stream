@@ -19,4 +19,4 @@ usage() {
 STREAM_ID="$1"
 PCAP_IN="$2"
 PCAP_OUT="$3"
-tshark -2 -R "tcp.stream eq $STREAM_ID" -r "$PCAP_IN" -w "$PCAP_OUT"
+tshark -Y "tcp.stream eq $STREAM_ID" -r "$PCAP_IN" -w "$PCAP_OUT"
