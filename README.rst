@@ -33,7 +33,7 @@ Example output:
 
 .. code::
 
-  Total:	1398	1539
+  Total:  1398	1539
  	  CPU0	CPU1
   22:	233	227	IO-APIC-fasteoi	eth1
   28:	91	98	PCI-MSI-edge	eth0
