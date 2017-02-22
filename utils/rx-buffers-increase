@@ -17,6 +17,7 @@ __author__ = 'Oleg Strizhechenko <oleg.strizhechenko@gmail.com>'
 class RxBuffersIncreaser(object):
 
     """
+    0. Check if buffers already been setted up in ifcfg-ethX
     1. Determines what size of buffers available
     2. Evaluate one that fits for our purposes
     3. Apply it
@@ -28,6 +29,7 @@ class RxBuffersIncreaser(object):
         self.current = 0
         self.maximum = 0
         self.prefered = None
+        self.manual_tuned = False
 
     def __str__(self):
         attrs = ('dev', 'upper_bound', 'current', 'maximum', 'prefered')
@@ -42,7 +44,7 @@ class RxBuffersIncreaser(object):
         if process.returncode != 0:
             exit(0)
         process = Popen(['ethtool', '-g', self.dev], stdout=PIPE, stderr=PIPE)
-        ethtool_buffers, stderr = process.communicate()
+        ethtool_buffers, _ = process.communicate()
         if process.returncode != 0:
             exit(1)
         ethtool_buffers = ethtool_buffers.split('\n')
