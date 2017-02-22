@@ -6,7 +6,7 @@ between avoiding dropped/missing pkts and keeping a latency low.
 """
 
 import sys
-from os import getenv, system
+from os import getenv, system, path
 from unittest import TestCase
 from unittest import main as test_main
 from subprocess import Popen, PIPE
@@ -37,6 +37,12 @@ class RxBuffersIncreaser(object):
 
     def investigate(self):
         """ get maximum and current rx ring buffers values via ethtool """
+        ns = '/etc/sysconfig/network-scripts/'
+        with open(path.join(ns, 'ifcfg-' + self.dev)) as config:
+            if any(line for line in config.xreadlines() if 'ETHTOOL_OPTS' in line):
+                print "{0}'s RX ring buffer already manually tuned.".format(self.dev)
+                exit(0)
+
         extract_value = lambda s: int(s.strip('RX:\t\n'))
         process = Popen(['ethtool', '-i', self.dev], stdout=PIPE, stderr=PIPE)
         _, _ = process.communicate()
@@ -52,7 +58,7 @@ class RxBuffersIncreaser(object):
         self.current = extract_value(ethtool_buffers[7])
 
     def determine(self, current=None, maximum=None):
-        """ evaluate most fitting rx ring buffer's fize """
+        """ evaluate most fitting RX ring buffer's fize """
         if not current:
             current = self.current
         if not maximum:
@@ -68,9 +74,9 @@ class RxBuffersIncreaser(object):
         self.investigate()
         self.prefered = self.determine()
         if self.prefered == self.current:
-            print "{0}'s rx ring buffer already has fine size.".format(self.dev)
+            print "{0}'s RX ring buffer already has fine size.".format(self.dev)
             return
-        assert self.prefered, "Can't eval prefered rx buffer size."
+        assert self.prefered, "Can't eval prefered RX ring buffer size."
         command = 'ethtool -G {0} rx {1}'.format(self.dev, self.prefered)
         print 'run:', command
         system(command)
