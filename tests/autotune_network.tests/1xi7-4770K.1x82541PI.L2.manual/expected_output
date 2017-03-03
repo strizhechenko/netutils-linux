@@ -1,0 +1,49 @@
+cpu:
+  info:
+    Architecture: x86_64
+    BogoMIPS: 6984.18
+    Byte Order: Little Endian
+    CPU MHz: 3492.092
+    CPU family: 6
+    CPU op-mode(s): 32-bit, 64-bit
+    CPU(s): 8
+    Core(s) per socket: 4
+    L1d cache: 32K
+    L1i cache: 32K
+    L2 cache: 256K
+    L3 cache: 8192K
+    Model: 60
+    Model name: Intel(R) Core(TM) i7-4770K CPU @ 3.50GHz
+    NUMA node(s): 1
+    NUMA node0 CPU(s): 0-7
+    On-line CPU(s) list: 0-7
+    Socket(s): 1
+    Stepping: 3
+    Thread(s) per core: 2
+    Vendor ID: GenuineIntel
+    Virtualization: VT-x
+  layout:
+    '0': '0'
+    '1': '0'
+    '2': '0'
+    '3': '0'
+    '4': '0'
+    '5': '0'
+    '6': '0'
+    '7': '0'
+net:
+  eth0:
+    buffers:
+      cur: 256
+      max: 4096
+    conf:
+      ip: ''
+      vlan: false
+    queues:
+      own:
+      - eth0
+      rx: []
+      rxtx: []
+      shared: []
+      tx: []
+      unknown: []

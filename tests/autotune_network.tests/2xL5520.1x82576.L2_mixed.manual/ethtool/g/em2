@@ -1,0 +1,12 @@
+Ring parameters for em2:
+Pre-set maximums:
+RX:		4096
+RX Mini:	0
+RX Jumbo:	0
+TX:		4096
+Current hardware settings:
+RX:		4096
+RX Mini:	0
+RX Jumbo:	0
+TX:		4096
+

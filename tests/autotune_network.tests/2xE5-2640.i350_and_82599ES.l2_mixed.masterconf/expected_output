@@ -1,0 +1,269 @@
+cpu:
+  info:
+    Architecture: x86_64
+    BogoMIPS: 3999.43
+    Byte Order: Little Endian
+    CPU MHz: 1999.909
+    CPU family: 6
+    CPU op-mode(s): 32-bit, 64-bit
+    CPU(s): 32
+    Core(s) per socket: 8
+    L1d cache: 32K
+    L1i cache: 32K
+    L2 cache: 256K
+    L3 cache: 20480K
+    Model: 62
+    NUMA node(s): 2
+    NUMA node0 CPU(s): 0-7,16-23
+    NUMA node1 CPU(s): 8-15,24-31
+    On-line CPU(s) list: 0-31
+    Socket(s): 2
+    Stepping: 4
+    Thread(s) per core: 2
+    Vendor ID: GenuineIntel
+    Virtualization: VT-x
+  layout:
+    '0': '0'
+    '1': '0'
+    '10': '1'
+    '11': '1'
+    '12': '1'
+    '13': '1'
+    '14': '1'
+    '15': '1'
+    '16': '0'
+    '17': '0'
+    '18': '0'
+    '19': '0'
+    '2': '0'
+    '20': '0'
+    '21': '0'
+    '22': '0'
+    '23': '0'
+    '24': '1'
+    '25': '1'
+    '26': '1'
+    '27': '1'
+    '28': '1'
+    '29': '1'
+    '3': '0'
+    '30': '1'
+    '31': '1'
+    '4': '0'
+    '5': '0'
+    '6': '0'
+    '7': '0'
+    '8': '1'
+    '9': '1'
+net:
+  eth1:
+    buffers:
+      cur: 4096
+      max: 4096
+    conf:
+      ip: ''
+      vlan: false
+    queues:
+      own:
+      - eth1
+      rx: []
+      rxtx:
+      - eth1-TxRx-0
+      - eth1-TxRx-1
+      - eth1-TxRx-2
+      - eth1-TxRx-3
+      - eth1-TxRx-4
+      - eth1-TxRx-5
+      - eth1-TxRx-6
+      - eth1-TxRx-7
+      shared: []
+      tx: []
+      unknown: []
+  eth2:
+    buffers:
+      cur: 4096
+      max: 4096
+    conf:
+      ip: ''
+      vlan: false
+    queues:
+      own:
+      - eth2
+      rx: []
+      rxtx:
+      - eth2-TxRx-0
+      - eth2-TxRx-1
+      - eth2-TxRx-2
+      - eth2-TxRx-3
+      - eth2-TxRx-4
+      - eth2-TxRx-5
+      - eth2-TxRx-6
+      - eth2-TxRx-7
+      - eth2-TxRx-8
+      - eth2-TxRx-9
+      - eth2-TxRx-10
+      - eth2-TxRx-11
+      - eth2-TxRx-12
+      - eth2-TxRx-13
+      - eth2-TxRx-14
+      - eth2-TxRx-15
+      - eth2-TxRx-16
+      - eth2-TxRx-17
+      - eth2-TxRx-18
+      - eth2-TxRx-19
+      - eth2-TxRx-20
+      - eth2-TxRx-21
+      - eth2-TxRx-22
+      - eth2-TxRx-23
+      - eth2-TxRx-24
+      - eth2-TxRx-25
+      - eth2-TxRx-26
+      - eth2-TxRx-27
+      - eth2-TxRx-28
+      - eth2-TxRx-29
+      - eth2-TxRx-30
+      - eth2-TxRx-31
+      shared: []
+      tx: []
+      unknown: []
+  eth3:
+    buffers:
+      cur: 4096
+      max: 4096
+    conf:
+      ip: ''
+      vlan: true
+    queues:
+      own:
+      - eth3
+      rx: []
+      rxtx:
+      - eth3-TxRx-0
+      - eth3-TxRx-1
+      - eth3-TxRx-2
+      - eth3-TxRx-3
+      - eth3-TxRx-4
+      - eth3-TxRx-5
+      - eth3-TxRx-6
+      - eth3-TxRx-7
+      - eth3-TxRx-8
+      - eth3-TxRx-9
+      - eth3-TxRx-10
+      - eth3-TxRx-11
+      - eth3-TxRx-12
+      - eth3-TxRx-13
+      - eth3-TxRx-14
+      - eth3-TxRx-15
+      - eth3-TxRx-16
+      - eth3-TxRx-17
+      - eth3-TxRx-18
+      - eth3-TxRx-19
+      - eth3-TxRx-20
+      - eth3-TxRx-21
+      - eth3-TxRx-22
+      - eth3-TxRx-23
+      - eth3-TxRx-24
+      - eth3-TxRx-25
+      - eth3-TxRx-26
+      - eth3-TxRx-27
+      - eth3-TxRx-28
+      - eth3-TxRx-29
+      - eth3-TxRx-30
+      - eth3-TxRx-31
+      shared: []
+      tx: []
+      unknown: []
+  eth4:
+    buffers:
+      cur: 4096
+      max: 4096
+    conf:
+      ip: ''
+      vlan: true
+    queues:
+      own:
+      - eth4
+      rx: []
+      rxtx:
+      - eth4-TxRx-0
+      - eth4-TxRx-1
+      - eth4-TxRx-2
+      - eth4-TxRx-3
+      - eth4-TxRx-4
+      - eth4-TxRx-5
+      - eth4-TxRx-6
+      - eth4-TxRx-7
+      - eth4-TxRx-8
+      - eth4-TxRx-9
+      - eth4-TxRx-10
+      - eth4-TxRx-11
+      - eth4-TxRx-12
+      - eth4-TxRx-13
+      - eth4-TxRx-14
+      - eth4-TxRx-15
+      - eth4-TxRx-16
+      - eth4-TxRx-17
+      - eth4-TxRx-18
+      - eth4-TxRx-19
+      - eth4-TxRx-20
+      - eth4-TxRx-21
+      - eth4-TxRx-22
+      - eth4-TxRx-23
+      - eth4-TxRx-24
+      - eth4-TxRx-25
+      - eth4-TxRx-26
+      - eth4-TxRx-27
+      - eth4-TxRx-28
+      - eth4-TxRx-29
+      - eth4-TxRx-30
+      - eth4-TxRx-31
+      shared: []
+      tx: []
+      unknown: []
+  eth5:
+    buffers:
+      cur: 4096
+      max: 4096
+    conf:
+      ip: ''
+      vlan: false
+    queues:
+      own:
+      - eth5
+      rx: []
+      rxtx:
+      - eth5-TxRx-0
+      - eth5-TxRx-1
+      - eth5-TxRx-2
+      - eth5-TxRx-3
+      - eth5-TxRx-4
+      - eth5-TxRx-5
+      - eth5-TxRx-6
+      - eth5-TxRx-7
+      - eth5-TxRx-8
+      - eth5-TxRx-9
+      - eth5-TxRx-10
+      - eth5-TxRx-11
+      - eth5-TxRx-12
+      - eth5-TxRx-13
+      - eth5-TxRx-14
+      - eth5-TxRx-15
+      - eth5-TxRx-16
+      - eth5-TxRx-17
+      - eth5-TxRx-18
+      - eth5-TxRx-19
+      - eth5-TxRx-20
+      - eth5-TxRx-21
+      - eth5-TxRx-22
+      - eth5-TxRx-23
+      - eth5-TxRx-24
+      - eth5-TxRx-25
+      - eth5-TxRx-26
+      - eth5-TxRx-27
+      - eth5-TxRx-28
+      - eth5-TxRx-29
+      - eth5-TxRx-30
+      - eth5-TxRx-31
+      shared: []
+      tx: []
+      unknown: []

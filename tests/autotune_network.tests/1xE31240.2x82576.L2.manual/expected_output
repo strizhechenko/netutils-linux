@@ -1,0 +1,79 @@
+cpu:
+  info:
+    Architecture: x86_64
+    BogoMIPS: 6585.07
+    Byte Order: Little Endian
+    CPU MHz: 3292.535
+    CPU family: 6
+    CPU op-mode(s): 32-bit, 64-bit
+    CPU(s): 8
+    Core(s) per socket: 4
+    L1d cache: 32K
+    L1i cache: 32K
+    L2 cache: 256K
+    L3 cache: 8192K
+    Model: 42
+    NUMA node(s): 1
+    NUMA node0 CPU(s): 0-7
+    On-line CPU(s) list: 0-7
+    Socket(s): 1
+    Stepping: 7
+    Thread(s) per core: 2
+    Vendor ID: GenuineIntel
+    Virtualization: VT-x
+  layout:
+    '0': '0'
+    '1': '0'
+    '2': '0'
+    '3': '0'
+    '4': '0'
+    '5': '0'
+    '6': '0'
+    '7': '0'
+net:
+  eth0:
+    buffers:
+      cur: 2048
+      max: 4096
+    conf:
+      ip: ''
+      vlan: false
+    queues:
+      own:
+      - eth0
+      rx: []
+      rxtx:
+      - eth0-TxRx-0
+      - eth0-TxRx-1
+      - eth0-TxRx-2
+      - eth0-TxRx-3
+      - eth0-TxRx-4
+      - eth0-TxRx-5
+      - eth0-TxRx-6
+      - eth0-TxRx-7
+      shared: []
+      tx: []
+      unknown: []
+  eth1:
+    buffers:
+      cur: 2048
+      max: 4096
+    conf:
+      ip: ''
+      vlan: false
+    queues:
+      own:
+      - eth1
+      rx: []
+      rxtx:
+      - eth1-TxRx-0
+      - eth1-TxRx-1
+      - eth1-TxRx-2
+      - eth1-TxRx-3
+      - eth1-TxRx-4
+      - eth1-TxRx-5
+      - eth1-TxRx-6
+      - eth1-TxRx-7
+      shared: []
+      tx: []
+      unknown: []

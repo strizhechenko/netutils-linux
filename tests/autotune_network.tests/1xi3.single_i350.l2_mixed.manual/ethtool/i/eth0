@@ -1,0 +1,9 @@
+driver: r8169
+version: 2.3LK-NAPI
+firmware-version: rtl8168e-3_0.0.4 03/27/12
+bus-info: 0000:03:00.0
+supports-statistics: yes
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: yes
+supports-priv-flags: no

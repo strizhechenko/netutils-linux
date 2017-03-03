@@ -12,11 +12,14 @@ prepare() {
 server_info() {
 	cat /proc/interrupts > $TMPDIR/interrupts
 	cat /proc/meminfo > $TMPDIR/meminfo
+	cat /proc/cpuinfo > $TMPDIR/cpuinfo
 	cat /proc/scsi/scsi > $TMPDIR/scsi
+	lsblk -d --output=NAME,MODEL > $TMPDIR/lsblk_models
+	lsblk --bytes -i --output NAME,SIZE,MOUNTPOINT > $TMPDIR/lsblk_sizes
 	lspci > $TMPDIR/lspci
 	lscpu > $TMPDIR/lscpu_info
 	lscpu --extended=CPU,SOCKET > $TMPDIR/lscpu_layout
-
+	fgrep '' /sys/block/*/queue/rotational | egrep -v '[0-9]+/' >  $TMPDIR/disks_types
 }
 
 network_info() {
@@ -39,7 +42,7 @@ network_info() {
 		done
 		[ -f $SYSCONFIG/ifcfg-$netdev ] || continue
 		# avoiding collection of identification/privacy info
-		grep ETHTOOL $SYSCONFIG/ifcfg-$netdev > $TMPDIR/ifcfg-$netdev
+		grep ETHTOOL $SYSCONFIG/ifcfg-$netdev > $TMPDIR/ifcfg-$netdev || true
 	done
 }
 
