@@ -1,0 +1,61 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SYSCONFIG=/etc/sysconfig/network-scripts/
+TMPDIR="/tmp/$1"
+
+prepare() {
+	mkdir -p $TMPDIR/ethtool/{g,i,c} $TMPDIR/network-scripts/
+}
+
+server_info() {
+	cat /proc/interrupts > $TMPDIR/interrupts
+	cat /proc/meminfo > $TMPDIR/meminfo
+	cat /proc/scsi/scsi > $TMPDIR/scsi
+	lspci > $TMPDIR/lspci
+	lscpu > $TMPDIR/lscpu_info
+	lscpu --extended=CPU,SOCKET > $TMPDIR/lscpu_layout
+
+}
+
+network_info() {
+	local netdev action
+	brctl show > $TMPDIR/brctl
+	MIRRORCONF_CR7=/usr/local/Reductor/userinfo/mirror_info.conf
+	MIRRORCONF_CR8=/app/reductor/cfg/userinfo/mirror_info.conf
+	if [ -f "$MIRRORCONF_CR7" ]; then
+		cp "$MIRRORCONF_CR7" "$TMPDIR/mirror_info.conf"
+	elif [ -f "$MIRRORCONF_CR8" ]; then
+		cp "$MIRRORCONF_CR8" "$TMPDIR/mirror_info.conf"
+	fi
+
+	for netdev in $(grep : /proc/net/dev | awk '{print $1}' | tr -d :); do
+		ethtool -i $netdev &>/dev/null || continue
+		for action in i g c; do
+			if ! ethtool -$action $netdev &>$TMPDIR/ethtool/$action/$netdev; then
+				rm -f $TMPDIR/ethtool/$action/$netdev
+			fi
+		done
+		[ -f $SYSCONFIG/ifcfg-$netdev ] || continue
+		# avoiding collection of identification/privacy info
+		grep ETHTOOL $SYSCONFIG/ifcfg-$netdev > $TMPDIR/ifcfg-$netdev
+	done
+}
+
+make_archive() {
+	local output=/root/$1.tar.gz
+	cd /tmp/
+	tar cfz "$output" "$1"
+	rm -rf $TMPDIR
+	echo "$output"
+}
+
+main() {
+	prepare
+	server_info
+	network_info
+	make_archive "$@"
+}
+
+main "$@"
