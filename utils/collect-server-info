@@ -15,7 +15,7 @@ server_info() {
 	cat /proc/cpuinfo > $TMPDIR/cpuinfo
 	cat /proc/scsi/scsi > $TMPDIR/scsi
 	lsblk -d --output=NAME,MODEL > $TMPDIR/lsblk_models
-	lsblk --bytes -i --output NAME,SIZE,MOUNTPOINT > $TMPDIR/lsblk_sizes
+	lsblk -nlb --output SIZE,MOUNTPOINT,NAME > $TMPDIR/lsblk_sizes
 	lspci > $TMPDIR/lspci
 	lscpu > $TMPDIR/lscpu_info
 	lscpu --extended=CPU,SOCKET > $TMPDIR/lscpu_layout
@@ -42,7 +42,7 @@ network_info() {
 		done
 		[ -f $SYSCONFIG/ifcfg-$netdev ] || continue
 		# avoiding collection of identification/privacy info
-		grep ETHTOOL $SYSCONFIG/ifcfg-$netdev > $TMPDIR/ifcfg-$netdev || true
+		grep ETHTOOL $SYSCONFIG/ifcfg-$netdev > $TMPDIR/network-scripts/ifcfg-$netdev || true
 	done
 }
 
