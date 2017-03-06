@@ -1,0 +1,2 @@
+/sys/block/sda/queue/rotational:1
+/sys/block/sdb/queue/rotational:1

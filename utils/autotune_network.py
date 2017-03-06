@@ -7,9 +7,12 @@ from autotune_network_reader import Reader
 
 
 def main():
-    test_dir = 'tests/autotune_network.tests'
-    test = '2xE5530.82576_and_82574L.l2_mixed.manual'
-    datadir = os.getenv('DATADIR', os.path.join(test_dir, test))
+    if os.path.join(os.getcwd(), 'lspci'):
+        datadir = os.getcwd()
+    else:
+        test_dir = 'tests/autotune_network.tests'
+        test = '2xE5530.82576_and_82574L.l2_mixed.manual'
+        datadir = os.getenv('DATADIR', os.path.join(test_dir, test))
     print Reader(datadir)
 
 if __name__ == '__main__':
