@@ -37,6 +37,9 @@ net:
     conf:
       ip: ''
       vlan: true
+    driver:
+      driver: igb
+      version: 5.3.5.4
     queues:
       own:
       - eth6

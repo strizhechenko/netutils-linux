@@ -33,6 +33,9 @@ net:
     conf:
       ip: ''
       vlan: false
+    driver:
+      driver: e1000e
+      version: 3.2.6-k
     queues:
       own:
       - eth1
@@ -46,6 +49,9 @@ net:
     conf:
       ip: ''
       vlan: false
+    driver:
+      driver: ATL1E
+      version: 1.0.0.7-NAPI
     queues:
       own:
       - eth2

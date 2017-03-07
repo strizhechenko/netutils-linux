@@ -45,6 +45,9 @@ net:
     conf:
       ip: ''
       vlan: false
+    driver:
+      driver: bnx2
+      version: 2.2.5
     queues:
       own: []
       rx: []
@@ -67,6 +70,9 @@ net:
     conf:
       ip: ''
       vlan: false
+    driver:
+      driver: mlx4_en
+      version: 2.2-1 (Feb 2014)
     queues:
       own: []
       rx: []

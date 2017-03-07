@@ -48,6 +48,9 @@ net:
     conf:
       ip: ''
       vlan: false
+    driver:
+      driver: e1000e
+      version: 3.2.5-k
     queues:
       own:
       - eth1
@@ -65,6 +68,9 @@ net:
     conf:
       ip: ''
       vlan: true
+    driver:
+      driver: igb
+      version: 5.2.15-k
     queues:
       own:
       - eth3

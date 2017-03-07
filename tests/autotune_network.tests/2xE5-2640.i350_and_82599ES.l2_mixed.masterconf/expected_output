@@ -77,6 +77,9 @@ net:
     conf:
       ip: ''
       vlan: false
+    driver:
+      driver: igb
+      version: 5.2.15-k
     queues:
       own:
       - eth1
@@ -100,6 +103,9 @@ net:
     conf:
       ip: ''
       vlan: false
+    driver:
+      driver: ixgbe
+      version: 4.0.1-k
     queues:
       own:
       - eth2
@@ -147,6 +153,9 @@ net:
     conf:
       ip: ''
       vlan: true
+    driver:
+      driver: ixgbe
+      version: 4.0.1-k
     queues:
       own:
       - eth3
@@ -194,6 +203,9 @@ net:
     conf:
       ip: ''
       vlan: true
+    driver:
+      driver: ixgbe
+      version: 4.0.1-k
     queues:
       own:
       - eth4
@@ -241,6 +253,9 @@ net:
     conf:
       ip: ''
       vlan: false
+    driver:
+      driver: ixgbe
+      version: 4.0.1-k
     queues:
       own:
       - eth5
