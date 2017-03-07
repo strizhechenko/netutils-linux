@@ -16,6 +16,12 @@ def extract(dictionary, key_sequence):
     return dictionary
 
 
+def make_marks(minimum, maximum, scale):
+    step = (maximum - minimum) / scale
+    ranges = enumerate(xrange(minimum, maximum, step), 1)
+    return dict(((v, v + step - 1), k) for k, v in ranges)
+
+
 def any2int(value):
     if isinstance(value, int):
         return value
@@ -36,7 +42,8 @@ class Assessor(object):
 
     def __init__(self, data):
         self.data = data
-        self.assess()
+        if self.data:
+            self.assess()
 
     def __str__(self):
         return yaml.dump(self.info, default_flow_style=False).strip()
@@ -54,9 +61,7 @@ class Assessor(object):
                 return scale
             elif value <= minimum:
                 return 1
-        step = (maximum - minimum) / scale
-        ranges = enumerate(xrange(minimum, maximum, step), 1)
-        marks = dict(((v, v + step - 1), k) for k, v in ranges)
+        marks = make_marks(minimum, maximum, scale)
         return next(mark for rng, mark in marks.iteritems() if rng[0] <= value <= rng[1])
 
     @staticmethod
@@ -71,8 +76,12 @@ class Assessor(object):
     def grade_fact(value, mode=False):
         return int((value is None) != mode) * 10 or 1
 
+    def grade_list(self, value, minimum, maxmimum, scale=10):
+        return self.grade_int(len(value), minimum, maxmimum, scale)
+
     def assess_netdev(self, netdev):
-        pass
+        net = self.data.get('net')
+        print net.get(netdev)
 
     def assess(self):
         self.info = {
@@ -157,6 +166,11 @@ class AssessorTest(TestCase):
         self.assertEqual(any2int("23K"), 23)
         self.assertEqual(any2int("23 K"), 23)
         self.assertEqual(any2int(" "), 0)
+
+    def test_grade_list(self):
+        self.assertEqual(Assessor(None).grade_list([], 1, 4), 1)
+        self.assertEqual(Assessor(None).grade_list([1], 1, 4), 1)
+        self.assertEqual(Assessor(None).grade_list([1, 2, 3, 4], 1, 4), 10)
 
 
 def __main():
