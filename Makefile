@@ -20,6 +20,7 @@ env:
 	python setup.py install
 
 clean:
+	rm -fr env
 	rm -fr build
 	rm -fr dist
 	find . -name '*.pyc' -exec rm -f {} \;
