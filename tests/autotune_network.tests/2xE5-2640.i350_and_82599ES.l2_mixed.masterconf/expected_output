@@ -55,6 +55,20 @@ cpu:
     '7': '0'
     '8': '1'
     '9': '1'
+disk:
+  sda:
+    model: Hitachi HUA72201
+    size: 1000204886016
+    type: HDD
+  sdb:
+    model: Hitachi HUA72201
+    size: 1000204886016
+    type: HDD
+memory:
+  MemFree: 432940
+  MemTotal: 32843852
+  SwapFree: 16490492
+  SwapTotal: 16490492
 net:
   eth1:
     buffers:

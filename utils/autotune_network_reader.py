@@ -43,10 +43,10 @@ class Reader(object):
 
         self.info = {
             "cpu": {
-                "info": YAMLLike().parse_file(self.path('lscpu_info')),
-                "layout": CPULayout().parse_file(self.path('lscpu_layout')),
+                "info": YAMLLike().parse_file_safe(self.path('lscpu_info')),
+                "layout": CPULayout().parse_file_safe(self.path('lscpu_layout')),
             },
             "net": self.net_dev_list(),
             "disk": DiskInfo().parse(self.path('disks_types'), self.path('lsblk_sizes'), self.path('lsblk_models')),
-            "memory": MemInfo().parse_file(self.path('meminfo')),
+            "memory": MemInfo().parse_file_safe(self.path('meminfo')),
         }

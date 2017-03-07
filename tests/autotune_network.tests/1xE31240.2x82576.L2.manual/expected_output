@@ -30,6 +30,8 @@ cpu:
     '5': '0'
     '6': '0'
     '7': '0'
+disk: null
+memory: null
 net:
   eth0:
     buffers:

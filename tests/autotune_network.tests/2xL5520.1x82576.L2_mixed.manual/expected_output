@@ -39,6 +39,8 @@ cpu:
     '7': '1'
     '8': '0'
     '9': '0'
+disk: null
+memory: null
 net:
   em2:
     buffers:

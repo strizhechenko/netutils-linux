@@ -11,11 +11,14 @@ run_test() {
 	local rc=0
 	echo -n "# $name "
 	DATADIR="$1" ./utils/autotune_network.py > $TMPDIR/output
+	if [ "${REWRITE:-}" = '1' ]; then
+		DATADIR="$1" ./utils/autotune_network.py > $testdata/$name/expected_output
+	fi
 	cmp -s $1/expected_output $TMPDIR/output || rc=$?
 	if [ "$rc" = '0' ]; then
 		echo OK
 	else
-		diff -U 0 $testdata/$name/expected output
+		diff -U 0 $testdata/$name/expected_output $TMPDIR/output
 		echo FAIL
 	fi
 	return "$rc"

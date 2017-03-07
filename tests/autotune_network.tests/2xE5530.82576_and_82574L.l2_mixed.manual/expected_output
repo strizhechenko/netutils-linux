@@ -38,6 +38,8 @@ cpu:
     '7': '1'
     '8': '0'
     '9': '1'
+disk: null
+memory: null
 net:
   eth1:
     buffers:

@@ -65,11 +65,13 @@ class DiskInfo(object):
         return d2
 
     def parse(self, types, sizes, models):
-        types_data = self.DiskTypesInfo().parse_file(types)
+        types_data = self.DiskTypesInfo().parse_file_safe(types)
+        if not types_data:
+            return
         disk_data = {
             "type": types_data,
-            "size": self.DiskSizeInfo(types_data).parse_file(sizes),
-            "model": self.DiskModelsInfo(types_data).parse_file(models),
+            "size": self.DiskSizeInfo(types_data).parse_file_safe(sizes),
+            "model": self.DiskModelsInfo(types_data).parse_file_safe(models),
         }
         return self.invert_dict_nesting(disk_data)
 

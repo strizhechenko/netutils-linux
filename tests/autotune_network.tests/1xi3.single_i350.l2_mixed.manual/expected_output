@@ -27,6 +27,8 @@ cpu:
     '1': '0'
     '2': '0'
     '3': '0'
+disk: null
+memory: null
 net:
   eth6:
     buffers:

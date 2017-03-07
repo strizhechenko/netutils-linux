@@ -23,6 +23,8 @@ cpu:
   layout:
     '0': '0'
     '1': '0'
+disk: null
+memory: null
 net:
   eth1:
     buffers:
