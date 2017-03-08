@@ -1,0 +1,48 @@
+cpu:
+  info:
+    Architecture: x86_64
+    BogoMIPS: 6799.99
+    Byte Order: Little Endian
+    CPU MHz: 3399.998
+    CPU family: 6
+    CPU op-mode(s): 32-bit, 64-bit
+    CPU(s): 2
+    Core(s) per socket: 1
+    Hypervisor vendor: KVM
+    L1d cache: 32K
+    L1i cache: 32K
+    L2 cache: 4096K
+    Model: 13
+    Model name: QEMU Virtual CPU version (cpu64-rhel6)
+    NUMA node(s): 1
+    NUMA node0 CPU(s): 0,1
+    On-line CPU(s) list: 0,1
+    Socket(s): 2
+    Stepping: 3
+    Thread(s) per core: 1
+    Vendor ID: GenuineIntel
+    Virtualization type: full
+  layout:
+    '0': '0'
+    '1': '1'
+disk: null
+memory: null
+net:
+  eth1:
+    buffers:
+      cur: 4096
+      max: 4096
+    conf:
+      ip: 10.30.30.1/24
+      vlan: true
+    driver:
+      driver: e1000
+      version: 7.3.21-k8-NAPI
+    queues:
+      own: []
+      rx: []
+      rxtx: []
+      shared:
+      - uhci_hcd:usb1, eth0, eth1
+      tx: []
+      unknown: []

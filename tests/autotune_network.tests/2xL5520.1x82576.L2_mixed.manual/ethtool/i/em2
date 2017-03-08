@@ -1,0 +1,9 @@
+driver: igb
+version: 5.3.0-k
+firmware-version: 1.4.3
+bus-info: 0000:01:00.1
+supports-statistics: yes
+supports-test: yes
+supports-eeprom-access: yes
+supports-register-dump: yes
+supports-priv-flags: no

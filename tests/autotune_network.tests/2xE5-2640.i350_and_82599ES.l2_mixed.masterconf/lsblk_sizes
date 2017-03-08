@@ -1,0 +1,14 @@
+1000204886016            sda
+ 950150365184            md126
+    524288000 /boot      md126p1
+ 949625028608            md126p2
+  53687091200 /          VolGroup-lv_root (dm-0)
+  16886267904 [SWAP]     VolGroup-lv_swap (dm-1)
+ 879050620928 /home      VolGroup-lv_home (dm-2)
+1000204886016            sdb
+ 950150365184            md126
+    524288000 /boot      md126p1
+ 949625028608            md126p2
+  53687091200 /          VolGroup-lv_root (dm-0)
+  16886267904 [SWAP]     VolGroup-lv_swap (dm-1)
+ 879050620928 /home      VolGroup-lv_home (dm-2)

@@ -1,0 +1,27 @@
+Coalesce parameters for eth2:
+Adaptive RX: on  TX: off
+stats-block-usecs: 0
+sample-interval: 0
+pkt-rate-low: 400000
+pkt-rate-high: 450000
+
+rx-usecs: 16
+rx-frames: 44
+rx-usecs-irq: 0
+rx-frames-irq: 0
+
+tx-usecs: 16
+tx-frames: 16
+tx-usecs-irq: 0
+tx-frames-irq: 0
+
+rx-usecs-low: 0
+rx-frame-low: 0
+tx-usecs-low: 0
+tx-frame-low: 0
+
+rx-usecs-high: 128
+rx-frame-high: 0
+tx-usecs-high: 0
+tx-frame-high: 0
+

@@ -1,0 +1,9 @@
+driver: ixgbe
+version: 4.0.1-k
+firmware-version: 0x800000cb
+bus-info: 0000:04:00.0
+supports-statistics: yes
+supports-test: yes
+supports-eeprom-access: yes
+supports-register-dump: yes
+supports-priv-flags: no

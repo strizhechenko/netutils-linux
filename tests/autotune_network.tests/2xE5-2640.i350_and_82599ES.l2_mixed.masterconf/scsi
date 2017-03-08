@@ -1,0 +1,7 @@
+Attached devices:
+Host: scsi1 Channel: 00 Id: 00 Lun: 00
+  Vendor: ATA      Model: Hitachi HUA72201 Rev: JP4O
+  Type:   Direct-Access                    ANSI  SCSI revision: 05
+Host: scsi2 Channel: 00 Id: 00 Lun: 00
+  Vendor: ATA      Model: Hitachi HUA72201 Rev: JP4O
+  Type:   Direct-Access                    ANSI  SCSI revision: 05

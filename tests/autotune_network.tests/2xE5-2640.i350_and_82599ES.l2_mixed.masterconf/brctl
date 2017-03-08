@@ -1,0 +1,15 @@
+bridge name	bridge id		STP enabled	interfaces
+br0		8000.002590e4997b	no		eth1
+br1		8000.00e0ed3365b2	no		eth2
+br10		8000.00e0ed3589ed	no		eth4.31
+br11		8000.00e0ed3589ed	no		eth4.1123
+br12		8000.00e0ed3589ed	no		eth4.1223
+br13		8000.00e0ed3589ec	no		eth5
+br2		8000.00e0ed3365b3	no		eth3
+br3		8000.00e0ed3365b3	no		eth3.55
+br4		8000.00e0ed3365b3	no		eth3.76
+br5		8000.00e0ed3365b3	no		eth3.3424
+br6		8000.00e0ed3365b3	no		eth3.3429
+br7		8000.00e0ed3589ed	no		eth4
+br8		8000.00e0ed3589ed	no		eth4.25
+br9		8000.00e0ed3589ed	no		eth4.27

@@ -1,0 +1,12 @@
+Ring parameters for eth5:
+Pre-set maximums:
+RX:		4096
+RX Mini:	0
+RX Jumbo:	0
+TX:		1024
+Current hardware settings:
+RX:		512
+RX Mini:	0
+RX Jumbo:	0
+TX:		128
+

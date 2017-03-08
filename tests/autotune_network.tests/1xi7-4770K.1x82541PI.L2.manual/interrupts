@@ -1,0 +1,32 @@
+           CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       
+  0:        126          0          0          0          0          0          0          0   IO-APIC-edge      timer
+  1:       1168          0          0          0          0          0          0          0   IO-APIC-edge      i8042
+  8:          1          0          0          0          0          0          0          0   IO-APIC-edge      rtc0
+  9:          3          0          0          0          0          0          0          0   IO-APIC-fasteoi   acpi
+ 16:   94643869          0          0          0          0          0          0          0   IO-APIC-fasteoi   ehci_hcd:usb1, eth1
+ 23:         44          0          0          0          0          0          0          0   IO-APIC-fasteoi   ehci_hcd:usb2
+ 24:       8621          0          0          0          0          0          0          0  HPET_MSI-edge      hpet2
+ 25:          0          0          0          0          0          0          0          0  HPET_MSI-edge      hpet3
+ 26:          0          0          0          0          0          0          0          0  HPET_MSI-edge      hpet4
+ 27:          0          0          0          0          0          0          0          0  HPET_MSI-edge      hpet5
+ 28:          0          0          0          0          0          0          0          0  HPET_MSI-edge      hpet6
+ 29:        191          0          0          0          0          0          0          0   PCI-MSI-edge      i915
+ 30:       1146          0          0          0          0          0          0          0   PCI-MSI-edge      xhci_hcd
+ 31:    4190256          0          0          0          0          0          0          0   PCI-MSI-edge      ahci
+ 32:          0          0          0          0          0          0          0          0   PCI-MSI-edge      ahci
+ 33:         59          0          0          0          0          0          0          0   PCI-MSI-edge      snd_hda_intel
+ 34: 1525852897          0          0          0          0          0          0          0   PCI-MSI-edge      eth0
+NMI:       2605        746        754        733        558        437        542        825   Non-maskable interrupts
+LOC:  111052713   14481284   10346390    7774105   39516794   22437580   55835410   39563866   Local timer interrupts
+SPU:          0          0          0          0          0          0          0          0   Spurious interrupts
+PMI:       2605        746        754        733        558        437        542        825   Performance monitoring interrupts
+IWI:          0          0          0          0          0          0          0          0   IRQ work interrupts
+RES:     327246     346325     715348     873918     438573     120232      82373      97456   Rescheduling interrupts
+CAL:         61 2818454870 2899009803 2841446991 2859836802 2839942617 2814422001 2848230963   Function call interrupts
+TLB:      69190      43942      44379      38536     271204    2762205     833599     621465   TLB shootdowns
+TRM:          0          0          0          0          0          0          0          0   Thermal event interrupts
+THR:          0          0          0          0          0          0          0          0   Threshold APIC interrupts
+MCE:          0          0          0          0          0          0          0          0   Machine check exceptions
+MCP:       8622       8622       8622       8622       8622       8622       8622       8622   Machine check polls
+ERR:          0
+MIS:          0

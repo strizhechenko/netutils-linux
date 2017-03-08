@@ -1,7 +1,8 @@
 test: env
 	. env/bin/activate && \
 		./tests/rss-ladder && \
-		./utils/rx-buffers-increase
+		./utils/rx-buffers-increase && \
+		./tests/autotune_network
 
 help:
 	@echo "  env         create a development environment using virtualenv"
@@ -15,10 +16,11 @@ env:
 	rm -rf env
 	virtualenv env && \
 	. env/bin/activate && \
-	pip install setuptools --upgrade && \
+	pip install --upgrade -r requirements.txt && \
 	python setup.py install
 
 clean:
+	rm -fr env
 	rm -fr build
 	rm -fr dist
 	find . -name '*.pyc' -exec rm -f {} \;

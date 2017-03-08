@@ -1,0 +1,66 @@
+            CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       CPU8       CPU9       CPU10      CPU11      
+   0:       1625          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-edge      timer
+   1:          2          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-edge      i8042
+   3:          3          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-edge    
+   4:          2          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-edge    
+   8:          1          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-edge      rtc0
+   9:          0          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-fasteoi   acpi
+  12:          4          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-edge      i8042
+  20:          2          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-fasteoi   ehci_hcd:usb1, uhci_hcd:usb2
+  21:        212          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-fasteoi   ipmi_si
+  22:         39          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-fasteoi   uhci_hcd:usb4, uhci_hcd:usb6, hpilo
+  23:     140979          0          0          0          0          0          0          0          0          0          0          0   IO-APIC-fasteoi   uhci_hcd:usb3, uhci_hcd:usb5, radeon
+  48:       4091          0        641          0          0       3758          0          0          0          0         11     265675   PCI-MSI-edge      hpsa0
+  49:       2764          0          0          0          0       1341          0        464          0        193          0      29963   PCI-MSI-edge      hpsa0
+  50:        147          0       2172          0        498         55          0       1779          0          0         17      83855   PCI-MSI-edge      hpsa0
+  51:        179          0          0          0          0      12961          1       3225          0       1335         38       4803   PCI-MSI-edge      hpsa0
+  52:         35          0         14          0          0         48        560        765          4        158          0      10826   PCI-MSI-edge      hpsa0
+  53:         22          0        381          0          0          0          0       8754          2        248          0      28886   PCI-MSI-edge      hpsa0
+  54:         12          0         10          0          0        260          0          0        285       6373          0          0   PCI-MSI-edge      hpsa0
+  55:         21          0         61          0          0       8032          0       4099         15       6431          0       1018   PCI-MSI-edge      hpsa0
+  56:          7          0         30          0          0          0          0          0          0          0        250       5009   PCI-MSI-edge      hpsa0
+  57:          7        385          0          0          0       1630          0        689          0          3          0      10489   PCI-MSI-edge      hpsa0
+  58:        256          0          7          0          0       1570          0        113          0       1240          0        824   PCI-MSI-edge      hpsa0
+  59:          3          0        113         69         31       2671          2       2379          0       4439          1     159396   PCI-MSI-edge      hpsa0
+  60:          0          0          0          0          0          0          0          0          0          0          0          0   PCI-MSI-edge      mlx4-comp-0@pci:0000:07:00.0
+  61:          0          0          0          0          0          0          0          0          0          0          0          0   PCI-MSI-edge      mlx4-comp-1@pci:0000:07:00.0
+  62:          0          0          0          0          0          0          0          0          0          0          0          0   PCI-MSI-edge      mlx4-comp-2@pci:0000:07:00.0
+  63:       1757          0          0          0          0       7720          0      20636        160          0          0    1748710   PCI-MSI-edge      mlx4-async@pci:0000:07:00.0
+  64:  783381142          0          0          0          0          0   46661221          0          0          0          0          0   PCI-MSI-edge      eth2-0
+  65:     172393          0  892220467          0          0          0          0          0          0   47346085          0          0   PCI-MSI-edge      eth2-1
+  66:     133090          0          0          0  731567246          0          0          0   39889476          0          0          0   PCI-MSI-edge      eth2-2
+  67:     143320          0          0          0          0          0  945889254          0          0          0          0   42011409   PCI-MSI-edge      eth2-3
+  68:     141743          0          0          0          0          0          0          0  486753531          0   41087032          0   PCI-MSI-edge      eth2-4
+  69:     142832   46001403          0          0          0          0          0          0          0          0  841277345          0   PCI-MSI-edge      eth2-5
+  70: 4276756322          0          0          0          0          0          0          0          0          0          0          0   PCI-MSI-edge      eth2-6
+  71:     127038          0          0  499525610          0          0          0          0          0          0          0          0   PCI-MSI-edge      eth2-7
+  77:          6          0        337          0          0        676          0       1626        383        793          0     108411   PCI-MSI-edge      eth0-0
+  78:          1          0          0          0          0       4335         51      16733         17      22815         10     458207   PCI-MSI-edge      eth0-1
+  79:          2          0      12941          0          0      15744          0     201096          0       1391          0     509890   PCI-MSI-edge      eth0-2
+  80:          1          0       1318          0          0     226861          0       3554          0       8476        677     475653   PCI-MSI-edge      eth0-3
+  81:         38        749          0          0          0      48086          0   13116616          0          0          0    4074816   PCI-MSI-edge      eth0-4
+  82:         26          0     149634          0          0     326834          0       1013        826       6451          0          0   PCI-MSI-edge      eth0-5
+  83:          7          0          0        127          0       2112          0       1699         15          0          0     465401   PCI-MSI-edge      eth0-6
+  84:          1          0     332730          0          0       5791          0       6544          0        904         30     134417   PCI-MSI-edge      eth0-7
+  86:      65176 4125879810          0          0   20984801          0          0          0          0          0          0          0   PCI-MSI-edge      eth1-0
+  87:          1          0          0        245          0          0          0          0          0          0          0          0   PCI-MSI-edge      eth1-1
+  88:          1          0          0          0          0          1          0          0          0          0          0         76   PCI-MSI-edge      eth1-2
+  89:          0          0          0          0          0          0          0          0          0          0          0          0   PCI-MSI-edge      eth1-3
+  90:          1          0          0          0          0          0          0          0          0          6          0        389   PCI-MSI-edge      eth1-4
+  91:          0          0          0          0          0          0          0          0          0          0          0          0   PCI-MSI-edge      eth1-5
+  92:          5          0          0          0          0          0          0          0          0          0          0          0   PCI-MSI-edge      eth1-6
+  93:          0          0          0          0          0          0          0          0          0          0          0          0   PCI-MSI-edge      eth1-7
+ NMI:     257678      50672     147320     159771     148327       2536     140721       1796     152921       1063     155547       1561   Non-maskable interrupts
+ LOC:   37285095   19127511   32931907   31935476   26972137    7450370   26782450    7783072   25066566    1478272   24904898    7142734   Local timer interrupts
+ SPU:          0          0          0          0          0          0          0          0          0          0          0          0   Spurious interrupts
+ PMI:     257678      50672     147320     159771     148327       2536     140721       1796     152921       1063     155547       1561   Performance monitoring interrupts
+ IWI:          0          0          0          0          0          0          0          0          0          0          0          0   IRQ work interrupts
+ RES:     122221     198989     101956     108847     124607      93884     156901      74546     170859      99898     212368     161835   Rescheduling interrupts
+ CAL:     400767       4003        182        179        198        195        174        196        197        196        195        196   Function call interrupts
+ TLB:      66930      23634     594687     454761      83713      17883      39795       8722      20292       3002      12645       9882   TLB shootdowns
+ TRM:          0          0          0          0          0          0          0          0          0          0          0          0   Thermal event interrupts
+ THR:          0          0          0          0          0          0          0          0          0          0          0          0   Threshold APIC interrupts
+ MCE:          0          0          0          0          0          0          0          0          0          0          0          0   Machine check exceptions
+ MCP:       1483       1483       1483       1483       1483       1483       1483       1483       1483       1483       1483       1483   Machine check polls
+ ERR:          0
+ MIS:          0

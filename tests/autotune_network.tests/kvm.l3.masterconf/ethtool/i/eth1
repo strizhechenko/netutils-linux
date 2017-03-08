@@ -1,0 +1,9 @@
+driver: e1000
+version: 7.3.21-k8-NAPI
+firmware-version: 
+bus-info: 0000:00:04.0
+supports-statistics: yes
+supports-test: yes
+supports-eeprom-access: yes
+supports-register-dump: yes
+supports-priv-flags: no
