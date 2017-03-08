@@ -2,7 +2,8 @@ test: env
 	. env/bin/activate && \
 		./tests/rss-ladder && \
 		./utils/rx-buffers-increase && \
-		./tests/autotune_network
+		./tests/autotune_network && \
+		UNITTEST=1 ./utils/assess_hardware.py
 
 help:
 	@echo "  env         create a development environment using virtualenv"
