@@ -69,13 +69,12 @@ class Assessor(object):
         return {
             'queues': self.grade_int(queues, 2, 8),
             'driver': self.grade_str(netdevinfo.get('driver').get('driver'),
-                                     ['ixgbe', 'igb', 'mlx4_en'],
-                                     ['r8169', 'ATL1E', 'e1000', 'e1000e']),
+                                     good=['ixgbe', 'igb', 'mlx4_en'],
+                                     bad=['r8169', 'ATL1E', 'e1000', 'e1000e']),
             'buffers': {
                 'cur': self.grade_int(buffers.get('cur'), 256, 4096),
                 'max': self.grade_int(buffers.get('max'), 256, 4096),
             },
-            'conf': self.data.get('net').get(netdev).get('conf'),
         }
 
     def assess_cpu(self):
@@ -108,13 +107,21 @@ class Assessor(object):
                 'Virtualization type': self.grade_fact(cpuinfo.get('Hypervisor vendor'), False),
             }
 
+    def assess_disk(self, disk):
+        diskinfo = extract(self.data, ['disk', disk])
+        return {
+            'type': self.grade_str(diskinfo.get('type'), ['SDD'], ['HDD']),
+            # 50Gb - good, 1Tb - good enough
+            'size': self.grade_int(diskinfo.get('size'), 50 * (1000**3), 1000**4),
+        }
+
     def assess(self):
         self.info = {
             'net': dict((netdev, self.assess_netdev(netdev)) for netdev in self.data.get('net')),
             'cpu': self.assess_cpu(),
             'memory': self.assess_memory(),
             'system': self.assess_system(),
-            # 'disk': None,
+            'disk': dict((disk, self.assess_disk(disk)) for disk in self.data.get('disk')),
         }
 
 
