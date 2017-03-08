@@ -16,12 +16,6 @@ def extract(dictionary, key_sequence):
     return dictionary
 
 
-def make_marks(minimum, maximum, scale):
-    step = (maximum - minimum) / scale
-    ranges = enumerate(xrange(minimum, maximum, step), 1)
-    return dict(((v, v + step - 1), k) for k, v in ranges)
-
-
 def any2int(value):
     if isinstance(value, int):
         return value
@@ -49,20 +43,9 @@ class Assessor(object):
         return yaml.dump(self.info, default_flow_style=False).strip()
 
     @staticmethod
-    def grade_int(value, minimum, maximum, scale=10):
+    def grade_int(value, _min, _max, scale=10):
         value = any2int(value)
-        if minimum > maximum:
-            if value <= maximum:
-                return scale
-            elif value >= minimum:
-                return 1
-        else:
-            if value >= maximum:
-                return scale
-            elif value <= minimum:
-                return 1
-        marks = make_marks(minimum, maximum, scale)
-        return next(mark for rng, mark in marks.iteritems() if rng[0] <= value <= rng[1])
+        return min(scale, max(1, int(1 + round((value - _min) * (scale - 1.) / (_max - _min)))))
 
     @staticmethod
     def grade_str(value, good=None, bad=None):
@@ -80,43 +63,58 @@ class Assessor(object):
         return self.grade_int(len(value), minimum, maxmimum, scale)
 
     def assess_netdev(self, netdev):
-        net = self.data.get('net')
-        print net.get(netdev)
+        netdevinfo = extract(self.data, ['net', netdev])
+        queues = sum(len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
+        buffers = netdevinfo.get('buffers')
+        return {
+            'queues': self.grade_int(queues, 2, 8),
+            'driver': self.grade_str(netdevinfo.get('driver').get('driver'),
+                                     ['ixgbe', 'igb', 'mlx4_en'],
+                                     ['r8169', 'ATL1E', 'e1000', 'e1000e']),
+            'buffers': {
+                'cur': self.grade_int(buffers.get('cur'), 256, 4096),
+                'max': self.grade_int(buffers.get('max'), 256, 4096),
+            },
+            'conf': self.data.get('net').get(netdev).get('conf'),
+        }
+
+    def assess_cpu(self):
+        cpuinfo = extract(self.data, ['cpu', 'info'])
+        if cpuinfo:
+            return {
+                'CPU MHz': self.grade_int(cpuinfo.get('CPU MHz'), 2000, 4000),
+                'BogoMIPS': self.grade_int(cpuinfo.get('BogoMIPS'), 4000, 8000),
+                'CPU(s)': self.grade_int(cpuinfo.get('CPU(s)'), 2, 32),
+                'Core(s) per socket': self.grade_int(cpuinfo.get('Core(s) per socket'), 1, 2),
+                'Socket(s)': self.grade_int(cpuinfo.get('Socket(s)'), 1, 2),
+                'Thread(s) per core': self.grade_int(cpuinfo.get('Thread(s) per core'), 2, 1),
+                'L3 cache': self.grade_int(cpuinfo.get('L3 cache'), 1000, 30000),
+                'Vendor ID': self.grade_str(cpuinfo.get('Vendor ID'), good=['GenuineIntel']),
+            }
+
+    def assess_memory(self):
+        meminfo = self.data.get('memory')
+        if meminfo:
+            return {
+                'MemTotal': self.grade_int(meminfo.get('MemTotal'), 2 * (1024**2), 16 * (1024**2)),
+                'SwapTotal': self.grade_int(meminfo.get('SwapTotal'), 512 * 1024, 4 * (1024**2)),
+            }
+
+    def assess_system(self):
+        cpuinfo = extract(self.data, ['cpu', 'info'])
+        if cpuinfo:
+            return {
+                'Hypervisor vendor': self.grade_fact(cpuinfo.get('Hypervisor vendor'), False),
+                'Virtualization type': self.grade_fact(cpuinfo.get('Hypervisor vendor'), False),
+            }
 
     def assess(self):
         self.info = {
             'net': dict((netdev, self.assess_netdev(netdev)) for netdev in self.data.get('net')),
+            'cpu': self.assess_cpu(),
+            'memory': self.assess_memory(),
+            'system': self.assess_system(),
             # 'disk': None,
-            # 'cpu': {
-            #     'CPU MHz': self.grade_int(
-            #         extract(self.data, ['cpu', 'info', 'CPU MHz']), 2000, 4000),
-            #     'BogoMIPS': self.grade_int(
-            #         extract(self.data, ['cpu', 'info', 'BogoMIPS']), 4000, 8000),
-            #     'CPU(s)': self.grade_int(
-            #         extract(self.data, ['cpu', 'info', 'CPU(s)']), 2, 32),
-            #     'Core(s) per socket': self.grade_int(
-            #         extract(self.data, ['cpu', 'info', 'Core(s) per socket']), 1, 2),
-            #     'Socket(s)': self.grade_int(
-            #         extract(self.data, ['cpu', 'info', 'Socket(s)']), 1, 2),
-            #     'Thread(s) per core': self.grade_int(
-            #         extract(self.data, ['cpu', 'info', 'Thread(s) per core']), 2, 1),
-            #     'L3 cache': self.grade_int(
-            #         extract(self.data, ['cpu', 'info', 'L3 cache']), 1000, 30000),
-            #     'Vendor ID': self.grade_str(
-            #         extract(self.data, ['cpu', 'info', 'Vendor ID']), good=['GenuineIntel']),
-            # },
-            # 'memory': {
-            #     'MemTotal': self.grade_int(
-            #         extract(self.data, ['memory', 'MemTotal']), 2 * (1024**2), 16 * (1024**2)),
-            #     'SwapTotal': self.grade_int(
-            #         extract(self.data, ['memory', 'SwapTotal']), 512 * 1024, 4 * (1024**2)),
-            # },
-            # 'system': {
-            #     'Hypervisor vendor': self.grade_fact(
-            #         extract(self.data, ['cpu', 'info', 'Hypervisor vendor']), False),
-            #     'Virtualization type': self.grade_fact(
-            #         extract(self.data, ['cpu', 'info', 'Hypervisor vendor']), False),
-            # }
         }
 
 
