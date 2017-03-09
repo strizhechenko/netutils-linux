@@ -5,14 +5,13 @@ set -euo pipefail
 find_mirror_conf() {
 	local CR7=/usr/local/Reductor/userinfo/mirror_info.conf
 	local CR8_INNER=/cfg/userinfo/mirror_info.conf
-	local CR8_OUTER=/app/reductor/$MIRRORCONF_CR8_INNER
+	local CR8_OUTER=/app/reductor/$CR8_INNER
 	local conf
 	for conf in $CR7 $CR8_INNER $CR8_OUTER; do
 		[ -f $conf ] || continue
 		echo $conf
 		break
 	done
-	[ -z "${MIRROR_CONF:-}" ] || echo "$MIRROR_CONF"
 }
 
 mirror_devices_bridge() {

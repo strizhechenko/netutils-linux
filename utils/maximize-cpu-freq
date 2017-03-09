@@ -24,10 +24,7 @@ set_governor_performance() {
 	local gov_state
 	local cpu="$1"
 	local gov=$cpu/cpufreq/scaling_governor
-	if [ ! -f $gov ]; then
-		echo "$cpu have no scaling_governor."
-		continue
-	fi
+	[ -f $gov ] || continue
 	read gov_state < $gov
 	if [ "$DRYRUN" = '0' ]; then
 		if [ "$gov_state" != 'performance' ]; then

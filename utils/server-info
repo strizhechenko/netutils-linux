@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [ "$1" != 'show' ] && [ "$1" != 'rate' ]; then
+	echo "Usage $0 [show|rate]"
+	exit 1
+fi
+server-info-collect server &>/dev/null
+cd /root/
+tar xfz server.tar.gz
+cd /root/server/
+server-info-"$1"
