@@ -102,7 +102,8 @@ class DiskInfo(object):
             self.types_data = types_data
 
         def parse(self, text):
-            data = dict(line.split(None, 1) for line in text.strip().split('\n'))
+            lines = [line.split(None, 1) for line in text.strip().split('\n')]
+            data = dict(line if len(line) == 2 else line + [None] for line in lines)
             if data.get('NAME'):
                 del data['NAME']
             return data
