@@ -64,7 +64,8 @@ class Assessor(object):
 
     def assess_netdev(self, netdev):
         netdevinfo = extract(self.data, ['net', netdev])
-        queues = sum(len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
+        queues = sum(
+            len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
         buffers = netdevinfo.get('buffers')
         return {
             'queues': self.grade_int(queues, 2, 8),
@@ -76,6 +77,11 @@ class Assessor(object):
                 'max': self.grade_int(buffers.get('max'), 256, 4096),
             },
         }
+
+    def assess_netdevs(self):
+        netdevs = self.data.get('net')
+        if netdevs:
+            return dict((netdev, self.assess_netdev(netdev)) for netdev in netdevs)
 
     def assess_cpu(self):
         cpuinfo = extract(self.data, ['cpu', 'info'])
@@ -115,13 +121,18 @@ class Assessor(object):
             'size': self.grade_int(diskinfo.get('size'), 50 * (1000**3), 1000**4),
         }
 
+    def assess_disks(self):
+        disks = self.data.get('disk')
+        if disks:
+            return dict((disk, self.assess_disk(disk)) for disk in disks)
+
     def assess(self):
         self.info = {
-            'net': dict((netdev, self.assess_netdev(netdev)) for netdev in self.data.get('net')),
+            'net': self.assess_netdevs(),
             'cpu': self.assess_cpu(),
             'memory': self.assess_memory(),
             'system': self.assess_system(),
-            'disk': dict((disk, self.assess_disk(disk)) for disk in self.data.get('disk')),
+            'disk': self.assess_disks(),
         }
 
 
