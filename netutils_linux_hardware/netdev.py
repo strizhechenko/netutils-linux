@@ -2,8 +2,8 @@
 # pylint: disable=C0111, C0103
 
 import os
-from autotune_network_interrupts import IRQQueueCounter
-from autotune_network_parsers import EthtoolBuffers, ReductorMirror, BrctlOutput, YAMLLike
+from interrupts import IRQQueueCounter
+from parsers import EthtoolBuffers, ReductorMirror, BrctlOutput, YAMLLike
 
 
 class ReaderNet(object):

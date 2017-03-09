@@ -1,7 +1,7 @@
 # coding: utf-8
 # pylint: disable=C0111, C0103
 
-from autotune_network_parsers import Parser
+from parsers import Parser
 
 
 class NICQueues(object):

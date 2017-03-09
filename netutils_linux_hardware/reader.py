@@ -3,8 +3,8 @@
 
 import os
 import yaml
-from autotune_network_parsers import YAMLLike, CPULayout, DiskInfo, MemInfo
-from autotune_network_netdev import ReaderNet
+from parsers import YAMLLike, CPULayout, DiskInfo, MemInfo
+from netdev import ReaderNet
 
 
 class Reader(object):

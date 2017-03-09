@@ -6,7 +6,7 @@ import os
 import re
 from unittest import main, TestCase
 import yaml
-from autotune_network_reader import Reader
+from netutils_linux_hardware.reader import Reader
 
 
 def extract(dictionary, key_sequence):

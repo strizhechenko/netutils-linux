@@ -3,7 +3,7 @@
 # pylint: disable=C0111, C0103
 
 import os
-from autotune_network_reader import Reader
+from netutils_linux_hardware.reader import Reader
 
 
 def main():
