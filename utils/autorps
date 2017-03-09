@@ -8,6 +8,13 @@ if [ "$#" -lt 1 ] || [ "$@" == '--help' ] || [ "$@" == '-h' ]; then
 	exit 1
 fi
 
+sockets="$(lscpu | fgrep 'Socket(s)' | egrep -o '[0-9]+')"
+if [ "$sockets" -gt 1 ]; then
+	echo "This system has more then one socket ($sockets)."
+	echo "$0 in current implementation may cause performance degradation in this case, so we skip it."
+	exit 0
+fi
+
 dev="$1"
 queue_count="$(find /sys/class/net/$dev/queues/ -type d -name "rx-*" | wc -l)"
 cpu_count="$(nproc)"

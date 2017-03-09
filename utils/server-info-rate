@@ -198,11 +198,7 @@ def __main():
         # datadir = 'tests/autotune_network.tests/kvm.l3.masterconf'
     reader = Reader(datadir)
     data = reader.info
-    # print yaml.dump(data.get('net'))
-    # exit(1)
-    # print reader.info.keys()
-    assessments = Assessor(data)
-    print assessments
+    print Assessor(data)
 
 if __name__ == '__main__':
     __main()
