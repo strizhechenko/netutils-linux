@@ -26,11 +26,15 @@ network_info() {
 	local netdev action
 	brctl show > $TMPDIR/brctl
 	MIRRORCONF_CR7=/usr/local/Reductor/userinfo/mirror_info.conf
-	MIRRORCONF_CR8=/app/reductor/cfg/userinfo/mirror_info.conf
+	MIRRORCONF_CR8_INCHROOT=/cfg/userinfo/mirror_info.conf
+	MIRRORCONF_CR8_OUTCHROOT=/app/reductor/$MIRRORCONF_CR8_INCHROOT
+
 	if [ -f "$MIRRORCONF_CR7" ]; then
 		cp "$MIRRORCONF_CR7" "$TMPDIR/mirror_info.conf"
-	elif [ -f "$MIRRORCONF_CR8" ]; then
-		cp "$MIRRORCONF_CR8" "$TMPDIR/mirror_info.conf"
+	elif [ -f "$MIRRORCONF_CR8_INCHROOT" ]; then
+		cp "$MIRRORCONF_CR8_INCHROOT" "$TMPDIR/mirror_info.conf"
+	elif [ -f "$MIRRORCONF_CR8_OUTCHROOT" ]; then
+		cp "$MIRRORCONF_CR8_OUTCHROOT" "$TMPDIR/mirror_info.conf"
 	fi
 
 	for netdev in $(grep : /proc/net/dev | awk '{print $1}' | tr -d :); do
