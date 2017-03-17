@@ -15,7 +15,7 @@ def read(*paths):
 
 setup(
     name='netutils-linux',
-    version='0.5.3',
+    version='1.0.0',
     author='Oleg Strizhechenko',
     author_email='oleg.strizhechenko@gmail.com',
     license='MIT',
@@ -25,6 +25,7 @@ setup(
     long_description=(read('README.rst')),
     packages=find_packages(exclude=['tests*']),
     scripts = [os.path.join('utils/', script) for script in os.listdir('utils/')],
+    install_requires=['pyyaml'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
