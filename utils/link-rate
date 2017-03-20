@@ -19,7 +19,7 @@ def read_stat(device, stat):
         return int(devfile.read().strip())
 
 
-def get_stat(device):
+def fetch_stats(device):
     return dict((stat, read_stat(device, stat)) for stat in STATS)
 
 
@@ -34,7 +34,7 @@ def print_diff(diff):
 def loop(device):
     cur = prev = None
     while True:
-        cur = get_stat(device)
+        cur = fetch_stats(device)
         if prev:
             print_diff(delta(prev, cur))
         prev = cur
