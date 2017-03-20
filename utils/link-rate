@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+# pylint disable C0103,C0111
+
+import os
+import sys
+import time
+
+INTERVAL = int(os.getenv('INTERVAL', '1'))
+STATS = (
+    'rx_bytes',
+    'rx_packets',
+    'tx_bytes',
+    'tx_packets',
+)
+
+
+def read_stat(device, stat):
+    with open('/sys/class/net/{0}/statistics/{1}'.format(device, stat)) as devfile:
+        return int(devfile.read().strip())
+
+
+def get_stat(device):
+    return dict((stat, read_stat(device, stat)) for stat in STATS)
+
+
+def delta(prev, cur):
+    return dict((stat, cur[stat] - prev[stat]) for stat in STATS)
+
+
+def print_diff(diff):
+    print ' '.join(':'.join((stat, str(diff[stat]))) for stat in STATS)
+
+
+def loop(device):
+    cur = prev = None
+    while True:
+        cur = get_stat(device)
+        if prev:
+            print_diff(delta(prev, cur))
+        prev = cur
+        time.sleep(INTERVAL)
+
+
+if __name__ == "__main__":
+    dev = 'eth1' if len(sys.argv) < 2 else sys.argv[1]
+    loop(dev)
