@@ -27,8 +27,21 @@ def delta(prev, cur):
     return dict((stat, cur[stat] - prev[stat]) for stat in STATS)
 
 
+def fallback_spaces(n, sep=' '):
+    output = str()
+    while n / 1000 > 0:
+        output = str(n % 1000).zfill(3) + sep + output
+        n /= 1000
+    return str(n % 1000) + sep + output
+
 def print_diff(diff):
-    print ' '.join(':'.join((stat, str(diff[stat]))) for stat in STATS)
+    if os.getenv('NOSPACES'):
+        print '\t'.join(':'.join((stat, str(diff[stat]))) for stat in STATS)
+        return
+    if sys.version_info[0:2] == (2, 6):
+        print '\t'.join(':'.join((stat, fallback_spaces(diff[stat]))) for stat in STATS)
+        return
+    print '\t'.join(':'.join((stat, "{0:,}".format(diff[stat]))) for stat in STATS)
 
 
 def loop(device):
