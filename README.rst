@@ -158,3 +158,104 @@ Example output:
   RX Mini:	0
   RX Jumbo:	0
   TX:		256
+
+server-info
+------
+Much alike lshw but designed for network processing role of server.
+
+.. code::
+
+  # server-info show
+  cpu:
+    info:
+      Architecture: x86_64
+      BogoMIPS: 6799.9899999999998
+      Byte Order: Little Endian
+      CPU MHz: 3399.998
+      CPU family: 6
+      CPU op-mode(s): 32-bit, 64-bit
+      CPU(s): 2
+      Core(s) per socket: 1
+      Hypervisor vendor: KVM
+      L1d cache: 32K
+      L1i cache: 32K
+      L2 cache: 4096K
+      Model: 13
+      Model name: QEMU Virtual CPU version (cpu64-rhel6)
+      NUMA node(s): 1
+      NUMA node0 CPU(s): 0,1
+      On-line CPU(s) list: 0,1
+      Socket(s): 2
+      Stepping: 3
+      Thread(s) per core: 1
+      Vendor ID: GenuineIntel
+      Virtualization type: full
+    layout:
+      '0': '0'
+      '1': '1'
+  disk:
+    sr0:
+      model: QEMU DVD-ROM
+    vda:
+      model: null
+      size: 64424509440
+      type: HDD
+  memory:
+    MemFree: 158932
+    MemTotal: 1922096
+    SwapFree: 4128764
+    SwapTotal: 4128764
+  net:
+    eth1:
+      buffers:
+        cur: 2048
+        max: 4096
+      conf:
+        ip: 10.144.63.1/24
+        vlan: true
+      driver:
+        driver: e1000
+        version: 7.3.21-k8-NAPI
+      queues:
+        own: []
+        rx: []
+        rxtx: []
+        shared:
+        - virtio1, eth0, eth1
+        tx: []
+        unknown: []
+
+It also can rate hardware and its features in range of 1..10.
+
+.. code::
+
+  # server-info rate
+  cpu:
+    BogoMIPS: 7
+    CPU MHz: 7
+    CPU(s): 1
+    Core(s) per socket: 1
+    L3 cache: 1
+    Socket(s): 10
+    Thread(s) per core: 10
+    Vendor ID: 10
+   disk:
+     sr0:
+       size: 1
+       type: 2
+     vda:
+       size: 1
+       type: 1
+   memory:
+     MemTotal: 1
+     SwapTotal: 10
+   net:
+     eth1:
+       buffers:
+         cur: 5
+         max: 10
+       driver: 1
+       queues: 1
+   system:
+     Hypervisor vendor: 1
+     Virtualization type: 1
