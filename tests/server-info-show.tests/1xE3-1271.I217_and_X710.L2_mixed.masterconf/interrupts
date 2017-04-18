@@ -1,0 +1,42 @@
+           CPU0       CPU1       CPU2       CPU3       
+  0:        130          0          0          0  IR-IO-APIC-edge      timer
+  7:         17          0          0          0  IR-IO-APIC-edge    
+  8:          1          0          1          0  IR-IO-APIC-edge      rtc0
+  9:          2          2          0          0  IR-IO-APIC-fasteoi   acpi
+ 16:         17         14          3         13  IR-IO-APIC-fasteoi   ehci_hcd:usb1
+ 22:         10         13         10         11  IR-IO-APIC-fasteoi   ehci_hcd:usb2
+ 24:          0          0          0          0  DMAR_MSI-edge      dmar0
+ 25:        538          0          0          0  IR-HPET_MSI-edge      hpet2
+ 26:          0          0          0          0  IR-HPET_MSI-edge      hpet3
+ 27:          0          0          0          0  IR-HPET_MSI-edge      hpet4
+ 28:          0          0          0          0  IR-HPET_MSI-edge      hpet5
+ 30:         39         25         20         33  IR-PCI-MSI-edge      xhci_hcd
+ 31:     226108     195487     102448     113825  IR-PCI-MSI-edge      ahci
+ 32:          0          0          0          0  IR-PCI-MSI-edge      i40e-0000:01:00.0:misc
+ 33:  732696843  759655218  309380411  242948054  IR-PCI-MSI-edge      i40e-eth0-TxRx-0
+ 34:  643508328  845599776  264655322  198406844  IR-PCI-MSI-edge      i40e-eth0-TxRx-1
+ 35:  631836368  766401753  323062709  170944912  IR-PCI-MSI-edge      i40e-eth0-TxRx-2
+ 36:  601983183  741506010  218347426  227568420  IR-PCI-MSI-edge      i40e-eth0-TxRx-3
+ 37:          0          0          0          0  IR-PCI-MSI-edge      i40e-0000:01:00.0:fdir-TxRx-0
+ 46:          0          0          0          0  IR-PCI-MSI-edge      i40e-0000:01:00.1:misc
+ 51:          0          0          0          0  IR-PCI-MSI-edge      i40e-0000:01:00.1:fdir-TxRx-0
+ 60:     443615     473648     148977     136556  IR-PCI-MSI-edge      eth2
+ 61:          0          1          0          0  IR-PCI-MSI-edge      eth3
+ 62:     594965     634046     375784     368301  IR-PCI-MSI-edge      eth3-TxRx-0
+ 63:     604831     636540     371316     355449  IR-PCI-MSI-edge      eth3-TxRx-1
+ 64:     607894     628751     355946     334336  IR-PCI-MSI-edge      eth3-TxRx-2
+ 65:    8092821    9607550    3502440    2802009  IR-PCI-MSI-edge      eth3-TxRx-3
+NMI:        685        718        482        387   Non-maskable interrupts
+LOC:   12263245   11515646    7831315    6077260   Local timer interrupts
+SPU:          0          0          0          0   Spurious interrupts
+PMI:        685        718        482        387   Performance monitoring interrupts
+IWI:          0          0          0          0   IRQ work interrupts
+RES:      88604      79001      58112      59820   Rescheduling interrupts
+CAL:        133        213        208        193   Function call interrupts
+TLB:      57069     610755     217540     110382   TLB shootdowns
+TRM:          0          0          0          0   Thermal event interrupts
+THR:          0          0          0          0   Threshold APIC interrupts
+MCE:          0          0          0          0   Machine check exceptions
+MCP:        540        540        540        540   Machine check polls
+ERR:         17
+MIS:          0

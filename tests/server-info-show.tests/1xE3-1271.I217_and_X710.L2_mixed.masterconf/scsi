@@ -1,0 +1,4 @@
+Attached devices:
+Host: scsi0 Channel: 00 Id: 00 Lun: 00
+  Vendor: ATA      Model: INTEL SSDSC2KW12 Rev: 036C
+  Type:   Direct-Access                    ANSI  SCSI revision: 05
