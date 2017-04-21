@@ -70,7 +70,7 @@ class Assessor(object):
         return {
             'queues': self.grade_int(queues, 2, 8),
             'driver': self.grade_str(netdevinfo.get('driver').get('driver'),
-                                     good=['ixgbe', 'igb', 'mlx4_en', 'i40e'],
+                                     good=['ixgbe', 'igb', 'mlx4_en', 'i40e', 'bnx2x'],
                                      bad=['r8169', 'ATL1E', 'e1000', 'e1000e', '8139too']),
             'buffers': {
                 'cur': self.grade_int(buffers.get('cur'), 256, 4096),
