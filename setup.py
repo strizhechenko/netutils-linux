@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-'''The setup and build script for the twitterbot-farm library.'''
+"""The setup and build script for the netutils-linux."""
 
 import os
-
-from setuptools import setup, find_packages
+import setuptools
 
 
 def read(*paths):
@@ -13,9 +12,9 @@ def read(*paths):
         return f.read()
 
 
-setup(
+setuptools.setup(
     name='netutils-linux',
-    version='1.0.3',
+    version='1.0.4',
     author='Oleg Strizhechenko',
     author_email='oleg.strizhechenko@gmail.com',
     license='MIT',
@@ -23,8 +22,8 @@ setup(
     keywords='linux network performanse utils troubleshooting irq interrupts softirqs proc',
     description='Bunch of utils to simplify linux network troubleshooting and performance tuning.',
     long_description=(read('README.rst')),
-    packages=find_packages(exclude=['tests*']),
-    scripts = [os.path.join('utils/', script) for script in os.listdir('utils/')],
+    packages=setuptools.find_packages(exclude=['tests*']),
+    scripts=[os.path.join('utils/', script) for script in os.listdir('utils/')],
     install_requires=['pyyaml'],
     classifiers=[
         'Development Status :: 3 - Alpha',
