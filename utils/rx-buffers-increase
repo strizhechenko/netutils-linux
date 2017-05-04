@@ -38,7 +38,10 @@ class RxBuffersIncreaser(object):
     def investigate(self):
         """ get maximum and current rx ring buffers values via ethtool """
         ns = '/etc/sysconfig/network-scripts/'
-        with open(path.join(ns, 'ifcfg-' + self.dev)) as config:
+        iface_cfg = path.join(ns, 'ifcfg-' + self.dev)
+        if not path.exists(iface_cfg):
+            return 0
+        with open(iface_cfg) as config:
             if any(line for line in config.xreadlines() if 'ETHTOOL_OPTS' in line):
                 print "{0}'s RX ring buffer already manually tuned.".format(self.dev)
                 exit(0)
