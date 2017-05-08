@@ -34,6 +34,7 @@ def fallback_spaces(n, sep=' '):
         n /= 1000
     return str(n % 1000) + sep + output
 
+
 def print_diff(diff):
     if os.getenv('NOSPACES'):
         print '\t'.join(':'.join((stat, str(diff[stat]))) for stat in STATS)

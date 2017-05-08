@@ -9,6 +9,8 @@ from netdev import ReaderNet
 
 class Reader(object):
 
+    info = None
+
     def __init__(self, datadir):
         self.datadir = datadir
         self.gather_info()

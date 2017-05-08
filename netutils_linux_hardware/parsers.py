@@ -6,7 +6,6 @@ import yaml
 
 
 class Parser(object):
-
     @staticmethod
     def parse(text, **kwargs):
         raise NotImplementedError
@@ -21,14 +20,12 @@ class Parser(object):
 
 
 class YAMLLike(Parser):
-
     @staticmethod
     def parse(text):
         return yaml.load(text)
 
 
 class ReductorMirror(Parser):
-
     @staticmethod
     def parse(text):
         lines = dict((line.split(' ', 1)) for line in text.strip().split('\n'))
@@ -43,7 +40,6 @@ class ReductorMirror(Parser):
 
 
 class DiskInfo(object):
-
     @staticmethod
     def invert_dict_nesting(d):
         """
@@ -122,7 +118,6 @@ class MemInfo(YAMLLike):
 
 
 class CPULayout(Parser):
-
     @staticmethod
     def parse(text):
         output = dict((line.strip().split())
@@ -132,7 +127,6 @@ class CPULayout(Parser):
 
 
 class BrctlOutput(Parser):
-
     @staticmethod
     def parse(text):
         netdevs_keys = [line.split()[3]
@@ -144,7 +138,7 @@ class BrctlOutput(Parser):
             elif key.count('.') == 0:
                 dev = key
             else:
-                raise NotImplementedError, 'QinQ not supported yet.'
+                raise NotImplementedError 'QinQ not supported yet.'
 
             netdevs[dev] = dict()
             netdevs[dev]['conf'] = {
@@ -155,7 +149,6 @@ class BrctlOutput(Parser):
 
 
 class EthtoolBuffers(Parser):
-
     @staticmethod
     def parse(text):
         buffers = [int(line.split()[1])
