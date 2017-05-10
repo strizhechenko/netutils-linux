@@ -138,7 +138,8 @@ class BrctlOutput(Parser):
             elif key.count('.') == 0:
                 dev = key
             else:
-                raise NotImplementedError 'QinQ not supported yet.'
+                print 'QinQ not supported yet. Device: {0}'.format(key)
+                raise NotImplementedError
 
             netdevs[dev] = dict()
             netdevs[dev]['conf'] = {
