@@ -19,11 +19,13 @@ while sleep 1; do
 	fi
 
 	for i in $(seq 1 $(wc -l < $CUR)); do
-		printf "%s\t%s\n" $i $(($(sed -n "${i}p" $CUR) - $(sed -n "${i}p" $PREV)))
+		printf "%s\t%s\n" CPU$((i-1)) $(($(sed -n "${i}p" $CUR) - $(sed -n "${i}p" $PREV)))
 	done > $DIFF
 
 	echo
-	uptime  | sed 's/.*://g'
+	clear
+	echo "Press CTRL-C to exit..."
+	uptime  | sed 's/.*:/Load average: /g'
 	cat $DIFF
 	mv $CUR $PREV
 done
