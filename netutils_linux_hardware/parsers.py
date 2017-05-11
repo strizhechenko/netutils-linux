@@ -132,7 +132,6 @@ class BrctlOutput(Parser):
     @staticmethod
     def parse(text):
         netdevs = dict()
-        print text.strip().split('\n')[1:]
         netdevs_keys = [line.split()[3]
                         for line in text.strip().split('\n')[1:]
                         if len(line.split()) > 3]
