@@ -19,7 +19,7 @@ server_info() {
 	lspci > $TMPDIR/lspci
 	lscpu > $TMPDIR/lscpu_info
 	lscpu --extended=CPU,SOCKET > $TMPDIR/lscpu_layout
-	fgrep '' /sys/block/*/queue/rotational | egrep -v '[0-9]+/' >  $TMPDIR/disks_types
+	fgrep '' /sys/block/*/queue/rotational | egrep -v '[0-9]+/' >  $TMPDIR/disks_types || true
 }
 
 network_info() {

@@ -76,6 +76,8 @@ class DiskInfo(object):
         @staticmethod
         def parse(text):
             types = ['SSD', 'HDD']
+            if not text:
+                return dict()
             return dict((k, types[v]) for k, v in yaml.load(text
                                                             .replace(":", ": ")
                                                             .replace("/sys/block/", "")
