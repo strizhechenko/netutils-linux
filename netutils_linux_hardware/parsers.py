@@ -131,9 +131,11 @@ class CPULayout(Parser):
 class BrctlOutput(Parser):
     @staticmethod
     def parse(text):
-        netdevs_keys = [line.split()[3]
-                        for line in text.strip().split('\n')[1:]]
         netdevs = dict()
+        print text.strip().split('\n')[1:]
+        netdevs_keys = [line.split()[3]
+                        for line in text.strip().split('\n')[1:]
+                        if len(line.split()) > 3]
         for key in netdevs_keys:
             if key.count('.') == 1:
                 dev, _ = key.split('.')

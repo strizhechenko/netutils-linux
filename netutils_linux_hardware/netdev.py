@@ -37,7 +37,10 @@ class ReaderNet(object):
         for netdev in self.netdevs:
             driverfile = os.path.join(self.datadir, 'ethtool/i', netdev)
             driverdata = YAMLLike().parse_file_safe(driverfile)
-            driverdata = dict((k, v) for k, v in driverdata.iteritems() if k in keys_required)
+            if driverdata:
+                driverdata = dict((k, v) for k, v in driverdata.iteritems() if k in keys_required)
+            else:
+                driverdata = dict()
             self.netdevs[netdev]['driver'] = driverdata
 
     def net_dev_list(self):
