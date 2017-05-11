@@ -46,7 +46,7 @@ def print_diff(diff):
 
 
 def loop(device):
-    cur = prev = None
+    prev = None
     while True:
         cur = fetch_stats(device)
         if prev:

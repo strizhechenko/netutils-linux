@@ -26,8 +26,8 @@ network_info() {
 	local netdev action
 	brctl show > $TMPDIR/brctl
 	MIRRORCONF_CR7=/usr/local/Reductor/userinfo/mirror_info.conf
-	MIRRORCONF_CR8_INCHROOT=/cfg/userinfo/mirror_info.conf
-	MIRRORCONF_CR8_OUTCHROOT=/app/reductor/$MIRRORCONF_CR8_INCHROOT
+	MIRRORCONF_CR8_INCHROOT="/cfg/userinfo/mirror_info.conf"
+	MIRRORCONF_CR8_OUTCHROOT="/app/reductor/$MIRRORCONF_CR8_INCHROOT"
 
 	if [ -f "$MIRRORCONF_CR7" ]; then
 		cp "$MIRRORCONF_CR7" "$TMPDIR/mirror_info.conf"
@@ -38,20 +38,20 @@ network_info() {
 	fi
 
 	for netdev in $(grep : /proc/net/dev | awk '{print $1}' | tr -d :); do
-		ethtool -i $netdev &>/dev/null || continue
+		ethtool -i "$netdev" &>/dev/null || continue
 		for action in i g c; do
-			if ! ethtool -$action $netdev &>$TMPDIR/ethtool/$action/$netdev; then
-				rm -f $TMPDIR/ethtool/$action/$netdev
+			if ! ethtool -"$action" "$netdev" &>"$TMPDIR/ethtool/$action/$netdev"; then
+				rm -f "$TMPDIR/ethtool/$action/$netdev"
 			fi
 		done
-		[ -f $SYSCONFIG/ifcfg-$netdev ] || continue
+		[ -f "$SYSCONFIG/ifcfg-$netdev" ] || continue
 		# avoiding collection of identification/privacy info
-		grep ETHTOOL $SYSCONFIG/ifcfg-$netdev > $TMPDIR/network-scripts/ifcfg-$netdev || true
+		grep ETHTOOL "$SYSCONFIG/ifcfg-$netdev" > "$TMPDIR/network-scripts/ifcfg-$netdev" || true
 	done
 }
 
 make_archive() {
-	local output=/root/$1.tar.gz
+	local output="/root/$1.tar.gz"
 	cd /tmp/
 	tar cfz "$output" "$1"
 	rm -rf $TMPDIR

@@ -27,18 +27,18 @@ class InterruptDiff(object):
         for ln, line in enumerate(self.diff):
             changed = False
             for cn, column in enumerate(line):
-                if column.isdigit():
-                    new_value = int(column) - int(self.previous[ln][cn])
-                    if new_value > 0:
-                        changed = True
-                    self.diff[ln][cn] = str(new_value)
+                if not column.isdigit():
+                    continue
+                new_value = int(column) - int(self.previous[ln][cn])
+                if new_value > 0:
+                    changed = True
+                self.diff[ln][cn] = str(new_value)
 
             changes.append(changed)
 
     def __print__(self):
         def is_changed(line):
             return any(int(x) > self.ignore_limit for x in line if x.isdigit())
-        line = []
         system('clear')
         print
         cpucount = len(self.diff[0]) - 1
