@@ -5,61 +5,9 @@ import sys
 import time
 import optparse
 import unittest
+from netutils_linux import SoftnetStat
 
 FILE = '/proc/net/softnet_stat'
-
-
-class SoftnetStat(object):
-    def __init__(self, row, cpu):
-        row = [int('0x' + x, 16) for x in row.strip().split()]
-        self.total, self.dropped, self.time_squeeze = row[0:3]
-        self.cpu_collision = row[6]
-        self.received_rps = row[7]
-        self.cpu = cpu
-
-    def __repr__(self):
-        return "CPU: {0} total: {1:11} dropped: {2} time_squeeze: {3:4} cpu_collision: {4} received_rps: {5}" \
-            .format(self.cpu, self.total, self.dropped, self.time_squeeze, self.cpu_collision, self.received_rps)
-
-    def __sub__(self, other):
-        return "CPU: {0:2} total: {1:8} dropped: {2} time_squeeze: {3} cpu_collision: {4} received_rps: {5}" \
-            .format(self.cpu,
-                    self.total - other.total,
-                    self.dropped - other.dropped,
-                    self.time_squeeze - other.time_squeeze,
-                    self.cpu_collision - other.cpu_collision,
-                    self.received_rps - other.received_rps)
-
-
-class SoftnetStatTests(unittest.TestCase):
-    first = """
-    9d3cbd5e 00000000 0000004d 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    301350a8 00000000 00000025 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    2102d7a3 00000000 00000021 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    1d208d3b 00000000 00000021 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    6ba194e0 00000000 0000002b 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    25ef7e5f 00000000 0000001f 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    178ea501 00000000 0000001e 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    16882427 00000000 00000029 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    """
-
-    second = """
-    9d3cebfe 00000000 0000004d 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    30135354 00000000 00000025 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    2102d995 00000000 00000021 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    1d208e70 00000000 00000021 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    6ba1984a 00000000 0000002b 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    25ef7f6f 00000000 0000001f 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    178ed754 00000000 0000001e 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    168824ff 00000000 00000029 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-    """
-
-    def test_delta(self):
-        __first = [SoftnetStat(row, cpu) for cpu, row in enumerate(self.first.strip().split('\n'))]
-        __second = [SoftnetStat(row, cpu) for cpu, row in enumerate(self.second.strip().split('\n'))]
-        delta = __second[0] - __first[0]
-        expected = 'CPU:  0 total:    11936 dropped: 0 time_squeeze: 0 cpu_collision: 0 received_rps: 0'
-        self.assertEqual(delta, expected)
 
 
 def make_options():

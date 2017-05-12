@@ -2,7 +2,7 @@ test: env
 	. env/bin/activate && \
 		./tests/rss-ladder && \
 		./utils/rx-buffers-increase && \
-		./utils/softnet-stat-top -u && \
+		./tests/softnet_stat_top.py -u && \
 		./tests/server-info-show && \
 		UNITTEST=1 ./utils/server-info-rate
 
