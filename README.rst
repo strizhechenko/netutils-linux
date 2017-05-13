@@ -4,16 +4,9 @@ netutils-linux
 .. image:: https://travis-ci.org/strizhechenko/netutils-linux.svg?branch=master
    :target: https://travis-ci.org/strizhechenko/netutils-linux
 
-It's just a bunch of utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and later automate the whole linux performance tuning process out of box.
+It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging.
 
 .. _Carbon Reductor: http://www.carbonsoft.ru/products/carbon-reductor-5/
-Project state
-=============
-Beta. Few script were gathered together, shortly documented, one has some tests and packed into python package.
-
-Some were cleaned up, some - not. Most of them were being written in bash, not python, maybe they'll be ported later.
-
-In next few weeks, it will receive something like a 'tuned' with autodetection of best settings for all the system feature.
 
 Installation
 ============
