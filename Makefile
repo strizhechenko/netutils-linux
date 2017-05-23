@@ -1,8 +1,8 @@
 test: env
 	. env/bin/activate && \
 		./tests/rss-ladder && \
-		./utils/rx-buffers-increase && \
-		./tests/softnet_stat_top.py -u && \
+		./tests/rx_buffers_test.py && \
+		./tests/softnet_stat_test.py && \
 		./tests/server-info-show && \
 		UNITTEST=1 ./utils/server-info-rate
 
