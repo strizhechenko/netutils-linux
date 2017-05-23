@@ -4,6 +4,7 @@ test: env
 		./tests/rx_buffers_test.py && \
 		./tests/softnet_stat_test.py && \
 		./tests/server-info-show && \
+		./tests/softirq_net_rx_top_test.py && \
 		UNITTEST=1 ./utils/server-info-rate
 
 help:
