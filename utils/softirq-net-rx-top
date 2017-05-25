@@ -3,4 +3,4 @@
 from netutils_linux.softirqs import Softirqs
 
 if __name__ == '__main__':
-    Softirqs().loop()
+    Softirqs().run()
