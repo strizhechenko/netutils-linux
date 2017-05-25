@@ -1,12 +1,11 @@
-import os
-import time
+from top import Top
 
 
-class Softirqs(object):
+class Softirqs(Top):
     def __init__(self, filename='/proc/softirqs'):
-        self.filename = filename
+        Top.__init__(self, filename)
 
-    def file2data(self):
+    def parse(self):
         with open(self.filename) as fd:
             metrics = [line.strip().split(':') for line in fd.readlines() if ':' in line]
             return dict((k, map(int, v.strip().split())) for k, v in metrics)
@@ -15,32 +14,13 @@ class Softirqs(object):
     def __active_cpu_count__(data):
         return len([metric for metric in data.get('TIMER') if metric > 0])
 
-    @staticmethod
-    def __list_diff__(cur, prev):
-        return [cur[i] - prev[i] for i in xrange(len(cur))]
+    def eval(self):
+        self.diff = dict((key, self.list_diff(data, self.previous[key])) for key, data in self.current.iteritems())
 
-    @staticmethod
-    def __list_print__(data):
-        print "Press CTRL-C to exit..."
-        print
-        for n, v in enumerate(data):
-            print 'CPU{0}: {1}'.format(n, v)
+    def __repr__(self):
+        net_rx = ["CPU{0}: {1}".format(cpu, softirq) for cpu, softirq in enumerate(self.diff.get('NET_RX'))]
+        return "\n".join(map(str, [self.header] + net_rx))
 
-    def __loop__(self):
-        net_rx = None
-        while True:
-            data = self.file2data()
-            cpu_count = self.__active_cpu_count__(data)
-            net_rx_cur = data.get('NET_RX')[:cpu_count]
-            if net_rx:
-                os.system('clear')
-                self.__list_print__(self.__list_diff__(net_rx_cur, net_rx))
-            net_rx = net_rx_cur
-            time.sleep(1)
 
-    def loop(self):
-        try:
-            self.__loop__()
-        except KeyboardInterrupt as err:
-            print
-            exit(0)
+if __name__ == '__main__':
+    Softirqs().run()

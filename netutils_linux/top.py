@@ -19,6 +19,10 @@ class Top:
         if all((self.previous, self.current)):
             self.eval()
 
+    @staticmethod
+    def list_diff(current, previous):
+        return [data - previous[n] for n, data in enumerate(current)]
+
     def run(self):
         try:
             while self.iterations > -1:
