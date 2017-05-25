@@ -21,18 +21,12 @@ class InterruptDiff(object):
 
     def eval(self):
         self.diff = deepcopy(self.current)
-        changes = []
         for ln, line in enumerate(self.diff):
-            changed = False
             for cn, column in enumerate(line):
                 if not column.isdigit():
                     continue
                 new_value = int(column) - int(self.previous[ln][cn])
-                if new_value > 0:
-                    changed = True
                 self.diff[ln][cn] = str(new_value)
-
-            changes.append(changed)
 
     def __print__(self):
         def is_changed(line):
