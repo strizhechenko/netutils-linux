@@ -13,7 +13,7 @@ class IrqTop(Top):
 
     def parse(self):
         with open(self.filename) as file_fd:
-            return [[self.__int(item) for item in line.strip().split()] for line in file_fd.readlines()]
+            return [[self.int(item) for item in line.strip().split()] for line in file_fd.readlines()]
 
     def eval(self):
         self.diff = deepcopy(self.current)
@@ -23,7 +23,6 @@ class IrqTop(Top):
                     self.diff[ln][cn] = column - self.previous[ln][cn]
         self.diff_total = self.eval_diff_total()
 
-    @property
     def __repr__(self):
         if not self.diff_total:
             return self.header
@@ -45,3 +44,7 @@ class IrqTop(Top):
 
     def has_diff(self, s):
         return any(x > self.ignore_limit for x in s if isinstance(x, int))
+
+
+if __name__ == '__main__':
+    IrqTop().run()

@@ -1,58 +1,7 @@
 #!/usr/bin/env python
 
-import os
-import sys
-import time
-import optparse
-import unittest
-from netutils_linux import SoftnetStat
+from netutils_linux.softnet_stat import SoftnetStatTop
 
-FILE = '/proc/net/softnet_stat'
-
-
-def make_options():
-    parser = optparse.OptionParser()
-    parser.add_option("-i", "--interval", dest='interval', default=1,
-                      help="specifies the delay between screen updates")
-    parser.add_option("-a", "--assert-mode", dest='assert_mode', action='store_true', default=False,
-                      help="stops screen updates if there is packets drop")
-    parser.add_option("-u", "--unit-tests", dest='unit_tests', action='store_true', default=False,
-                      help="runs unit-tests instead of read anything from system")
-    parser.add_option("-n", "--no-delta-mode", dest='delta_mode', action='store_false', default=True,
-                      help="shows actual counters instead evaluating deltas")
-    options, _ = parser.parse_args()
-    return options
-
-
-def main():
-    options = make_options()
-    if options.unit_tests:
-        sys.argv = sys.argv[0:1]
-        return unittest.main()
-    prev = None
-    stop_flag = False
-    while True:
-        with open(FILE) as softnet_stat:
-            current_data = softnet_stat.read().strip().split('\n')
-            softnet_stat.close()
-        cur = [SoftnetStat(row, cpu) for cpu, row in enumerate(current_data)]
-        if prev or not options.delta_mode:
-            print "Press CTRL-C to exit."
-            for cpu, data in enumerate(cur):
-                if options.delta_mode:
-                    print cur[cpu] - prev[cpu]
-                    stop_flag = options.assert_mode and cur[cpu].dropped - prev[cpu].dropped > 0
-                else:
-                    print cur[cpu]
-        prev = cur
-        softnet_stat.close()
-        if stop_flag:
-            exit(0)
-        time.sleep(options.interval)
-        os.system('clear')
 
 if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        exit(0)
+    SoftnetStatTop().run()

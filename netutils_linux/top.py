@@ -26,13 +26,13 @@ class Top:
                 sleep(self.interval)
                 self.tick()
                 system('clear')
-                print self
+                if self.diff:
+                    print self
         except KeyboardInterrupt:
             print
             exit(0)
 
-    @staticmethod
-    def __int(item):
+    def int(self, item):
         return int(item) if item.isdigit() else item
 
     def parse(self):
