@@ -38,7 +38,8 @@ class SoftnetStatTop(Top):
         self.diff = [data - self.previous[cpu] for cpu, data in enumerate(self.current)]
 
     def __repr__(self):
-        return "\n".join(map(str, [self.header] + self.diff))
+        repr_source = self.current if self.no_delta else self.diff
+        return "\n".join(map(str, [self.header] + repr_source))
 
 
 if __name__ == '__main__':

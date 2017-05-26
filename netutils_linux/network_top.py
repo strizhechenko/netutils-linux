@@ -1,21 +1,24 @@
 #!/usr/bin/env python
 
-import os
-import time
-from irqtop import InterruptDiff
+from top import Top
+from irqtop import IrqTop
 from softirqs import Softirqs
-from softnet_stat import SoftnetStat
+from softnet_stat import SoftnetStatTop
 
 
-def loop(tops, interval=1):
-    while True:
-        for top in tops:
-            top.eval()
-        os.system('clear')
-        print "Press CTRL-C to exit..."
-        for top in tops:
-            print top
-        time.sleep(interval)
+class NetworkTop(Top):
+    def __init__(self):
+        Top.__init__(self, None)
+
+    def parse(self):
+        pass
+
+    def eval(self):
+        pass
+
+    def __repr__(self):
+        pass
+
 
 if __name__ == '__main__':
-    loop((InterruptDiff(),))
+    NetworkTop().run()

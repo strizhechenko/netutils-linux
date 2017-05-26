@@ -47,7 +47,9 @@ class LinkRateTop(Top):
         return "\n".join(output)
 
     def __repr_dev__(self, dev):
-        return " ".join([self.__indent__(n, self.__spaces__(self.diff[dev][stat]), -1) for n, stat in enumerate(self.stats)])
+        repr_source = self.current if self.no_delta else self.diff
+        data = [self.__indent__(n, self.__spaces__(repr_source[dev][stat]), -1) for n, stat in enumerate(self.stats)]
+        return " ".join(data)
 
     def __parse_dev__(self, dev):
         return dict((stat, self.__parse_dev_stat__(dev, stat)) for stat in self.stats)

@@ -24,13 +24,14 @@ class IrqTop(Top):
         self.diff_total = self.eval_diff_total()
 
     def __repr__(self):
+        repr_source = self.current if self.no_delta else self.diff
         if not self.diff_total:
             return self.header
         output_lines = [self.header, "\t".join(str(x) for x in ['Total:'] + map(str, self.diff_total))]
-        for line in self.diff:
+        for line in repr_source:
             if line[0] == 'CPU0':
                 line.insert(0, ' ')
-            elif self.skipzero and not self.has_diff(line):
+            elif self.skipzero and not self.has_diff(line) and not self.no_delta:
                 continue
             output_lines.append("\t".join(map(str, line)))
         return "\n".join(output_lines)

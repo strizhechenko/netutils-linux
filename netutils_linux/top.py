@@ -12,6 +12,7 @@ class Top:
         self.filename = filename
         self.interval = int(getenv('INTERVAL', 1))
         self.iterations = int(getenv('ITERATIONS', 60))
+        self.no_delta = bool(int(getenv('NO_DELTA', 0)))
 
     def tick(self):
         self.previous = self.current
@@ -36,7 +37,8 @@ class Top:
             print
             exit(0)
 
-    def int(self, item):
+    @staticmethod
+    def int(item):
         return int(item) if item.isdigit() else item
 
     def parse(self):

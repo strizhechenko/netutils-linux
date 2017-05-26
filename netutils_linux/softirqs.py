@@ -18,8 +18,9 @@ class Softirqs(Top):
         self.diff = dict((key, self.list_diff(data, self.previous[key])) for key, data in self.current.iteritems())
 
     def __repr__(self):
+        repr_source = self.current if self.no_delta else self.diff
         active_cpu_count = self.__active_cpu_count__(self.current)
-        net_rx_active_cpu = self.diff.get('NET_RX')[:active_cpu_count]
+        net_rx_active_cpu = repr_source.get('NET_RX')[:active_cpu_count]
         net_rx = ["CPU{0}: {1}".format(cpu, softirq) for cpu, softirq in enumerate(net_rx_active_cpu)]
         return "\n".join(map(str, [self.header] + net_rx))
 
