@@ -1,60 +1,30 @@
 #!/usr/bin/env python
-# pylint disable C0103,C0111
 
 import os
-import sys
-import time
-
-INTERVAL = int(os.getenv('INTERVAL', '1'))
-STATS = (
-    'rx_bytes',
-    'rx_packets',
-    'tx_bytes',
-    'tx_packets',
-)
+import re
+import optparse
+from netutils_linux.link_rate import LinkRateTop
 
 
-def read_stat(device, stat):
-    with open('/sys/class/net/{0}/statistics/{1}'.format(device, stat)) as devfile:
-        return int(devfile.read().strip())
-
-
-def fetch_stats(device):
-    return dict((stat, read_stat(device, stat)) for stat in STATS)
-
-
-def delta(prev, cur):
-    return dict((stat, cur[stat] - prev[stat]) for stat in STATS)
-
-
-def fallback_spaces(n, sep=' '):
-    output = str()
-    while n / 1000 > 0:
-        output = str(n % 1000).zfill(3) + sep + output
-        n /= 1000
-    return str(n % 1000) + sep + output
-
-
-def print_diff(diff):
-    if os.getenv('NOSPACES'):
-        print '\t'.join(':'.join((stat, str(diff[stat]))) for stat in STATS)
-        return
-    if sys.version_info[0:2] == (2, 6):
-        print '\t'.join(':'.join((stat, fallback_spaces(diff[stat]))) for stat in STATS)
-        return
-    print '\t'.join(':'.join((stat, "{0:,}".format(diff[stat]))) for stat in STATS)
-
-
-def loop(device):
-    prev = None
-    while True:
-        cur = fetch_stats(device)
-        if prev:
-            print_diff(delta(prev, cur))
-        prev = cur
-        time.sleep(INTERVAL)
+def device_list():
+    parser = optparse.OptionParser()
+    parser.add_option('-r', '--regex', dest='regex', help="filter net devices by regex-mask")
+    parser.add_option('-d', '--devices', dest='devices', help="comma-separated devices list")
+    options, args = parser.parse_args()
+    if not all((options.regex, options.devices)):
+        raise ValueError("please define --regex or --devices")
+    if all((options.regex, options.devices)):
+        raise ValueError("please, define only --regex or only --devices")
+    if options.devices:
+        devices = options.devices.split(',')
+    elif options.regex:
+        devices = [dev for dev in os.listdir('/sys/class/net/') if re.match(options.regex, dev)]
+    else:
+        devices = args[1:]
+    if not devices:
+        raise ValueError("No devices specified")
+    return devices
 
 
 if __name__ == "__main__":
-    dev = 'eth1' if len(sys.argv) < 2 else sys.argv[1]
-    loop(dev)
+    LinkRateTop(device_list()).run()

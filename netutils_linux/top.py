@@ -6,7 +6,7 @@ class Top:
     current = None
     previous = None
     diff = None
-    header = "Press CTRL-C to exit..."
+    header = "Press CTRL-C to exit...\n"
 
     def __init__(self, filename):
         self.filename = filename
