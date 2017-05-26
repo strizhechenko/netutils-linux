@@ -1,6 +1,6 @@
 from os import getenv
-from top import Top
 from copy import deepcopy
+from top import Top
 
 
 class IrqTop(Top):
