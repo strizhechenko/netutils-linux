@@ -43,7 +43,7 @@ class LinkRateTop(Top):
     def __repr__(self):
         output = [self.header]
         for dev in self.devices:
-            output.append("{0:<9} {1}".format(dev, self.__repr_dev__(dev)))
+            output.append("{0:<14} {1}".format(dev, self.__repr_dev__(dev)))
         return "\n".join(output)
 
     def __repr_dev__(self, dev):
@@ -68,7 +68,7 @@ class LinkRateTop(Top):
 
     @staticmethod
     def __indent__(n, v, maxvalue=0):
-        return "{0:<9}".format(v) if n == maxvalue else "{0:>11}".format(v)
+        return "{0:<14}".format(v) if n == maxvalue else "{0:>11}".format(v)
 
 if __name__ == '__main__':
     print LinkRateTop(['eth0', 'eth1']).run()
