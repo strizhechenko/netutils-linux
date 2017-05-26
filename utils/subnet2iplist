@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+import optparse
+import ipaddress
+
+
+def main():
+    parser = optparse.OptionParser()
+    options, args = parser.parse_args()
+    for arg in args:
+        for ip in ipaddress.ip_network(unicode(arg, 'utf-8')):
+            print ip
+
+
+if __name__ == '__main__':
+    main()

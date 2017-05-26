@@ -30,6 +30,8 @@ class LinkRateTop(Top):
         stats_header1 = " ".join(self.__indent__(n, v) for n, v in enumerate([""] + ["RX"] * 10 + ["TX"] * 3))
         stats_header2 = " ".join(self.__indent__(n, stat.shortname) for n, stat in enumerate([Stat("", "")] + self.stats))
         self.header = "\n".join([self.header, stats_header1, stats_header2])
+        if not self.devices:
+            raise ValueError("Where's my devices?")
 
     def parse(self):
         return dict((dev, self.__parse_dev__(dev)) for dev in self.devices)
