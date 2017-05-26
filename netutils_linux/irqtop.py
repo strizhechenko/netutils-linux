@@ -23,6 +23,9 @@ class IrqTop(Top):
                     self.diff[ln][cn] = column - self.previous[ln][cn]
         self.diff_total = self.eval_diff_total()
 
+    def skip_zero_line(self, line):
+        return self.skipzero and not self.has_diff(line) and not self.no_delta
+
     def __repr__(self):
         repr_source = self.current if self.no_delta else self.diff
         if not self.diff_total:
@@ -31,7 +34,7 @@ class IrqTop(Top):
         for line in repr_source:
             if line[0] == 'CPU0':
                 line.insert(0, ' ')
-            elif self.skipzero and not self.has_diff(line) and not self.no_delta:
+            elif self.skip_zero_line(line):
                 continue
             output_lines.append("\t".join(map(str, line)))
         return "\n".join(output_lines)
