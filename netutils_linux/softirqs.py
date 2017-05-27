@@ -6,8 +6,7 @@ class Softirqs(BaseTop):
     def __init__(self):
         BaseTop.__init__(self)
         specific_options = [
-            Option('--softirqs-file', dest='softirqs_file', default='/proc/softirqs',
-                   help='Option for testing on MacOS purpose.')
+            Option('--softirqs-file', default='/proc/softirqs', help='Option for testing on MacOS purpose.')
         ]
         self.specific_options.extend(specific_options)
 

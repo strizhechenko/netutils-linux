@@ -31,10 +31,10 @@ class LinkRateTop(BaseTop):
             Option('--assert', '--assert-mode', default=False, dest='assert_mode',
                    help='Stops running after errors detected.'),
             Option('--dev', '--devices', default="", dest='devices', help='Comma-separated list of devices to monitor.'),
-            Option('--device-regex', default='^.*$', dest='devices_regex', help="Regex-mask for devices to monitor."),
+            Option('--device-regex', default='^.*$', help="Regex-mask for devices to monitor."),
             Option('-s', '--simple', default='False', dest='simple_mode',
                    help='Hides different kinds of error, showing only general counters.'),
-            Option('--rx', '--rx-only', default=False, action='store_true', help='Hides tx-counters'),
+            Option('--rx', '--rx-only', dest='rx_only', default=False, action='store_true', help='Hides tx-counters'),
         ]
         self.specific_options.extend(specific_options)
         stats_header1 = " ".join(self.__indent__(n, v) for n, v in enumerate([""] + ["RX"] * 10 + ["TX"] * 3))

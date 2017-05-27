@@ -28,7 +28,7 @@ class SoftnetStatTop(BaseTop):
     def __init__(self):
         BaseTop.__init__(self)
         specific_options = [
-            Option('--softnet-stat-file', default='/proc/net/softnet_stat', dest='softnet_stat_file',
+            Option('--softnet-stat-file', default='/proc/net/softnet_stat',
                    help='Option for testing on MacOS purpose.'),
         ]
         self.specific_options.extend(specific_options)

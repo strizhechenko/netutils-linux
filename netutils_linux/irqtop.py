@@ -8,8 +8,8 @@ class IrqTop(BaseTop):
 
     def __init__(self):
         BaseTop.__init__(self)
-        interrupts_file = Option('--interrupt-file', default='/proc/interrupts', dest='interrupts_file',
-                                help='Option for testing on MacOS purpose.')
+        interrupts_file = Option('--interrupt-file', default='/proc/interrupts',
+                                 help='Option for testing on MacOS purpose.')
         self.specific_options.append(interrupts_file)
 
     def parse(self):
