@@ -4,4 +4,6 @@ from netutils_linux.irqtop import IrqTop
 
 
 if __name__ == '__main__':
-    IrqTop().run()
+    top = IrqTop()
+    top.parse_options()
+    top.run()

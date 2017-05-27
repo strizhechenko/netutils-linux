@@ -1,8 +1,8 @@
+from optparse import Option
 from base_top import BaseTop
 
 
 class SoftnetStat:
-
     def __init__(self, row, cpu):
         row = [int('0x' + x, 16) for x in row.strip().split()]
         self.total, self.dropped, self.time_squeeze = row[0:3]
@@ -25,11 +25,16 @@ class SoftnetStat:
 
 
 class SoftnetStatTop(BaseTop):
-    def __init__(self, filename='/proc/net/softnet_stat'):
-        BaseTop.__init__(self, filename)
+    def __init__(self):
+        BaseTop.__init__(self)
+        specific_options = [
+            Option('--softnet-stat-file', default='/proc/net/softnet_stat', dest='softnet_stat_file',
+                   help='Option for testing on MacOS purpose.'),
+        ]
+        self.specific_options.extend(specific_options)
 
     def parse(self):
-        with open(self.filename) as softnet_stat:
+        with open(self.options.softnet_stat_file) as softnet_stat:
             data = softnet_stat.read().strip().split('\n')
             return [SoftnetStat(row, cpu) for cpu, row in enumerate(data)]
 
@@ -37,7 +42,7 @@ class SoftnetStatTop(BaseTop):
         self.diff = [data - self.previous[cpu] for cpu, data in enumerate(self.current)]
 
     def __repr__(self):
-        repr_source = self.current if self.no_delta else self.diff
+        repr_source = self.diff if self.options.delta_mode else self.current
         return "\n".join(map(str, [self.header] + repr_source))
 
 

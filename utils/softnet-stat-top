@@ -4,4 +4,6 @@ from netutils_linux.softnet_stat import SoftnetStatTop
 
 
 if __name__ == '__main__':
-    SoftnetStatTop().run()
+    top = SoftnetStatTop()
+    top.parse_options()
+    top.run()
