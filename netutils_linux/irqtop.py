@@ -1,13 +1,13 @@
 from os import getenv
 from copy import deepcopy
-from top import Top
+from base_top import BaseTop
 
 
-class IrqTop(Top):
+class IrqTop(BaseTop):
     diff_total = None
 
     def __init__(self, filename='/proc/interrupts'):
-        Top.__init__(self, filename)
+        BaseTop.__init__(self, filename)
         self.skipzero = bool(getenv('SKIPZERO', True))
         self.ignore_limit = int(getenv('IGNORE_LE', 80))
 

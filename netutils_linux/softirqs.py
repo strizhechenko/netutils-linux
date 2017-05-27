@@ -1,9 +1,9 @@
-from top import Top
+from base_top import BaseTop
 
 
-class Softirqs(Top):
+class Softirqs(BaseTop):
     def __init__(self, filename='/proc/softirqs'):
-        Top.__init__(self, filename)
+        BaseTop.__init__(self, filename)
 
     def parse(self):
         with open(self.filename) as fd:

@@ -1,12 +1,12 @@
 from os import getenv
 from copy import deepcopy
-from top import Top
+from base_top import BaseTop
 from collections import namedtuple
 
 Stat = namedtuple('Stat', ['filename', 'shortname'])
 
 
-class LinkRateTop(Top):
+class LinkRateTop(BaseTop):
     stats = [
         Stat('rx_packets', 'packets'),
         Stat('rx_bytes', 'bytes'),
@@ -24,7 +24,7 @@ class LinkRateTop(Top):
     ]
 
     def __init__(self, devices=None):
-        Top.__init__(self, None)
+        BaseTop.__init__(self, None)
         self.devices = devices
         self.no_spaces = bool(int(getenv('NO_SPACES', 0)))
         stats_header1 = " ".join(self.__indent__(n, v) for n, v in enumerate([""] + ["RX"] * 10 + ["TX"] * 3))

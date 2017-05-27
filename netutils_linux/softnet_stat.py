@@ -1,4 +1,4 @@
-from top import Top
+from base_top import BaseTop
 
 
 class SoftnetStat:
@@ -24,9 +24,9 @@ class SoftnetStat:
                     self.received_rps - other.received_rps)
 
 
-class SoftnetStatTop(Top):
+class SoftnetStatTop(BaseTop):
     def __init__(self, filename='/proc/net/softnet_stat'):
-        Top.__init__(self, filename)
+        BaseTop.__init__(self, filename)
         pass
 
     def parse(self):

@@ -2,7 +2,7 @@ from os import getenv, system
 from time import sleep
 
 
-class Top:
+class BaseTop:
     current = None
     previous = None
     diff = None

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-from top import Top
+from base_top import BaseTop
 from irqtop import IrqTop
 from softirqs import Softirqs
 from softnet_stat import SoftnetStatTop
 # from link_rate import LinkRateTop
 
 
-class NetworkTop(Top):
+class NetworkTop(BaseTop):
     def __init__(self):
-        Top.__init__(self, None)
+        BaseTop.__init__(self, None)
         self.tops = {
             'irqtop': IrqTop(),
             'softnet_stat_top': SoftnetStatTop(),
@@ -35,7 +35,6 @@ class NetworkTop(Top):
 
     def __repr__(self):
         return "\n".join(str(_top) for top_name, _top in self.tops.iteritems())
-
 
 if __name__ == '__main__':
     NetworkTop().run()
