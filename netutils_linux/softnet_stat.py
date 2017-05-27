@@ -27,7 +27,6 @@ class SoftnetStat:
 class SoftnetStatTop(BaseTop):
     def __init__(self, filename='/proc/net/softnet_stat'):
         BaseTop.__init__(self, filename)
-        pass
 
     def parse(self):
         with open(self.filename) as softnet_stat:
