@@ -1,18 +1,21 @@
-from os import getenv
 from copy import deepcopy
+from optparse import Option
 from base_top import BaseTop
 
 
 class IrqTop(BaseTop):
     diff_total = None
 
-    def __init__(self, filename='/proc/interrupts'):
-        BaseTop.__init__(self, filename)
-        self.skipzero = bool(getenv('SKIPZERO', True))
-        self.ignore_limit = int(getenv('IGNORE_LE', 80))
+    def __init__(self):
+        BaseTop.__init__(self)
+        specific_options = [
+            Option('--interrupts-file', default='/proc/interrupts',
+                   help='Option for testing on MacOS purpose.')
+        ]
+        self.specific_options.extend(specific_options)
 
     def parse(self):
-        with open(self.filename) as file_fd:
+        with open(self.options.interrupts_file) as file_fd:
             return [[self.int(item) for item in line.strip().split()] for line in file_fd.readlines()]
 
     def eval(self):
@@ -24,10 +27,10 @@ class IrqTop(BaseTop):
         self.diff_total = self.eval_diff_total()
 
     def skip_zero_line(self, line):
-        return self.skipzero and not self.has_diff(line) and not self.no_delta
+        return self.options.delta_small_hide and not self.has_diff(line) and self.options.delta_mode
 
     def __repr__(self):
-        repr_source = self.current if self.no_delta else self.diff
+        repr_source = self.diff if self.options.delta_mode else self.current
         if not self.diff_total:
             return self.header
         output_lines = [self.header, "\t".join(str(x) for x in ['Total:'] + map(str, self.diff_total))]
@@ -47,7 +50,7 @@ class IrqTop(BaseTop):
         return [self.eval_diff_total_column(column, cpucount) for column in xrange(1, cpucount + 2)]
 
     def has_diff(self, s):
-        return any(x > self.ignore_limit for x in s if isinstance(x, int))
+        return any(x > self.options.delta_small_hide_limit for x in s if isinstance(x, int))
 
 
 if __name__ == '__main__':

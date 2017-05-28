@@ -1,29 +1,9 @@
 #!/usr/bin/env python
 
-import os
-import re
-import optparse
 from netutils_linux.link_rate import LinkRateTop
 
 
-def device_list_regex(regex):
-    return [dev for dev in os.listdir('/sys/class/net/') if re.match(regex, dev)]
-
-
-def device_list():
-    parser = optparse.OptionParser()
-    parser.add_option('-r', '--regex', dest='regex', help="filter net devices by regex-mask")
-    options, args = parser.parse_args()
-    if not any((options.regex, args)):
-        options.regex = '.*'
-    if options.regex:
-        devices = device_list_regex(options.regex)
-    else:
-        devices = [dev for dev in args if os.path.exists('/sys/class/net/' + dev)]
-    if not devices:
-        raise ValueError("No devices specified")
-    return devices
-
-
 if __name__ == "__main__":
-    LinkRateTop(device_list()).run()
+    top = LinkRateTop()
+    top.parse_options()
+    top.run()
