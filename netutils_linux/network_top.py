@@ -46,8 +46,10 @@ class NetworkTop(BaseTop):
                     pass  # I don't know how to make a set of options
         self.options, args = parser.parse_args()
         for top in self.tops.itervalues():
+            top.options = self.options
             if hasattr(top, 'post_optparse'):
                 top.post_optparse()
+
 
 if __name__ == '__main__':
     NetworkTop().run()

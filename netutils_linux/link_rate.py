@@ -30,7 +30,8 @@ class LinkRateTop(BaseTop):
         specific_options = [
             Option('--assert', '--assert-mode', default=False, dest='assert_mode',
                    help='Stops running after errors detected.'),
-            Option('--dev', '--devices', default="", dest='devices', help='Comma-separated list of devices to monitor.'),
+            Option('--dev', '--devices', default="", dest='devices',
+                   help='Comma-separated list of devices to monitor.'),
             Option('--device-regex', default='^.*$', help="Regex-mask for devices to monitor."),
             Option('-s', '--simple', default='False', dest='simple_mode',
                    help='Hides different kinds of error, showing only general counters.'),
@@ -75,7 +76,8 @@ class LinkRateTop(BaseTop):
         return "{0:<14}".format(v) if n == maxvalue else "{0:>11}".format(v)
 
     def devices_list_regex(self):
-        return [dev for dev in listdir('/sys/class/net/') if match(self.options.devices_regex, dev)]
+        net_dev_list = listdir('/sys/class/net/')
+        return [dev for dev in net_dev_list if match(self.options.device_regex, dev)]
 
     def devices_list(self):
         return self.options.devices.split(',') if self.options.devices else self.devices_list_regex()
