@@ -1,0 +1,16 @@
+           CPU0       CPU1       CPU2       CPU3       
+  0:        147          0          0          0  IR-IO-APIC-edge      timer
+ 25:       2314          0          0          0  IR-HPET_MSI-edge      hpet2
+ 33:    2246954          0          0          0  IR-PCI-MSI-edge      ahci
+ 34:     256407          0          0 2758558739  IR-PCI-MSI-edge      eth4-TxRx-0
+ 35:     390986          0 2681535480          0  IR-PCI-MSI-edge      eth4-TxRx-1
+ 36:     329092 2697697503          0          0  IR-PCI-MSI-edge      eth4-TxRx-2
+ 37: 2839861257          0          0          0  IR-PCI-MSI-edge      eth4-TxRx-3
+ 39:     262382          0 1965549742          0  IR-PCI-MSI-edge      eth5-TxRx-0
+ 40:     349783 1881819362          0          0  IR-PCI-MSI-edge      eth5-TxRx-1
+ 41: 1863551031          0          0          0  IR-PCI-MSI-edge      eth5-TxRx-2
+ 42:     347998          0          0 1838393444  IR-PCI-MSI-edge      eth5-TxRx-3
+ 44:        151  230788178          0          0  IR-PCI-MSI-edge      eth0
+LOC:  110572450  118193748  103604456  112346977   Local timer interrupts
+RES:    1682231    1401369    1865641    1639404   Rescheduling interrupts
+TLB:     357467    1212412     910981     677478   TLB shootdowns

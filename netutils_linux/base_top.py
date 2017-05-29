@@ -1,5 +1,6 @@
 from os import system
 from time import sleep
+from random import randint
 from optparse import Option, OptionParser, OptionConflictError
 
 
@@ -29,7 +30,9 @@ class BaseTop:
             Option('--no-color', dest='color', default=True, action='store_false',
                    help="Don't highlight NUMA nodes or sockets"),
             Option('--spaces', default=False, action='store_true',
-                   help="Add spaces in numbers' representation, e.g. '1234567' will be '1 234 567'")
+                   help="Add spaces in numbers' representation, e.g. '1234567' will be '1 234 567'"),
+            Option('--random', default=False, action='store_true',
+                   help="Shows random diff data instead of real evaluation. Helpful for testing on static files")
         ]
 
     def parse_options(self):
@@ -51,9 +54,10 @@ class BaseTop:
         if all((self.previous, self.current)):
             self.eval()
 
-    @staticmethod
-    def list_diff(current, previous):
+    def list_diff(self, current, previous):
         """ It's strange that there is no [3,4,3] - [1,2,1] -> [2,2,2] in standard library """
+        if self.options.random:
+            return [randint(0, 10000) for _ in current]
         return [data - previous[n] for n, data in enumerate(current)]
 
     def run(self):

@@ -1,3 +1,4 @@
+from random import randint
 from copy import deepcopy
 from optparse import Option
 from base_top import BaseTop
@@ -23,7 +24,10 @@ class IrqTop(BaseTop):
         for ln, line in enumerate(self.diff):
             for cn, column in enumerate(line):
                 if isinstance(column, int):
-                    self.diff[ln][cn] = column - self.previous[ln][cn]
+                    if self.options.random:
+                        self.diff[ln][cn] = randint(0, 10000)
+                    else:
+                        self.diff[ln][cn] = column - self.previous[ln][cn]
         self.diff_total = self.eval_diff_total()
 
     def skip_zero_line(self, line):
