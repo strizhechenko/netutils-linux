@@ -16,6 +16,11 @@ Installation
 
 Utils
 =====
+network-top
+------
+Most useful util in this repo that includes all top-like utils and allow to monitor interrupts, soft interrupts, network processing statistic for devices and CPUs!
+
+.. image:: https://cloud.githubusercontent.com/assets/3813830/26552514/e72829a8-44a0-11e7-9386-f3828a82933c.gif
 
 irqtop
 ------
