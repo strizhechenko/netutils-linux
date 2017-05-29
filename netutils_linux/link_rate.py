@@ -1,6 +1,7 @@
 from re import match
 from os import listdir
 from copy import deepcopy
+from random import randint
 from optparse import Option
 from collections import namedtuple
 from base_top import BaseTop
@@ -50,7 +51,10 @@ class LinkRateTop(BaseTop):
         self.diff = deepcopy(self.current)
         for dev, data in self.current.iteritems():
             for stat in self.stats:
-                self.diff[dev][stat] = data[stat] - self.previous[dev][stat]
+                if self.options.random:
+                    self.diff[dev][stat] = randint(0, 10000)
+                else:
+                    self.diff[dev][stat] = data[stat] - self.previous[dev][stat]
 
     def __repr__(self):
         output = [self.header]
@@ -66,8 +70,9 @@ class LinkRateTop(BaseTop):
     def __parse_dev__(self, dev):
         return dict((stat, self.__parse_dev_stat__(dev, stat)) for stat in self.stats)
 
-    @staticmethod
-    def __parse_dev_stat__(dev, stat):
+    def __parse_dev_stat__(self, dev, stat):
+        if self.options.random:
+            return randint(1, 10000)
         with open('/sys/class/net/{0}/statistics/{1}'.format(dev, stat.filename)) as devfile:
             return int(devfile.read().strip())
 
