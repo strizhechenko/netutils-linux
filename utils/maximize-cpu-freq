@@ -24,10 +24,9 @@ set_governor_performance() {
 	local gov_state
 	local cpu="$1"
 	local gov=$cpu/cpufreq/scaling_governor
-	[ -f $gov ] || continue
-	read gov_state < $gov
+	[ -f $gov ] || echo "Processor not support scaling" && continue
 	if [ "$DRYRUN" = '0' ]; then
-		if [ "$gov_state" != 'performance' ]; then
+		if [ "$gov" != 'performance' ]; then
 			echo "Set performance mode for $cpu governor"
 			echo 'performance' > $gov
 		fi
