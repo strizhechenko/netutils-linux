@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 from optparse import OptionParser, OptionConflictError
+from colors import ColorsNode, Colors, colorize_cpu_list
+from numa import Numa
 from base_top import BaseTop
 from irqtop import IrqTop
 from softirqs import Softirqs
@@ -18,6 +20,7 @@ class NetworkTop(BaseTop):
             'link-rate': LinkRateTop(),
         }
         self.parse_options()
+        self.numa = Numa(devices=self.options.devices, fake=self.options.random)
 
     def parse(self):
         return dict((top_name, _top.parse()) for top_name, _top in self.tops.iteritems())
@@ -35,9 +38,13 @@ class NetworkTop(BaseTop):
 
     def __repr_dev(self):
         top = self.tops.get('link-rate')
-        output = ["# Network devices\n", top.make_header(network_top=True)]
+        output = [Colors['BOLD'], "# Network devices", top.make_header(network_top=True), Colors['ENDC']]
         for dev in top.options.devices:
-            output.append("{0:<14} {1}".format(dev, top.__repr_dev__(dev)))
+            output.append("{0}{1:<14}{3} {2}".format(
+                ColorsNode.get(self.numa.devices.get(dev)),
+                dev, top.__repr_dev__(dev),
+                Colors['ENDC'])
+            )
         return "\n".join(output)
 
     def __repr_irq(self):
@@ -45,15 +52,15 @@ class NetworkTop(BaseTop):
         repr_source = top.diff if top.options.delta_mode else top.current
         if not top.diff_total:
             return ""
-        # output_lines = ["\t".join(str(x) for x in ['Total:'] + map(str, top.diff_total))]
         output_lines = list()
         for line in repr_source:
             if line[0] == 'CPU0':
+                line = colorize_cpu_list(line, self.numa)
                 line.insert(0, ' ')
             elif top.skip_zero_line(line):
                 continue
             output_lines.append("\t".join(map(str, line)))
-        return "\n".join(["# /proc/interrupts\n"] + output_lines)
+        return "\n".join([Colors['BOLD'] + "# /proc/interrupts\n" + Colors['ENDC']] + output_lines)
 
     def __repr_cpu(self):
         irqtop = self.tops.get('irqtop')
@@ -67,23 +74,40 @@ class NetworkTop(BaseTop):
         softnet_stat_top_output = softnet_stat_top.diff if softnet_stat_top.options.delta_mode else softnet_stat_top.current
 
         network_output = zip(irqtop.diff_total, softirq_output, softnet_stat_top_output)
-        fields = ["CPU", "Interrupts", "NET RX", "total", "dropped", "time_squeeze", "cpu_collision", "received_rps"]
-        header = "# Load per cpu:\n\n{0:6}  {1:>12} {2:>12} {3:>12} {4:>8} {5:>12} {6:>13} {7:>12}".format(*fields)
+        fields = [
+            Colors['BOLD'],
+            "CPU",
+            "Interrupts",
+            "NET RX",
+            "total",
+            "dropped",
+            "time_squeeze",
+            "cpu_collision",
+            "received_rps",
+            Colors['ENDC'],
+        ]
+        header_template = "{0}# Load per cpu:\n\n{1:6}  {2:>12} {3:>12} {4:>12} {5:>8} {6:>12} {7:>13} {8:>12}{9}\n"
+        cpu_row_template = "{0}CPU{1:<3}{2}: {3:>12} {4:>12} {5:>12} {6:>8} {7:>12} {8:>13} {9:>12}"
+        header = header_template.format(*fields)
         output = [header] + [
-            "CPU{0:3}: {1:>12} {2:>12} {3:>12} {4:>8} {5:>12} {6:>13} {7:>12}".format(softnet_stat.cpu, irq, softirq,
-                                                                                      softnet_stat.total,
-                                                                                      softnet_stat.dropped,
-                                                                                      softnet_stat.time_squeeze,
-                                                                                      softnet_stat.cpu_collision,
-                                                                                      softnet_stat.received_rps)
+            cpu_row_template.format(
+                ColorsNode.get(self.numa.cpu_node(softnet_stat.cpu)),
+                softnet_stat.cpu,
+                Colors['ENDC'],
+                irq, softirq,
+                softnet_stat.total,
+                softnet_stat.dropped,
+                softnet_stat.time_squeeze,
+                softnet_stat.cpu_collision,
+                softnet_stat.received_rps)
             for irq, softirq, softnet_stat in network_output
         ]
-        return "\n".join(output)
+        return Colors['ENDC'] + "\n".join(output) + Colors['ENDC']
 
     def __repr__(self):
         # return "\n".join(str(_top) for top_name, _top in self.tops.iteritems())
         return "\n\n".join([
-            self.header,
+            Colors['GREY'] + self.header + Colors['ENDC'],
             self.__repr_irq(),
             self.__repr_cpu(),
             self.__repr_dev(),
