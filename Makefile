@@ -48,5 +48,5 @@ mac_run: env
 	network-top --random \
 		--softirqs-file=./tests/softirqs/i7/softirqs1 \
 		--softnet-stat-file=./tests/softnet_stat/softnet_stat1 \
-		--interrupts-file=./tests/interrupts/multinic_multiqueue_4cpu/interrupts_short \
+		--interrupts-file=./tests/interrupts/singlequeue_8cpu/interrupts_short \
 		--devices=eth1,eth2,eth3
