@@ -1,5 +1,6 @@
 from os import system
 from time import sleep
+from random import randint
 from optparse import Option, OptionParser, OptionConflictError
 
 
@@ -53,9 +54,10 @@ class BaseTop:
         if all((self.previous, self.current)):
             self.eval()
 
-    @staticmethod
-    def list_diff(current, previous):
+    def list_diff(self, current, previous):
         """ It's strange that there is no [3,4,3] - [1,2,1] -> [2,2,2] in standard library """
+        if self.options.random:
+            return [randint(0, 10000) for _ in current]
         return [data - previous[n] for n, data in enumerate(current)]
 
     def run(self):
