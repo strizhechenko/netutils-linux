@@ -41,7 +41,14 @@ class LinkRateTop(BaseTop):
         self.specific_options.extend(specific_options)
 
     def make_header(self):
-        stats_header1 = " ".join(self.__indent__(n, v) for n, v in enumerate([""] + ["RX"] * 10 + ["TX"] * 3))
+        rx_count = 10
+        tx_count = 3
+        if self.options.simple_mode:
+            rx_count -= 7
+        if self.options.rx_only:
+            tx_count -= 3
+        header_columns = [""] + ["RX"] * rx_count + ["TX"] * tx_count
+        stats_header1 = " ".join(self.__indent__(n, v) for n, v in enumerate(header_columns))
         stats_header2 = " ".join(
             self.__indent__(n, stat.shortname) for n, stat in enumerate([Stat("", "")] + self.stats))
         return "\n".join([self.header, stats_header1, stats_header2])
