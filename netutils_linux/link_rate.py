@@ -34,15 +34,17 @@ class LinkRateTop(BaseTop):
             Option('--dev', '--devices', default="", dest='devices',
                    help='Comma-separated list of devices to monitor.'),
             Option('--device-regex', default='^.*$', help="Regex-mask for devices to monitor."),
-            Option('-s', '--simple', default='False', dest='simple_mode',
+            Option('-s', '--simple', default=False, dest='simple_mode', action='store_true',
                    help='Hides different kinds of error, showing only general counters.'),
             Option('--rx', '--rx-only', dest='rx_only', default=False, action='store_true', help='Hides tx-counters'),
         ]
         self.specific_options.extend(specific_options)
+
+    def make_header(self):
         stats_header1 = " ".join(self.__indent__(n, v) for n, v in enumerate([""] + ["RX"] * 10 + ["TX"] * 3))
         stats_header2 = " ".join(
             self.__indent__(n, stat.shortname) for n, stat in enumerate([Stat("", "")] + self.stats))
-        self.header = "\n".join([self.header, stats_header1, stats_header2])
+        return "\n".join([self.header, stats_header1, stats_header2])
 
     def parse(self):
         return dict((dev, self.__parse_dev__(dev)) for dev in self.options.devices)
@@ -91,6 +93,12 @@ class LinkRateTop(BaseTop):
         self.options.devices = self.devices_list()
         if not self.options.devices:
             raise ValueError("No devices've been specified")
+        if self.options.rx_only:
+            self.stats = [stat for stat in self.stats if stat.filename.startswith('rx')]
+        if self.options.simple_mode:
+            simple_stats = ('packets', 'bytes', 'errors')
+            self.stats = [stat for stat in self.stats if stat.shortname in simple_stats]
+        self.header = self.make_header()
 
 
 if __name__ == '__main__':
