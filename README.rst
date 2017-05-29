@@ -22,6 +22,36 @@ Most useful util in this repo that includes all top-like utils and allow to moni
 
 .. image:: https://cloud.githubusercontent.com/assets/3813830/26552514/e72829a8-44a0-11e7-9386-f3828a82933c.gif
 
+.. code ::
+  Usage: network-top [options]
+
+  Options:
+    -h, --help            show this help message and exit
+    -i INTERVAL, --interval=INTERVAL
+                          Interval between screen renew in seconds.
+    -n ITERATIONS, --iterations=ITERATIONS
+                          Count of screen's renews, -1 - infinite loop.
+    --no-delta-mode       Shows metrics' values instead of growth.
+    --no-delta-small-hide
+                          Prevent lines with only small changes or without
+                          changes at all from hiding.
+    -l DELTA_SMALL_HIDE_LIMIT, --delta-small-hide-limit=DELTA_SMALL_HIDE_LIMIT
+                          Hides lines with only changes less than this limit
+    --no-color            Don't highlight NUMA nodes or sockets
+    --spaces              Add spaces in numbers' representation, e.g. '1234567'
+                          will be '1 234 567'
+    --random              Shows random diff data instead of real evaluation.
+                          Helpful for testing on static files
+    --assert=ASSERT_MODE, --assert-mode=ASSERT_MODE
+                          Stops running after errors detected.
+    --dev=DEVICES, --devices=DEVICES
+                          Comma-separated list of devices to monitor.
+    --device-regex=DEVICE_REGEX
+                          Regex-mask for devices to monitor.
+    -s, --simple          Hides different kinds of error, showing only general
+                          counters.
+    --rx, --rx-only       Hides tx-counters
+
 irqtop
 ------
 - Show you a rate of interrupts
