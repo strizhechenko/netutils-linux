@@ -1,0 +1,11 @@
+           CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       
+  0:        133          0          0          0          0          0          0          0  IR-IO-APIC-edge      timer
+ 17:  825698509          0          0          0          0          0          0          0  IR-IO-APIC-fasteoi   eth0
+ 18:     888213          0          0          0          0          0          0          0  IR-IO-APIC-fasteoi   eth1
+ 26:       5922          0          0          0          0          0          0          0  IR-HPET_MSI-edge      hpet2
+ 34:  362262054          0          0          0          0          0          0          0  IR-PCI-MSI-edge      ahci
+ 35:        301          0          0          0          0          0          0          0  IR-PCI-MSI-edge      snd_hda_intel
+LOC: 1524101041 1201179305 1064310873  976437815 1527876073 1057933934 1005872914  926783958   Local timer interrupts
+RES:   27928951   23470011   22810864   23039338   29556969   24381694   22775135   21870396   Rescheduling interrupts
+CAL:   35167682   25159679   16355174   11470742   30081046   19313300   12014676    8780072   Function call interrupts
+TLB:   11033015   13526546   12035501   10882796   13228285   19068022   16802525   13950467   TLB shootdowns
