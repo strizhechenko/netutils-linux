@@ -40,6 +40,16 @@ class SoftnetStat:
             randint(0, 5) if self.random else self.received_rps - other.received_rps
         ])
 
+    def __eq__(self, other):
+        return all([
+            self.cpu == other.cpu,
+            self.total == other.total,
+            self.dropped == other.dropped,
+            self.time_squeeze == other.time_squeeze,
+            self.cpu_collision == other.cpu_collision,
+            self.received_rps == other.received_rps,
+        ])
+
 
 class SoftnetStatTop(BaseTop):
     def __init__(self):

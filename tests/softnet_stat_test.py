@@ -28,10 +28,11 @@ class SoftnetStatTests(unittest.TestCase):
     """
 
     def test_delta(self):
-        __first = [SoftnetStat(row, cpu) for cpu, row in enumerate(self.first.strip().split('\n'))]
-        __second = [SoftnetStat(row, cpu) for cpu, row in enumerate(self.second.strip().split('\n'))]
+        __first = [SoftnetStat().parse_string(row, cpu) for cpu, row in enumerate(self.first.strip().split('\n'))]
+        __second = [SoftnetStat().parse_string(row, cpu) for cpu, row in enumerate(self.second.strip().split('\n'))]
         delta = __second[0] - __first[0]
-        expected = 'CPU:  0 total:    11936 dropped: 0 time_squeeze: 0 cpu_collision: 0 received_rps: 0'
+        data = [0, 11936, 0, 0, 0, 0]
+        expected = SoftnetStat().parse_list(data)
         self.assertEqual(delta, expected)
 
 
