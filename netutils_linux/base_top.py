@@ -29,7 +29,9 @@ class BaseTop:
             Option('--no-color', dest='color', default=True, action='store_false',
                    help="Don't highlight NUMA nodes or sockets"),
             Option('--spaces', default=False, action='store_true',
-                   help="Add spaces in numbers' representation, e.g. '1234567' will be '1 234 567'")
+                   help="Add spaces in numbers' representation, e.g. '1234567' will be '1 234 567'"),
+            Option('--random', default=False, action='store_true',
+                   help="Shows random diff data instead of real evaluation. Helpful for testing on static files")
         ]
 
     def parse_options(self):

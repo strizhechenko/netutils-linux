@@ -1,0 +1,39 @@
+           CPU0       CPU1       CPU2       CPU3       
+  0:        147          0          0          0  IR-IO-APIC-edge      timer
+  7:         34          0          0          0  IR-IO-APIC-edge    
+  8:          1          0          0          0  IR-IO-APIC-edge      rtc0
+  9:          0          0          0          0  IR-IO-APIC-fasteoi   acpi
+ 16:         26          0          0          0  IR-IO-APIC-fasteoi   ehci_hcd:usb1
+ 23:         26          0          0          0  IR-IO-APIC-fasteoi   ehci_hcd:usb2
+ 24:          0          0          0          0  DMAR_MSI-edge      dmar0
+ 25:       2314          0          0          0  IR-HPET_MSI-edge      hpet2
+ 26:          0          0          0          0  IR-HPET_MSI-edge      hpet3
+ 27:          0          0          0          0  IR-HPET_MSI-edge      hpet4
+ 28:          0          0          0          0  IR-HPET_MSI-edge      hpet5
+ 32:         48          0          0          0  IR-PCI-MSI-edge      xhci_hcd
+ 33:    2246984          0          0          0  IR-PCI-MSI-edge      ahci
+ 34:     256407          0          0 2758715467  IR-PCI-MSI-edge      eth4-TxRx-0
+ 35:     390986          0 2681736694          0  IR-PCI-MSI-edge      eth4-TxRx-1
+ 36:     329092 2697899395          0          0  IR-PCI-MSI-edge      eth4-TxRx-2
+ 37: 2840060349          0          0          0  IR-PCI-MSI-edge      eth4-TxRx-3
+ 38:          2          0          0          0  IR-PCI-MSI-edge      eth4
+ 39:     262382          0 1965721182          0  IR-PCI-MSI-edge      eth5-TxRx-0
+ 40:     349783 1881985720          0          0  IR-PCI-MSI-edge      eth5-TxRx-1
+ 41: 1863707722          0          0          0  IR-PCI-MSI-edge      eth5-TxRx-2
+ 42:     347998          0          0 1838545495  IR-PCI-MSI-edge      eth5-TxRx-3
+ 43:          2          0          0          0  IR-PCI-MSI-edge      eth5
+ 44:        151  230788856          0          0  IR-PCI-MSI-edge      eth0
+NMI:       6191       6289       6159       6326   Non-maskable interrupts
+LOC:  110575635  118198307  103607939  112349724   Local timer interrupts
+SPU:          0          0          0          0   Spurious interrupts
+PMI:       6191       6289       6159       6326   Performance monitoring interrupts
+IWI:          0          0          0          0   IRQ work interrupts
+RES:    1682459    1401433    1865782    1639599   Rescheduling interrupts
+CAL:         55        379        388        384   Function call interrupts
+TLB:     357486    1212428     911004     677498   TLB shootdowns
+TRM:          0          0          0          0   Thermal event interrupts
+THR:          0          0          0          0   Threshold APIC interrupts
+MCE:          0          0          0          0   Machine check exceptions
+MCP:       2316       2316       2316       2316   Machine check polls
+ERR:         34
+MIS:          0

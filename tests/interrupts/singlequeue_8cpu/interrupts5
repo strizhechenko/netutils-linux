@@ -1,0 +1,35 @@
+           CPU0       CPU1       CPU2       CPU3       CPU4       CPU5       CPU6       CPU7       
+  0:        133          0          0          0          0          0          0          0  IR-IO-APIC-edge      timer
+  1:          2          0          0          0          0          0          0          0  IR-IO-APIC-edge      i8042
+  4:          1          0          0          0          0          0          0          0  IR-IO-APIC-edge    
+  8:          1          0          0          0          0          0          0          0  IR-IO-APIC-edge      rtc0
+  9:          3          0          0          0          0          0          0          0  IR-IO-APIC-fasteoi   acpi
+ 12:          4          0          0          0          0          0          0          0  IR-IO-APIC-edge      i8042
+ 17:  825710361          0          0          0          0          0          0          0  IR-IO-APIC-fasteoi   eth0
+ 18:     888215          0          0          0          0          0          0          0  IR-IO-APIC-fasteoi   eth1
+ 23:         74          0          0          0          0          0          0          0  IR-IO-APIC-fasteoi   ehci_hcd:usb1, ehci_hcd:usb2
+ 24:          0          0          0          0          0          0          0          0  DMAR_MSI-edge      dmar0
+ 25:          0          0          0          0          0          0          0          0  DMAR_MSI-edge      dmar1
+ 26:       5922          0          0          0          0          0          0          0  IR-HPET_MSI-edge      hpet2
+ 27:          0          0          0          0          0          0          0          0  IR-HPET_MSI-edge      hpet3
+ 28:          0          0          0          0          0          0          0          0  IR-HPET_MSI-edge      hpet4
+ 29:          0          0          0          0          0          0          0          0  IR-HPET_MSI-edge      hpet5
+ 30:          0          0          0          0          0          0          0          0  IR-HPET_MSI-edge      hpet6
+ 32:          9          0          0          0          0          0          0          0  IR-PCI-MSI-edge      i915
+ 33:          0          0          0          0          0          0          0          0  IR-PCI-MSI-edge      xhci_hcd
+ 34:  362270452          0          0          0          0          0          0          0  IR-PCI-MSI-edge      ahci
+ 35:        301          0          0          0          0          0          0          0  IR-PCI-MSI-edge      snd_hda_intel
+NMI:       7474       5501       4416       3915       5169       3397       3148       2801   Non-maskable interrupts
+LOC: 1524107473 1201186427 1064317930  976444405 1527883028 1057938888 1005878029  926787867   Local timer interrupts
+SPU:          0          0          0          0          0          0          0          0   Spurious interrupts
+PMI:       7474       5501       4416       3915       5169       3397       3148       2801   Performance monitoring interrupts
+IWI:          0          0          0          0          0          0          0          0   IRQ work interrupts
+RES:   27929123   23470103   22810936   23039463   29557394   24381924   22775434   21870710   Rescheduling interrupts
+CAL:   35167755   25159777   16355227   11470783   30081129   19313344   12014727    8780108   Function call interrupts
+TLB:   11033038   13526645   12035507   10882813   13228325   19068042   16802551   13950502   TLB shootdowns
+TRM:          0          0          0          0          0          0          0          0   Thermal event interrupts
+THR:          0          0          0          0          0          0          0          0   Threshold APIC interrupts
+MCE:          0          0          0          0          0          0          0          0   Machine check exceptions
+MCP:       5923       5923       5923       5923       5923       5923       5923       5923   Machine check polls
+ERR:          0
+MIS:          0
