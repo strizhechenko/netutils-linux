@@ -35,8 +35,7 @@ class NetworkTop(BaseTop):
 
     def __repr_dev(self):
         top = self.tops.get('link-rate')
-        repr_source = top.diff if top.options.delta_mode else top.current
-        output = ["# network devices\n"]
+        output = ["# Network devices\n", top.make_header(network_top=True)]
         for dev in top.options.devices:
             output.append("{0:<14} {1}".format(dev, top.__repr_dev__(dev)))
         return "\n".join(output)
