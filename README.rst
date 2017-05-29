@@ -22,7 +22,8 @@ Most useful util in this repo that includes all top-like utils and allow to moni
 
 .. image:: https://cloud.githubusercontent.com/assets/3813830/26552514/e72829a8-44a0-11e7-9386-f3828a82933c.gif
 
-.. code ::
+.. code::
+
   Usage: network-top [options]
 
   Options:
@@ -51,6 +52,7 @@ Most useful util in this repo that includes all top-like utils and allow to moni
     -s, --simple          Hides different kinds of error, showing only general
                           counters.
     --rx, --rx-only       Hides tx-counters
+
 
 irqtop
 ------
