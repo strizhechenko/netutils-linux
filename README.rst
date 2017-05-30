@@ -25,7 +25,7 @@ Most useful util in this repo that includes all top-like utils and allow to moni
 .. code::
 
   Usage: network-top [options]
-
+  
   Options:
     -h, --help            show this help message and exit
     -i INTERVAL, --interval=INTERVAL
@@ -52,6 +52,15 @@ Most useful util in this repo that includes all top-like utils and allow to moni
     -s, --simple          Hides different kinds of error, showing only general
                           counters.
     --rx, --rx-only       Hides tx-counters
+    --bits                
+    --kbits               
+    --mbits               
+    --interrupts-file=INTERRUPTS_FILE
+                          Option for testing on MacOS purpose.
+    --softnet-stat-file=SOFTNET_STAT_FILE
+                          Option for testing on MacOS purpose.
+    --softirqs-file=SOFTIRQS_FILE
+                          Option for testing on MacOS purpose.
 
 
 irqtop
