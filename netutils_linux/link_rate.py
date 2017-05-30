@@ -37,6 +37,9 @@ class LinkRateTop(BaseTop):
             Option('-s', '--simple', default=False, dest='simple_mode', action='store_true',
                    help='Hides different kinds of error, showing only general counters.'),
             Option('--rx', '--rx-only', dest='rx_only', default=False, action='store_true', help='Hides tx-counters'),
+            Option('--bits', default=False, action='store_true'),
+            Option('--kbits', default=False, action='store_true'),
+            Option('--mbits', default=False, action='store_true'),
         ]
         self.specific_options.extend(specific_options)
 
@@ -81,7 +84,19 @@ class LinkRateTop(BaseTop):
         if self.options.random:
             return randint(1, 10000)
         with open('/sys/class/net/{0}/statistics/{1}'.format(dev, stat.filename)) as devfile:
-            return int(devfile.read().strip())
+            file_value = int(devfile.read().strip())
+            if 'bytes' in stat.filename:
+                return self.__repr_bytes(file_value)
+            return file_value
+
+    def __repr_bytes(self, value):
+        if self.options.bits:
+            return value * 8
+        elif self.options.kbits:
+            return value * 8 / 1024
+        elif self.options.mbits:
+            return value * 8 / 1024 / 1024
+        return value
 
     @staticmethod
     def __indent__(n, v, maxvalue=0):
@@ -103,6 +118,15 @@ class LinkRateTop(BaseTop):
         if self.options.simple_mode:
             simple_stats = ('packets', 'bytes', 'errors')
             self.stats = [stat for stat in self.stats if stat.shortname in simple_stats]
+        if any([self.options.bits, self.options.kbits, self.options.mbits]):
+            for n, stat in enumerate(self.stats):
+                if stat.shortname == 'bytes':
+                    if self.options.bits:
+                        self.stats[n] = Stat(stat.filename, 'bits')
+                    elif self.options.kbits:
+                        self.stats[n] = Stat(stat.filename, 'kbits')
+                    elif self.options.mbits:
+                        self.stats[n] = Stat(stat.filename, 'mbits')
         self.header = self.make_header()
 
 

@@ -14,10 +14,10 @@ Colors = {
 }
 
 ColorsNode = {
-    0: Colors['OKBLUE'],
-    1: Colors['WARNING'],
-    2: Colors['FAIL'],
-    3: Colors['OKGREEN'],
+    0: Colors['OKGREEN'],
+    1: Colors['FAIL'],
+    2: Colors['WARNING'],
+    3: Colors['OKBLUE'],
     -1: Colors['ENDC']
 }
 
