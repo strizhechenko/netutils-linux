@@ -30,9 +30,14 @@ class Numa:
             return list(self.cpulist_parse(fd.read()))
 
     def cpulist_parse(self, cpulist):
-        for _min, _max in [map(int, r.split('-')) for r in cpulist.split(',')]:
-            for i in range(_min, _max+1):
-                yield i
+        cpu_ranges = cpulist.split(',')
+        if '-' not in cpulist:
+            for cpu in cpu_ranges:
+                yield int(cpu)
+        else:
+            for _min, _max in [map(int, r.split('-')) for r in cpu_ranges]:
+                for cpu in range(_min, _max+1):
+                    yield cpu
 
     def node_cpu_dict(self):
         return dict((int(node.strip('node')), self.cpulist_read(node)) for node in self.node_list())
