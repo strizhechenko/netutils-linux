@@ -93,7 +93,7 @@ class NetworkTop(BaseTop):
             Colors['ENDC'],
         ]
         header_template = "{0}# Load per cpu:\n\n{1:6}  {2:>12} {3:>12} {4:>12} {5:>12} {6:>8} {7:>12} {8:>13} {9:>12}{10}\n"
-        cpu_row_template = "{0}CPU{1:<3}{2}: {3:>12} {4:>12} {5:>12} {6:>8} {7:>12} {8:>13} {9:>12}"
+        cpu_row_template = "{0}CPU{1:<3}{2}: {3:>12} {4:>12} {5:>12} {6:>12} {7:>8} {8:>12} {9:>13} {10:>12}"
         header = header_template.format(*fields)
         output = [header] + [
             cpu_row_template.format(
