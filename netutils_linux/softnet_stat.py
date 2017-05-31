@@ -1,9 +1,10 @@
 from random import randint
 from optparse import Option
-from base_top import BaseTop
+from netutils_linux.base_top import BaseTop
 
 
-class SoftnetStat:
+class SoftnetStat(object):
+    """ Representation for 1 CPU data in /proc/net/softnet_stat """
     cpu = None
     total = None
     dropped = None
@@ -15,6 +16,7 @@ class SoftnetStat:
         self.random = random
 
     def parse_string(self, row, cpu):
+        """ Initialize SoftnetStat by string from /proc/net/softnet_stat """
         row = [int('0x' + x, 16) for x in row.strip().split()]
         self.total, self.dropped, self.time_squeeze = row[0:3]
         self.cpu_collision = row[6]
@@ -23,6 +25,7 @@ class SoftnetStat:
         return self
 
     def parse_list(self, data):
+        """ Initialize SoftnetStat by list of integers """
         self.cpu, self.total, self.dropped, self.time_squeeze, self.cpu_collision, self.received_rps = data
         return self
 
@@ -52,6 +55,7 @@ class SoftnetStat:
 
 
 class SoftnetStatTop(BaseTop):
+    """ Utility for monitoring packets processing/errors distribution per CPU """
     def __init__(self):
         BaseTop.__init__(self)
         specific_options = [
@@ -63,15 +67,15 @@ class SoftnetStatTop(BaseTop):
     def parse(self):
         with open(self.options.softnet_stat_file) as softnet_stat:
             data = softnet_stat.read().strip().split('\n')
-            return [SoftnetStat(self.options.random).parse_string(row, cpu) for cpu, row in enumerate(data)]
+            parser = SoftnetStat(self.options.random)
+            return [parser.parse_string(row, cpu) for cpu, row in enumerate(data)]
 
     def eval(self):
         print self.current
         self.diff = [data - self.previous[cpu] for cpu, data in enumerate(self.current)]
 
     def __repr__(self):
-        repr_source = self.diff if self.options.delta_mode else self.current
-        return "\n".join(map(str, [self.header] + repr_source))
+        return "\n".join(map(str, [self.header] + self.repr_source()))
 
 
 if __name__ == '__main__':

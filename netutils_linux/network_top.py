@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 
 from optparse import OptionParser, OptionConflictError
-from colors import ColorsNode, Colors, colorize_cpu_list
-from numa import Numa
-from base_top import BaseTop
-from irqtop import IrqTop
-from softirqs import Softirqs
-from softnet_stat import SoftnetStatTop
-from link_rate import LinkRateTop
+from netutils_linux import IrqTop
+from netutils_linux import Softirqs
+from netutils_linux import SoftnetStatTop
+from netutils_linux import LinkRateTop
+from netutils_linux.numa import Numa
+from netutils_linux.base_top import BaseTop
+from netutils_linux.colors import ColorsNode, Colors, colorize_cpu_list
 
 
 class NetworkTop(BaseTop):
+    """ Global top-like util that combine information from 4 other tops """
     def __init__(self):
         BaseTop.__init__(self)
         self.tops = {
@@ -20,14 +21,16 @@ class NetworkTop(BaseTop):
             'link-rate': LinkRateTop(),
         }
         self.parse_options()
-        self.numa = Numa(devices=self.options.devices, fake=self.options.random)
+        self.numa = Numa(devices=self.options.devices,
+                         fake=self.options.random)
 
     def parse(self):
         return dict((top_name, _top.parse()) for top_name, _top in self.tops.iteritems())
 
     def eval(self):
         if all((self.current, self.previous)):
-            self.diff = dict((top_name, _top.diff) for top_name, _top in self.tops.iteritems())
+            self.diff = dict((top_name, _top.diff)
+                             for top_name, _top in self.tops.iteritems())
 
     def tick(self):
         self.previous = self.current
@@ -38,22 +41,21 @@ class NetworkTop(BaseTop):
 
     def __repr_dev(self):
         top = self.tops.get('link-rate')
-        output = [Colors['BOLD'], "# Network devices", top.make_header(network_top=True), Colors['ENDC']]
+        output = [Colors['BOLD'], "# Network devices",
+                  top.make_header(network_top=True), Colors['ENDC']]
         for dev in top.options.devices:
             output.append("{0}{1:<14}{3} {2}".format(
                 ColorsNode.get(self.numa.devices.get(dev)),
                 dev, top.__repr_dev__(dev),
-                Colors['ENDC'])
-            )
+                Colors['ENDC']))
         return "\n".join(output)
 
     def __repr_irq(self):
         top = self.tops.get('irqtop')
-        repr_source = top.diff if top.options.delta_mode else top.current
         if not top.diff_total:
             return ""
         output_lines = list()
-        for line in repr_source:
+        for line in top.repr_source():
             if line[0] == 'CPU0':
                 line = colorize_cpu_list(line, self.numa)
                 line.insert(0, ' ')
@@ -66,14 +68,14 @@ class NetworkTop(BaseTop):
         irqtop = self.tops.get('irqtop')
         softirq_top = self.tops.get('softirq_top')
         softnet_stat_top = self.tops.get('softnet_stat_top')
-
         # all these evaluations are better to put in softirqs.parse()
-        softirq_repr_source = softirq_top.diff if softirq_top.options.delta_mode else softirq_top.current
-        active_cpu_count = softirq_top.__active_cpu_count__(softirq_top.current)
-        softirq_output = softirq_repr_source.get('NET_RX')[:active_cpu_count]
-        softnet_stat_top_output = softnet_stat_top.diff if softnet_stat_top.options.delta_mode else softnet_stat_top.current
-
-        network_output = zip(irqtop.diff_total, softirq_output, softnet_stat_top_output)
+        active_cpu_count = softirq_top.__active_cpu_count__(
+            softirq_top.current)
+        softirq_output = softirq_top.repr_source().get('NET_RX')[
+            :active_cpu_count]
+        softnet_stat_top_output = softnet_stat_top.repr_source()
+        network_output = zip(
+            irqtop.diff_total, softirq_output, softnet_stat_top_output)
         fields = [
             Colors['BOLD'],
             "CPU",
@@ -121,7 +123,7 @@ class NetworkTop(BaseTop):
                     parser.add_option(opt)
                 except OptionConflictError:
                     pass  # I don't know how to make a set of options
-        self.options, args = parser.parse_args()
+        self.options, _ = parser.parse_args()
         for top in self.tops.itervalues():
             top.options = self.options
             if hasattr(top, 'post_optparse'):

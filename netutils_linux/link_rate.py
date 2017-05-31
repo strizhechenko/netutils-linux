@@ -4,12 +4,13 @@ from copy import deepcopy
 from random import randint
 from optparse import Option
 from collections import namedtuple
-from base_top import BaseTop
+from netutils_linux.base_top import BaseTop
 
 Stat = namedtuple('Stat', ['filename', 'shortname'])
 
 
 class LinkRateTop(BaseTop):
+    """ Utility for monitoring network devices' pps and error rate """
     stats = [
         Stat('rx_packets', 'packets'),
         Stat('rx_bytes', 'bytes'),
@@ -33,10 +34,12 @@ class LinkRateTop(BaseTop):
                    help='Stops running after errors detected.'),
             Option('--dev', '--devices', default="", dest='devices',
                    help='Comma-separated list of devices to monitor.'),
-            Option('--device-regex', default='^.*$', help="Regex-mask for devices to monitor."),
+            Option('--device-regex', default='^.*$',
+                   help="Regex-mask for devices to monitor."),
             Option('-s', '--simple', default=False, dest='simple_mode', action='store_true',
                    help='Hides different kinds of error, showing only general counters.'),
-            Option('--rx', '--rx-only', dest='rx_only', default=False, action='store_true', help='Hides tx-counters'),
+            Option('--rx', '--rx-only', dest='rx_only', default=False, action='store_true',
+                   help='Hides tx-counters'),
             Option('--bits', default=False, action='store_true'),
             Option('--kbits', default=False, action='store_true'),
             Option('--mbits', default=False, action='store_true'),
@@ -44,12 +47,15 @@ class LinkRateTop(BaseTop):
         self.specific_options.extend(specific_options)
 
     def make_header(self, network_top=False):
+        """ generate `table's` header regarding to output options """
         rx_count = 3 if self.options.simple_mode else 10
         tx_count = 0 if self.options.rx_only else 3
         header_columns = [""] + ["RX"] * rx_count + ["TX"] * tx_count
-        stats_header1 = " ".join(self.__indent__(n, v) for n, v in enumerate(header_columns))
-        stats_header2 = " ".join(
-            self.__indent__(n, stat.shortname) for n, stat in enumerate([Stat("", "")] + self.stats))
+        ncolumns = [self.__indent__(n, v) for n, v in enumerate(header_columns)]
+        nstats = enumerate([Stat("", "")] + self.stats)
+        stats = [self.__indent__(n, stat.shortname) for n, stat in nstats]
+        stats_header1 = " ".join(ncolumns)
+        stats_header2 = " ".join(stats)
         if network_top:
             return "\n".join([stats_header1, stats_header2])
         return "\n".join([self.header, stats_header1, stats_header2])
@@ -64,7 +70,8 @@ class LinkRateTop(BaseTop):
                 if self.options.random:
                     self.diff[dev][stat] = randint(0, 10000)
                 else:
-                    self.diff[dev][stat] = data[stat] - self.previous[dev][stat]
+                    self.diff[dev][stat] = data[stat] - \
+                        self.previous[dev][stat]
 
     def __repr__(self):
         output = [self.header]
@@ -74,7 +81,8 @@ class LinkRateTop(BaseTop):
 
     def __repr_dev__(self, dev):
         repr_source = self.current if not self.options.delta_mode else self.diff
-        data = [self.__indent__(n, self.spaces(repr_source[dev][stat]), -1) for n, stat in enumerate(self.stats)]
+        data = [self.__indent__(n, self.spaces(repr_source[dev][stat]), -1)
+                for n, stat in enumerate(self.stats)]
         return " ".join(data)
 
     def __parse_dev__(self, dev):
@@ -99,34 +107,42 @@ class LinkRateTop(BaseTop):
         return value
 
     @staticmethod
-    def __indent__(n, v, maxvalue=0):
-        return "{0:<14}".format(v) if n == maxvalue else "{0:>11}".format(v)
+    def __indent__(column, value, maxvalue=0):
+        """ May be used for special indent for first column """
+        return "{0:<14}".format(value) if column == maxvalue else "{0:>11}".format(column)
 
     def devices_list_regex(self):
+        """ Returns list of network devices matching --device-regex """
         net_dev_list = listdir('/sys/class/net/')
         return [dev for dev in net_dev_list if match(self.options.device_regex, dev)]
 
     def devices_list(self):
-        return self.options.devices.split(',') if self.options.devices else self.devices_list_regex()
+        """ Return list of network devices regarding --devices / --device-regex """
+        if self.options.devices:
+            return self.options.devices.split(',')
+        return self.devices_list_regex()
 
     def post_optparse(self):
+        """ Asserting and applying parsing options """
         self.options.devices = self.devices_list()
         if not self.options.devices:
             raise ValueError("No devices've been specified")
         if self.options.rx_only:
-            self.stats = [stat for stat in self.stats if stat.filename.startswith('rx')]
+            self.stats = [
+                stat for stat in self.stats if stat.filename.startswith('rx')]
         if self.options.simple_mode:
             simple_stats = ('packets', 'bytes', 'errors')
-            self.stats = [stat for stat in self.stats if stat.shortname in simple_stats]
+            self.stats = [
+                stat for stat in self.stats if stat.shortname in simple_stats]
         if any([self.options.bits, self.options.kbits, self.options.mbits]):
-            for n, stat in enumerate(self.stats):
+            for i, stat in enumerate(self.stats):
                 if stat.shortname == 'bytes':
                     if self.options.bits:
-                        self.stats[n] = Stat(stat.filename, 'bits')
+                        self.stats[i] = Stat(stat.filename, 'bits')
                     elif self.options.kbits:
-                        self.stats[n] = Stat(stat.filename, 'kbits')
+                        self.stats[i] = Stat(stat.filename, 'kbits')
                     elif self.options.mbits:
-                        self.stats[n] = Stat(stat.filename, 'mbits')
+                        self.stats[i] = Stat(stat.filename, 'mbits')
         self.header = self.make_header()
 
 
