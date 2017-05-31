@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from netutils_linux.link_rate import LinkRateTop
+from netutils_linux_monitoring.link_rate import LinkRateTop
 
 
 if __name__ == "__main__":

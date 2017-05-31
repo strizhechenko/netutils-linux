@@ -1,7 +1,7 @@
 from random import randint
 from copy import deepcopy
 from optparse import Option
-from netutils_linux.base_top import BaseTop
+from netutils_linux_monitoring.base_top import BaseTop
 
 
 class IrqTop(BaseTop):

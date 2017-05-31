@@ -4,7 +4,7 @@ from copy import deepcopy
 from random import randint
 from optparse import Option
 from collections import namedtuple
-from netutils_linux.base_top import BaseTop
+from netutils_linux_monitoring.base_top import BaseTop
 
 Stat = namedtuple('Stat', ['filename', 'shortname'])
 

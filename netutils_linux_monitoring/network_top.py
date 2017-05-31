@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 from optparse import OptionParser, OptionConflictError
-from netutils_linux import IrqTop
-from netutils_linux import Softirqs
-from netutils_linux import SoftnetStatTop
-from netutils_linux import LinkRateTop
-from netutils_linux.numa import Numa
-from netutils_linux.base_top import BaseTop
-from netutils_linux.colors import ColorsNode, Colors, colorize_cpu_list
+from netutils_linux_monitoring import IrqTop
+from netutils_linux_monitoring import Softirqs
+from netutils_linux_monitoring import SoftnetStatTop
+from netutils_linux_monitoring import LinkRateTop
+from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.base_top import BaseTop
+from netutils_linux_monitoring.colors import ColorsNode, Colors, colorize_cpu_list
 
 
 class NetworkTop(BaseTop):

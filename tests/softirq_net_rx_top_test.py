@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from netutils_linux.softirqs import Softirqs
+from netutils_linux_monitoring.softirqs import Softirqs
 
 
 class SoftirqsTest(unittest.TestCase):
