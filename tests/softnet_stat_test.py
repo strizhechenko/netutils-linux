@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from netutils_linux.softnet_stat import SoftnetStat
+from netutils_linux_monitoring.softnet_stat import SoftnetStat
 
 
 class SoftnetStatTests(unittest.TestCase):

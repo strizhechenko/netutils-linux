@@ -7,7 +7,8 @@ dropped/missing pkts and keeping a latency low.
 
 import sys
 from os import getenv
-from netutils_linux.rx_buffers import RxBuffersIncreaser
+
+from netutils_linux_tuning.rx_buffers import RxBuffersIncreaser
 
 __author__ = 'Oleg Strizhechenko <oleg.strizhechenko@gmail.com>'
 

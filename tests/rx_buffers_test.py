@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 import unittest
-from netutils_linux.rx_buffers import RxBuffersIncreaser
+
+from netutils_linux_tuning.rx_buffers import RxBuffersIncreaser
 
 
 class RxBuffersIncreaserTest(unittest.TestCase):
