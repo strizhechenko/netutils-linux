@@ -12,6 +12,7 @@ from netutils_linux_monitoring.colors import ColorsNode, Colors, colorize_cpu_li
 
 class NetworkTop(BaseTop):
     """ Global top-like util that combine information from 4 other tops """
+
     def __init__(self):
         BaseTop.__init__(self)
         self.tops = {
@@ -69,18 +70,21 @@ class NetworkTop(BaseTop):
         softirq_top = self.tops.get('softirq_top')
         softnet_stat_top = self.tops.get('softnet_stat_top')
         # all these evaluations are better to put in softirqs.parse()
-        active_cpu_count = softirq_top.__active_cpu_count__(
+        active_cpu = softirq_top.__active_cpu_count__(
             softirq_top.current)
-        softirq_output = softirq_top.repr_source().get('NET_RX')[
-            :active_cpu_count]
+        softirq_rx = softirq_top.repr_source().get('NET_RX')[:active_cpu]
+        softirq_tx = softirq_top.repr_source().get('NET_TX')[:active_cpu]
         softnet_stat_top_output = softnet_stat_top.repr_source()
-        network_output = zip(
-            irqtop.diff_total, softirq_output, softnet_stat_top_output)
+        network_output = zip(irqtop.diff_total,
+                             softirq_rx,
+                             softirq_tx,
+                             softnet_stat_top_output)
         fields = [
             Colors['BOLD'],
             "CPU",
             "Interrupts",
             "NET RX",
+            "NET TX",
             "total",
             "dropped",
             "time_squeeze",
@@ -88,7 +92,7 @@ class NetworkTop(BaseTop):
             "received_rps",
             Colors['ENDC'],
         ]
-        header_template = "{0}# Load per cpu:\n\n{1:6}  {2:>12} {3:>12} {4:>12} {5:>8} {6:>12} {7:>13} {8:>12}{9}\n"
+        header_template = "{0}# Load per cpu:\n\n{1:6}  {2:>12} {3:>12} {4:>12} {5:>12} {6:>8} {7:>12} {8:>13} {9:>12}{10}\n"
         cpu_row_template = "{0}CPU{1:<3}{2}: {3:>12} {4:>12} {5:>12} {6:>8} {7:>12} {8:>13} {9:>12}"
         header = header_template.format(*fields)
         output = [header] + [
@@ -96,13 +100,13 @@ class NetworkTop(BaseTop):
                 ColorsNode.get(self.numa.cpu_node(softnet_stat.cpu)),
                 softnet_stat.cpu,
                 Colors['ENDC'],
-                irq, softirq,
+                irq, softirq_rx, softirq_tx,
                 softnet_stat.total,
                 softnet_stat.dropped,
                 softnet_stat.time_squeeze,
                 softnet_stat.cpu_collision,
                 softnet_stat.received_rps)
-            for irq, softirq, softnet_stat in network_output
+            for irq, softirq_rx, softirq_tx, softnet_stat in network_output
         ]
         return Colors['ENDC'] + "\n".join(output) + Colors['ENDC']
 

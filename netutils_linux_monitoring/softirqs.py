@@ -28,10 +28,12 @@ class Softirqs(BaseTop):
 
     def __repr__(self):
         active_cpu_count = self.__active_cpu_count__(self.current)
-        net_rx_active_cpu = self.repr_source().get('NET_RX')[:active_cpu_count]
-        net_rx = ["CPU{0}: {1}".format(cpu, softirq)
-                  for cpu, softirq in enumerate(net_rx_active_cpu)]
-        return "\n".join(map(str, [self.header] + net_rx))
+        sub_header = "CPU         NET_RX     NET_TX\n"
+        net_xx = zip(
+            self.repr_source().get('NET_RX')[:active_cpu_count],
+            self.repr_source().get('NET_TX')[:active_cpu_count])
+        softirqs = ["CPU{0:<3}: {1:>10} {2:>10}".format(cpu, softirq[0], softirq[1]) for cpu, softirq in enumerate(net_xx)]
+        return "\n".join(map(str, [self.header] + [sub_header] + softirqs))
 
 
 if __name__ == '__main__':
