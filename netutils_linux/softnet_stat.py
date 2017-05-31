@@ -66,9 +66,8 @@ class SoftnetStatTop(BaseTop):
 
     def parse(self):
         with open(self.options.softnet_stat_file) as softnet_stat:
-            data = softnet_stat.read().strip().split('\n')
-            parser = SoftnetStat(self.options.random)
-            return [parser.parse_string(row, cpu) for cpu, row in enumerate(data)]
+            data = enumerate(softnet_stat.read().strip().split('\n'))
+            return [SoftnetStat(self.options.random).parse_string(row, cpu) for cpu, row in data]
 
     def eval(self):
         print self.current
