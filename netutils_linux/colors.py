@@ -1,6 +1,3 @@
-from numa import Numa
-from random import sample
-
 Colors = {
     "GREY": '\033[90m',
     "HEADER": '\033[95m',
@@ -23,14 +20,5 @@ ColorsNode = {
 
 
 def colorize_cpu_list(cpu_list, numa):
+    """ return list of highlighted strings with CPU names regarding to NUMA """
     return [ColorsNode.get(numa.cpu_node(int(cpu[3:]))) + cpu + Colors['ENDC'] for cpu in cpu_list]
-
-
-def get_random_color():
-    return sample(ColorsNode.values(), 1)[0]
-
-
-if __name__ == '__main__':
-    CPU_LIST = ['CPU{0}'.format(i) for i in xrange(32)]
-    # ['CPU0', 'CPU1', 'CPU2', 'CPU3', 'CPU4', 'CPU5', 'CPU6', 'CPU7']
-    print " ".join(colorize_cpu_list(CPU_LIST, Numa(fake=True)))
