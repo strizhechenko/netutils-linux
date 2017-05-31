@@ -16,8 +16,12 @@ Installation
 
 Utils
 =====
+
+Monitoring
+----------
+
 network-top
-------
+~~~~~~~~~~~
 Most useful util in this repo that includes all top-like utils and allow to monitor interrupts, soft interrupts, network processing statistic for devices and CPUs! Even more - it doesn't requires sudo/root priveledges!
 
 .. image:: https://cloud.githubusercontent.com/assets/3813830/26570951/acacf18c-452c-11e7-8fe7-5d0952f39d8b.gif
@@ -64,67 +68,44 @@ Most useful util in this repo that includes all top-like utils and allow to moni
 
 
 irqtop
-------
+~~~~~~~~~~~
 - Show you a rate of interrupts
 - based on /proc/interrupts file
 - Hides the interrupts with small rate to show a better picture.
 
-Example output:
+.. image:: https://cloud.githubusercontent.com/assets/3813830/26623612/b1873510-4607-11e7-930e-08d47975c578.gif
 
-.. code::
-
-  Total:    1398	1539
-            CPU0    CPU1
-  22:	    233	    227     IO-APIC-fasteoi	eth1
-  28:	    91	    98      PCI-MSI-edge	eth0
-  LOC:	    1021	1035	Local	timer	interrupts
-  CAL:	    48	    172     Function	call	interrupts
-
-
-softirq-net-rx-top
-------------------
-- Show you a rate of receiving packets
+softirq-top
+~~~~~~~~~~~
+- Show you a rate of receiving/transmitting packets
 - Based on /proc/softirqs
-- Sometimes shows much more CPUs than really exists
 
-Example output:
+.. image:: https://cloud.githubusercontent.com/assets/3813830/26623157/43b62ed4-4606-11e7-805c-aa727bab1ea6.gif
 
-.. code::
+link-rate
+~~~~~~~~~
+- Shows how many packets/bytes network interface receives/transmite and how many errors happened
+- Based on /sys/class/net/XXX/statistic/YYY files
 
-  11.22, 11.20, 7.90
-  1	2897
-  2	2552
-  3	0
-  4	0
+.. image:: https://cloud.githubusercontent.com/assets/3813830/26623155/437fd460-4606-11e7-8262-f994a05daf08.gif
 
-  11.29, 11.21, 7.93
-  1	2182
-  2	2814
-  3	0
-  4	0
+softnet-stat-top
+~~~~~~~~~~~~~~~~
+Shows various statistic of packets processing per CPU.
+
+.. image:: https://cloud.githubusercontent.com/assets/3813830/26623156/43b2816c-4606-11e7-9450-cd21c579bb70.gif
 
 missed-pkts-monitor
--------------------
+~~~~~~~~~~~~~~~~~~~
 - Detects when were packets missed (maybe it will give some idea of correlation with something)
 - Easy to use in tactical, not strategic debug, without deployment of graphite/influxdb
 - Based on `ip -s -s link` output
 
-link-rx-rate
-------------
-- Shows how many packets/bytes network interface receives
-- Based on /proc/net/dev
-
-Example output:
-
-.. code::
-
-  0 mbit/s 1576 pps
-  0 mbit/s 1085 pps
-  0 mbit/s 390 pps
-  0 mbit/s 673 pps
+Tuning
+------
 
 rss-ladder
-----------
+~~~~~~~~~~
 Automatically set `smp_affinity_list` for IRQ of NIC rx/tx queues for ixgbe/igb/vmxnet3 drivers (they usually work on CPU0 out of the box).
 
 Based on lscpu's output.
@@ -145,17 +126,17 @@ It also supports double/quad ladder in case of multiprocessor systems (but you b
     - eth1: irq 74 eth1-TxRx-7 -> 11
 
 autorps
--------
+~~~~~~~
 Enables RPS of NIC on all available CPUs. It may be good for small servers with cheap network cards or a bunch of VLAN.
 
 Later, there will be a support for enabling RPS only for a subgroup of CPUs based on L3 caches.
 
 maximize-cpu-freq
------------------
+~~~~~~~~~~~~~~~~~
 Sets every CPU scaling governor mode to performance and set max scaling value for min scaling value. So you will be able to use all power of your processor (useful for latency sensible systems).
 
 rx-buffers-increase
--------------------
+~~~~~~~~~~~~~~~~~~~
 rx-buffers-increase utils, that finds and sets compromise-value between avoiding dropped/missing pkts and keeping a latency low.
 
 Example output:
@@ -198,8 +179,10 @@ Example output:
   RX Jumbo:	0
   TX:		256
 
+Hardware and its configuration rating
+-------------------------------------
 server-info
------------
+~~~~~~~~~~~
 Much alike lshw but designed for network processing role of server.
 
 .. code::
