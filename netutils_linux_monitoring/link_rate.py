@@ -51,9 +51,9 @@ class LinkRateTop(BaseTop):
         rx_count = 3 if self.options.simple_mode else 10
         tx_count = 0 if self.options.rx_only else 3
         header_columns = [""] + ["RX"] * rx_count + ["TX"] * tx_count
-        ncolumns = [self.__indent__(n, v) for n, v in enumerate(header_columns)]
-        nstats = enumerate([Stat("", "")] + self.stats)
-        stats = [self.__indent__(n, stat.shortname) for n, stat in nstats]
+        ncolumns = [self.__indent__(column, value) for column, value in enumerate(header_columns)]
+        nstats = list(enumerate([Stat("", "")] + self.stats))
+        stats = [self.__indent__(column, stat.shortname) for column, stat in nstats]
         stats_header1 = " ".join(ncolumns)
         stats_header2 = " ".join(stats)
         if network_top:
@@ -109,7 +109,7 @@ class LinkRateTop(BaseTop):
     @staticmethod
     def __indent__(column, value, maxvalue=0):
         """ May be used for special indent for first column """
-        return "{0:<14}".format(value) if column == maxvalue else "{0:>11}".format(column)
+        return "{0:<14}".format(value) if column == maxvalue else "{0:>11}".format(value)
 
     def devices_list_regex(self):
         """ Returns list of network devices matching --device-regex """
