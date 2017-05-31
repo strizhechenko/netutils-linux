@@ -4,7 +4,7 @@ netutils-linux
 .. image:: https://travis-ci.org/strizhechenko/netutils-linux.svg?branch=master
    :target: https://travis-ci.org/strizhechenko/netutils-linux
 
-It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging.
+It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging. Should work well with Python 2.6 and Python 2.7.
 
 .. _Carbon Reductor: http://www.carbonsoft.ru/products/carbon-reductor-5/
 
@@ -20,9 +20,14 @@ Utils
 Monitoring
 ----------
 
+All these top-like utils don't require root priveledges or sudo usage. So you can install and use them as non-priveledged user if you care about security.
+
+.. code :: shell
+  pip install --user netutils-linux
+
 network-top
 ~~~~~~~~~~~
-Most useful util in this repo that includes all top-like utils and allow to monitor interrupts, soft interrupts, network processing statistic for devices and CPUs! Even more - it doesn't requires sudo/root priveledges!
+Most useful util in this repo that includes all top-like utils and allow to monitor interrupts, soft interrupts, network processing statistic for devices and CPUs.
 
 .. image:: https://cloud.githubusercontent.com/assets/3813830/26570951/acacf18c-452c-11e7-8fe7-5d0952f39d8b.gif
 
