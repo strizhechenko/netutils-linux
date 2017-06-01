@@ -62,8 +62,8 @@ class Numa(object):
         if process.returncode != 0:
             return None
         layout = [row.split()[1:3] for row in stdout.strip().split('\n')][1:]
-        self.numa_layout = list(enumerate([int(row[0]) for row in layout]))
-        self.socket_layout = list(enumerate([int(row[1]) for row in layout]))
+        self.numa_layout = dict(enumerate([int(row[0]) for row in layout]))
+        self.socket_layout = dict(enumerate([int(row[1]) for row in layout]))
 
 if __name__ == '__main__':
     numa = Numa()
