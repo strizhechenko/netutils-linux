@@ -24,7 +24,7 @@ setuptools.setup(
     long_description=(read('README.rst')),
     packages=setuptools.find_packages(exclude=['tests*']),
     scripts=[os.path.join('utils/', script) for script in os.listdir('utils/')],
-    install_requires=['pyyaml'],
+    install_requires=['pyyaml', 'ipaddress', 'six'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

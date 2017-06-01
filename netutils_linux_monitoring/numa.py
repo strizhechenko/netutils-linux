@@ -1,58 +1,43 @@
+""" CPU/Memory specific things: NUMA, Sockets """
+
+# coding: utf-8
+
 import os
+from subprocess import Popen, PIPE
 
 
 class Numa(object):
-    NODE_DIRECTORY = '/sys/devices/system/node/'
-    FAKE = {
-        0: range(0, 4) + range(8, 12),
-        1: range(4, 8) + range(12, 16),
+    """ Class handling NUMA and sockets layout and membership of net-devices """
+    __NODE_DIRECTORY = '/sys/devices/system/node/'
+    __FAKE_LAYOUT = {
+        0:  0,  1:  0,  2:  0,  3:  0,
+        4:  1,  5:  1,  6:  1,  7:  1,
+        8:  0,  9:  0,  10: 0,  11: 0,
+        12: 1,  13: 1,  14: 1,  15: 1,
     }
-    FAKE_DEV = {
+    __FAKE_DEV = {
         'eth0': 0,
         'eth1': 0,
         'eth2': 1,
         'eth3': 1,
     }
-
     devices = None
+    layout_kind = None
+    numa_layout = None
+    socket_layout = None
 
     def __init__(self, devices=None, fake=False):
-        self.nodes = self.FAKE if fake else self.node_cpu_dict()
-        self.devices = self.node_dev_dict(devices, fake)
-
-    def node_list(self):
-        """ Returns list of NUMA nodes represented in current system """
-        if not os.path.isdir(self.NODE_DIRECTORY):
-            return []
-        return [node for node in os.listdir(self.NODE_DIRECTORY) if node.startswith('node')]
-
-    def cpulist_read(self, node):
-        """ Returns list of CPUs binded to given NUMA node """
-        with open(self.NODE_DIRECTORY + node + '/cpulist') as fd:
-            return list(self.cpulist_parse(fd.read()))
-
-    @staticmethod
-    def cpulist_parse(cpulist):
-        """ Parse cpulist notation like '1-7,15-21' or '1,2,3,4' into plain list """
-        cpu_ranges = cpulist.split(',')
-        if '-' not in cpulist:
-            for cpu in cpu_ranges:
-                yield int(cpu)
+        if fake:
+            self.numa_layout = self.socket_layout = self.__FAKE_LAYOUT
         else:
-            for _min, _max in [map(int, r.split('-')) for r in cpu_ranges]:
-                for cpu in range(_min, _max+1):
-                    yield cpu
-
-    def node_cpu_dict(self):
-        """ return cpu layout with NUMA nodes like a {0: [0,1,2,3,], 1: [4,5,6,7]} """
-        return dict((int(node.strip('node')), self.cpulist_read(node)) for node in self.node_list())
-
-    def cpu_node(self, cpu):
-        """ Determines which NUMA node given CPU belongs to """
-        for node, cpus in self.nodes.iteritems():
-            if cpu in cpus:
-                return node
-        return -1
+            self.detect_layouts()
+        if len(set(self.numa_layout.values())) >= 2:
+            self.layout = self.numa_layout
+            self.layout_kind = 'NUMA'
+        else:
+            self.layout = self.socket_layout
+            self.layout_kind = 'SOCKET'
+        self.devices = self.node_dev_dict(devices, fake)
 
     def node_dev_dict(self, devices, fake):
         """ Returns NIC's NUMA bindings dict like {'eth1': 0, 'eth2': 1, 'eth3': 0} """
@@ -63,13 +48,24 @@ class Numa(object):
     def dev_node(self, dev, fake=False):
         """ Determines which NUMA node given network device belongs to """
         if fake:
-            return self.FAKE_DEV.get(dev, -1)
+            return self.__FAKE_DEV.get(dev, -1)
         filename = '/sys/class/net/{0}/device/numa_node'.format(dev)
         if not os.path.isfile(filename):
             return -1
         with open(filename) as fd:
             return int(fd.read().strip())
 
+    def detect_layouts(self):
+        """ Determine NUMA and sockets layout """
+        process = Popen(['lscpu', '-e'], stdout=PIPE, stderr=PIPE)
+        stdout, _ = process.communicate()
+        if process.returncode != 0:
+            return None
+        layout = [row.split()[1:3] for row in stdout.strip().split('\n')][1:]
+        self.numa_layout = list(enumerate([int(row[0]) for row in layout]))
+        self.socket_layout = list(enumerate([int(row[1]) for row in layout]))
 
 if __name__ == '__main__':
-    print Numa().nodes
+    numa = Numa()
+    print 'SOCKET', numa.socket_layout
+    print 'NUMA', numa.numa_layout
