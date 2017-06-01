@@ -7,7 +7,7 @@ from netutils_linux_monitoring import SoftnetStatTop
 from netutils_linux_monitoring import LinkRateTop
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import ColorsNode, Colors, colorize_cpu_list
+from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, Colors, ColorsNode
 
 
 class NetworkTop(BaseTop):
@@ -24,6 +24,7 @@ class NetworkTop(BaseTop):
         self.parse_options()
         self.numa = Numa(devices=self.options.devices,
                          fake=self.options.random)
+        self.numa.layout_kind = 'SOCKET' # TODO: remove
 
     def parse(self):
         return dict((top_name, _top.parse()) for top_name, _top in self.tops.iteritems())
@@ -97,7 +98,7 @@ class NetworkTop(BaseTop):
         header = header_template.format(*fields)
         output = [header] + [
             cpu_row_template.format(
-                ColorsNode.get(self.numa.cpu_node(softnet_stat.cpu)),
+                cpu_color(softnet_stat.cpu, self.numa),
                 softnet_stat.cpu,
                 Colors['ENDC'],
                 irq, softirq_rx, softirq_tx,

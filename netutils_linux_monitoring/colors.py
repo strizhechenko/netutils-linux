@@ -18,7 +18,28 @@ ColorsNode = {
     -1: Colors['ENDC']
 }
 
+ColorsSocket = {
+    0: Colors['OKBLUE'],
+    1: Colors['WARNING'],
+    2: Colors['FAIL'],
+    3: Colors['OKGREEN'],
+    -1: Colors['ENDC']
+}
+
+
+def __choose_color_scheme(numa):
+    return ColorsNode if numa.layout_kind == 'NUMA' else ColorsSocket
+
+
+def cpu_color(cpu, numa, color_scheme=None):
+    if not color_scheme:
+        color_scheme = __choose_color_scheme(numa)
+    if isinstance(cpu, str):
+        cpu = int(cpu[3:])
+    return color_scheme.get(numa.layout.get(cpu))
+
 
 def colorize_cpu_list(cpu_list, numa):
     """ return list of highlighted strings with CPU names regarding to NUMA """
-    return [ColorsNode.get(numa.cpu_node(int(cpu[3:]))) + cpu + Colors['ENDC'] for cpu in cpu_list]
+    color_scheme = __choose_color_scheme(numa)
+    return [cpu_color(cpu, numa, color_scheme) + cpu + Colors['ENDC'] for cpu in cpu_list]

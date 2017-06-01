@@ -1,2 +1,4 @@
 setuptools
 pyyaml
+ipaddress
+six
