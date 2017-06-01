@@ -41,8 +41,9 @@ class LinkRateTop(BaseTop):
             Option('--rx', '--rx-only', dest='rx_only', default=False, action='store_true',
                    help='Hides tx-counters'),
             Option('--bits', default=False, action='store_true'),
+            Option('--bytes', default=False, action='store_true'),
             Option('--kbits', default=False, action='store_true'),
-            Option('--mbits', default=False, action='store_true'),
+            Option('--mbits', default=True, action='store_true'),
         ]
         self.specific_options.extend(specific_options)
 
@@ -98,13 +99,13 @@ class LinkRateTop(BaseTop):
             return file_value
 
     def __repr_bytes(self, value):
+        if self.options.bytes:
+            return value
         if self.options.bits:
             return value * 8
         elif self.options.kbits:
             return value * 8 / 1024
-        elif self.options.mbits:
-            return value * 8 / 1024 / 1024
-        return value
+        return value * 8 / 1024 / 1024
 
     @staticmethod
     def __indent__(column, value, maxvalue=0):
