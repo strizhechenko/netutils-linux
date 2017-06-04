@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from colorama import Style
+from colorama import Style, Fore
 from prettytable import PrettyTable
 from optparse import OptionParser, OptionConflictError
 from netutils_linux_monitoring import IrqTop
@@ -73,7 +73,6 @@ class NetworkTop(BaseTop):
         if not top.diff_total:
             return ""
         output_lines = list()
-
         for line in top.repr_source():
             if line[0] == 'CPU0':
                 cpu_count = len(line)
@@ -82,7 +81,8 @@ class NetworkTop(BaseTop):
                 line = line[1: cpu_count + 1] + [line[-1]]
             output_lines.append(line)
         align_map = ['r'] * cpu_count + ['l']
-        return str(make_table(output_lines[0], align_map, output_lines[1:]))
+        table = make_table(output_lines[0], align_map, output_lines[1:])
+        return wrap("# /proc/interrupts\n", Style.BRIGHT) + str(table)
 
     def __repr_cpu(self):
         irqtop = self.tops.get('irqtop')
@@ -124,11 +124,12 @@ class NetworkTop(BaseTop):
             ]
             for irq, softirq_rx, softirq_tx, softnet_stat in network_output
         ]
-        return "# Load per cpu:\n" + str(make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows))
+        table = make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows)
+        return wrap("# Load per cpu:\n", Style.BRIGHT) + str(table)
 
     def __repr__(self):
-        return "\n\n".join([
-            wrap(self.header, 'GREY'),
+        return "\n".join([
+            wrap(self.header, Fore.LIGHTBLACK_EX),
             self.__repr_irq(),
             self.__repr_cpu(),
             self.__repr_dev(),
