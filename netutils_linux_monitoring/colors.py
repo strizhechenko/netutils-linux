@@ -1,42 +1,34 @@
-Colors = {
-    "GREY": '\033[90m',
-    "HEADER": '\033[95m',
-    "OKBLUE": '\033[94m',
-    "OKGREEN": '\033[92m',
-    "WARNING": '\033[93m',
-    "FAIL": '\033[91m',
-    "ENDC": '\033[0m',
-    "BOLD": '\033[1m',
-    "UNDERLINE": '\033[4m',
-}
+from colorama import Fore, Style
+
 
 ColorsNode = {
-    0: 'OKGREEN',
-    1: 'FAIL',
-    2: 'WARNING',
-    3: 'OKBLUE',
-    -1: 'ENDC'
+    0: Fore.GREEN,
+    1: Fore.RED,
+    2: Fore.YELLOW,
+    3: Fore.BLUE,
+    -1: Style.RESET_ALL,
 }
 
 ColorsSocket = {
-    0: 'OKBLUE',
-    1: 'WARNING',
-    2: 'FAIL',
-    3: 'OKGREEN',
-    -1: 'ENDC'
+    0: Fore.BLUE,
+    1: Fore.YELLOW,
+    2: Fore.RED,
+    3: Fore.GREEN,
+    -1: Style.RESET_ALL,
 }
 
 
 def colorize(value, warning, error):
     if value >= error:
-        return wrap(value, 'FAIL')
+        return wrap(value, Fore.RED)
     if value >= warning:
-        return wrap(value, 'WARNING')
-    return wrap(value, 'ENDC')
+        return wrap(value, Fore.YELLOW)
+    return wrap(value, Fore.RESET)
+
 
 def wrap(word, color):
     """ wrap string in given color """
-    return "{0}{1}{2}".format(Colors[color], word, Colors['ENDC'])
+    return "{0}{1}{2}".format(color, word, Style.RESET_ALL)
 
 
 def __choose_color_scheme(numa):

@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from colorama import Style
+from prettytable import PrettyTable
 from optparse import OptionParser, OptionConflictError
 from netutils_linux_monitoring import IrqTop
 from netutils_linux_monitoring import Softirqs
@@ -8,6 +10,20 @@ from netutils_linux_monitoring import LinkRateTop
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, ColorsNode, wrap, colorize
+
+
+def make_table(header, align_map=None, rows=None):
+    """ Wrapper for pretty table """
+    t = PrettyTable()
+    t.horizontal_char = t.vertical_char = t.junction_char = ' '
+    t.field_names = header
+    if align_map:
+        for field, align in zip(header, align_map):
+            t.align[field] = align
+    if rows:
+        for row in rows:
+            t.add_row(row)
+    return t
 
 
 class NetworkTop(BaseTop):
@@ -43,8 +59,8 @@ class NetworkTop(BaseTop):
     def __repr_dev(self):
         top = self.tops.get('link-rate')
         output = [
-            wrap("# Network devices", 'BOLD'),
-            wrap(top.make_header(network_top=True), 'BOLD')
+            wrap("# Network devices", Style.BRIGHT),
+            wrap(top.make_header(network_top=True), Style.BRIGHT)
         ]
         for dev in top.options.devices:
             output.append("{0:<14}{1}".format(
@@ -57,14 +73,16 @@ class NetworkTop(BaseTop):
         if not top.diff_total:
             return ""
         output_lines = list()
+
         for line in top.repr_source():
             if line[0] == 'CPU0':
-                line = colorize_cpu_list(line, self.numa)
-                line.insert(0, ' ')
-            elif top.skip_zero_line(line):
-                continue
-            output_lines.append("\t".join(map(str, line)))
-        return "\n".join([wrap("# /proc/interrupts\n", 'BOLD')] + output_lines)
+                cpu_count = len(line)
+                line = colorize_cpu_list(line, self.numa) + ['']
+            else:
+                line = line[1: cpu_count + 1] + [line[-1]]
+            output_lines.append(line)
+        align_map = ['r'] * cpu_count + ['l']
+        return str(make_table(output_lines[0], align_map, output_lines[1:]))
 
     def __repr_cpu(self):
         irqtop = self.tops.get('irqtop')
@@ -91,11 +109,9 @@ class NetworkTop(BaseTop):
             "cpu_collision",
             "received_rps",
         ]
-        header_template = "# Load per cpu:\n\n{0:6}  {1:>12} {2:>12} {3:>12} {4:>12} {5:>8} {6:>12} {7:>13} {8:>12}\n"
-        cpu_row_template = "{0:<15} `{1:>22}` {2:>20} {3:>20} {4:>20} {5:>16} {6:>20} {7:>21} {8:>20} {9}"
-        header = wrap(header_template.format(*fields), 'BOLD')
-        output = [header] + [
-            cpu_row_template.format(
+        fields = [wrap(word, Style.BRIGHT) for word in fields]
+        rows = [
+            [
                 wrap("CPU{0}".format(softnet_stat.cpu), cpu_color(softnet_stat.cpu, self.numa)),
                 colorize(irq, 40000, 80000),
                 colorize(softirq_rx, 40000, 80000),
@@ -104,11 +120,11 @@ class NetworkTop(BaseTop):
                 colorize(softnet_stat.dropped, 1, 1),
                 colorize(softnet_stat.time_squeeze, 1, 300),
                 colorize(softnet_stat.cpu_collision, 1, 1000),
-                softnet_stat.received_rps,
-                len(colorize(irq, 40000, 80000)))
+                softnet_stat.received_rps
+            ]
             for irq, softirq_rx, softirq_tx, softnet_stat in network_output
         ]
-        return "\n".join(output)
+        return "# Load per cpu:\n" + str(make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows))
 
     def __repr__(self):
         return "\n\n".join([
