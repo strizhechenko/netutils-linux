@@ -7,7 +7,7 @@ from netutils_linux_monitoring import SoftnetStatTop
 from netutils_linux_monitoring import LinkRateTop
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, Colors, ColorsNode
+from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, ColorsNode, wrap, colorize
 
 
 class NetworkTop(BaseTop):
@@ -24,7 +24,6 @@ class NetworkTop(BaseTop):
         self.parse_options()
         self.numa = Numa(devices=self.options.devices,
                          fake=self.options.random)
-        self.numa.layout_kind = 'SOCKET' # TODO: remove
 
     def parse(self):
         return dict((top_name, _top.parse()) for top_name, _top in self.tops.iteritems())
@@ -43,13 +42,14 @@ class NetworkTop(BaseTop):
 
     def __repr_dev(self):
         top = self.tops.get('link-rate')
-        output = [Colors['BOLD'], "# Network devices",
-                  top.make_header(network_top=True), Colors['ENDC']]
+        output = [
+            wrap("# Network devices", 'BOLD'),
+            wrap(top.make_header(network_top=True), 'BOLD')
+        ]
         for dev in top.options.devices:
-            output.append("{0}{1:<14}{3} {2}".format(
-                ColorsNode.get(self.numa.devices.get(dev)),
-                dev, top.__repr_dev__(dev),
-                Colors['ENDC']))
+            output.append("{0:<14}{1}".format(
+                wrap(dev, ColorsNode.get(self.numa.devices.get(dev))),
+                top.__repr_dev__(dev)))
         return "\n".join(output)
 
     def __repr_irq(self):
@@ -64,7 +64,7 @@ class NetworkTop(BaseTop):
             elif top.skip_zero_line(line):
                 continue
             output_lines.append("\t".join(map(str, line)))
-        return "\n".join([Colors['BOLD'] + "# /proc/interrupts\n" + Colors['ENDC']] + output_lines)
+        return "\n".join([wrap("# /proc/interrupts\n", 'BOLD')] + output_lines)
 
     def __repr_cpu(self):
         irqtop = self.tops.get('irqtop')
@@ -81,7 +81,6 @@ class NetworkTop(BaseTop):
                              softirq_tx,
                              softnet_stat_top_output)
         fields = [
-            Colors['BOLD'],
             "CPU",
             "Interrupts",
             "NET RX",
@@ -91,36 +90,36 @@ class NetworkTop(BaseTop):
             "time_squeeze",
             "cpu_collision",
             "received_rps",
-            Colors['ENDC'],
         ]
-        header_template = "{0}# Load per cpu:\n\n{1:6}  {2:>12} {3:>12} {4:>12} {5:>12} {6:>8} {7:>12} {8:>13} {9:>12}{10}\n"
-        cpu_row_template = "{0}CPU{1:<3}{2}: {3:>12} {4:>12} {5:>12} {6:>12} {7:>8} {8:>12} {9:>13} {10:>12}"
-        header = header_template.format(*fields)
+        header_template = "# Load per cpu:\n\n{0:6}  {1:>12} {2:>12} {3:>12} {4:>12} {5:>8} {6:>12} {7:>13} {8:>12}\n"
+        cpu_row_template = "{0:<15} `{1:>22}` {2:>20} {3:>20} {4:>20} {5:>16} {6:>20} {7:>21} {8:>20} {9}"
+        header = wrap(header_template.format(*fields), 'BOLD')
         output = [header] + [
             cpu_row_template.format(
-                cpu_color(softnet_stat.cpu, self.numa),
-                softnet_stat.cpu,
-                Colors['ENDC'],
-                irq, softirq_rx, softirq_tx,
-                softnet_stat.total,
-                softnet_stat.dropped,
-                softnet_stat.time_squeeze,
-                softnet_stat.cpu_collision,
-                softnet_stat.received_rps)
+                wrap("CPU{0}".format(softnet_stat.cpu), cpu_color(softnet_stat.cpu, self.numa)),
+                colorize(irq, 40000, 80000),
+                colorize(softirq_rx, 40000, 80000),
+                colorize(softirq_tx, 20000, 30000),
+                colorize(softnet_stat.total, 300000, 900000),
+                colorize(softnet_stat.dropped, 1, 1),
+                colorize(softnet_stat.time_squeeze, 1, 300),
+                colorize(softnet_stat.cpu_collision, 1, 1000),
+                softnet_stat.received_rps,
+                len(colorize(irq, 40000, 80000)))
             for irq, softirq_rx, softirq_tx, softnet_stat in network_output
         ]
-        return Colors['ENDC'] + "\n".join(output) + Colors['ENDC']
+        return "\n".join(output)
 
     def __repr__(self):
-        # return "\n".join(str(_top) for top_name, _top in self.tops.iteritems())
         return "\n\n".join([
-            Colors['GREY'] + self.header + Colors['ENDC'],
+            wrap(self.header, 'GREY'),
             self.__repr_irq(),
             self.__repr_cpu(),
             self.__repr_dev(),
         ])
 
     def parse_options(self):
+        """ Tricky way to gather all options in one util without conflicts, parse them and do some logic after parse """
         parser = OptionParser()
         for top in self.tops.itervalues():
             for opt in top.specific_options:

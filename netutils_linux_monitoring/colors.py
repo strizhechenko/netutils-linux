@@ -11,20 +11,32 @@ Colors = {
 }
 
 ColorsNode = {
-    0: Colors['OKGREEN'],
-    1: Colors['FAIL'],
-    2: Colors['WARNING'],
-    3: Colors['OKBLUE'],
-    -1: Colors['ENDC']
+    0: 'OKGREEN',
+    1: 'FAIL',
+    2: 'WARNING',
+    3: 'OKBLUE',
+    -1: 'ENDC'
 }
 
 ColorsSocket = {
-    0: Colors['OKBLUE'],
-    1: Colors['WARNING'],
-    2: Colors['FAIL'],
-    3: Colors['OKGREEN'],
-    -1: Colors['ENDC']
+    0: 'OKBLUE',
+    1: 'WARNING',
+    2: 'FAIL',
+    3: 'OKGREEN',
+    -1: 'ENDC'
 }
+
+
+def colorize(value, warning, error):
+    if value >= error:
+        return wrap(value, 'FAIL')
+    if value >= warning:
+        return wrap(value, 'WARNING')
+    return wrap(value, 'ENDC')
+
+def wrap(word, color):
+    """ wrap string in given color """
+    return "{0}{1}{2}".format(Colors[color], word, Colors['ENDC'])
 
 
 def __choose_color_scheme(numa):
@@ -42,4 +54,4 @@ def cpu_color(cpu, numa, color_scheme=None):
 def colorize_cpu_list(cpu_list, numa):
     """ return list of highlighted strings with CPU names regarding to NUMA """
     color_scheme = __choose_color_scheme(numa)
-    return [cpu_color(cpu, numa, color_scheme) + cpu + Colors['ENDC'] for cpu in cpu_list]
+    return [wrap(cpu, cpu_color(cpu, numa, color_scheme)) for cpu in cpu_list]
