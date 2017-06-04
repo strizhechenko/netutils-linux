@@ -46,8 +46,7 @@ class NetworkTop(BaseTop):
 
     def eval(self):
         if all((self.current, self.previous)):
-            self.diff = dict((top_name, _top.diff)
-                             for top_name, _top in self.tops.iteritems())
+            self.diff = dict((top_name, _top.diff) for top_name, _top in self.tops.iteritems())
 
     def tick(self):
         self.previous = self.current
@@ -69,6 +68,7 @@ class NetworkTop(BaseTop):
         return "\n".join(output)
 
     def __repr_irq(self):
+        cpu_count = 0
         top = self.tops.get('irqtop')
         if not top.diff_total:
             return ""
@@ -99,15 +99,8 @@ class NetworkTop(BaseTop):
                              softirq_tx,
                              softnet_stat_top_output)
         fields = [
-            "CPU",
-            "Interrupts",
-            "NET RX",
-            "NET TX",
-            "total",
-            "dropped",
-            "time_squeeze",
-            "cpu_collision",
-            "received_rps",
+            "CPU", "Interrupts", "NET RX", "NET TX",
+            "total", "dropped", "time_squeeze", "cpu_collision", "received_rps",
         ]
         fields = [wrap(word, Style.BRIGHT) for word in fields]
         rows = [
