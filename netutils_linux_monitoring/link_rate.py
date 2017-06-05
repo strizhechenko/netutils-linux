@@ -135,8 +135,10 @@ class LinkRateTop(BaseTop):
             return
         for i, stat in enumerate(self.stats):
             if 'bytes' not in stat.shortname:
-                return
-            if self.options.bits:
+                continue
+            if self.options.bytes:
+                continue
+            elif self.options.bits:
                 self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'bits'))
             elif self.options.kbits:
                 self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'kbits'))
