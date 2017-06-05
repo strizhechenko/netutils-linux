@@ -62,7 +62,9 @@ class NetworkTop(BaseTop):
             if line[0] == 'CPU0':
                 cpu_count = len(line)
                 line = colorize_cpu_list(line, self.numa) + ['']
-            else:  # hiding useless data such a kind of interrupt etc
+            elif top.skip_zero_line(line):  # hiding useless data such a kind of interrupt etc
+                continue
+            else:
                 line = line[1: cpu_count + 1] + [line[-1]]
             output_lines.append(line)
         align_map = ['r'] * cpu_count + ['l']
