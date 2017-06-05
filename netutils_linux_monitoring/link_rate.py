@@ -127,16 +127,21 @@ class LinkRateTop(BaseTop):
             simple_stats = ('packets', 'bytes', 'errors')
             self.stats = [
                 stat for stat in self.stats if stat.shortname in simple_stats]
-        if any([self.options.bits, self.options.kbits, self.options.mbits]):
-            for i, stat in enumerate(self.stats):
-                if stat.shortname == 'bytes':
-                    if self.options.bits:
-                        self.stats[i] = Stat(stat.filename, 'bits')
-                    elif self.options.kbits:
-                        self.stats[i] = Stat(stat.filename, 'kbits')
-                    elif self.options.mbits:
-                        self.stats[i] = Stat(stat.filename, 'mbits')
+        self.unit_change()
         self.header = self.make_header()
+
+    def unit_change(self):
+        if not any([self.options.bits, self.options.kbits, self.options.mbits]):
+            return
+        for i, stat in enumerate(self.stats):
+            if 'bytes' not in stat.shortname:
+                return
+            if self.options.bits:
+                self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'bits'))
+            elif self.options.kbits:
+                self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'kbits'))
+            elif self.options.mbits:
+                self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'mbits'))
 
 
 if __name__ == '__main__':
