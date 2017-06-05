@@ -1,5 +1,5 @@
 from re import match
-from os import listdir
+from os import listdir, path
 from copy import deepcopy
 from random import randint
 from optparse import Option
@@ -84,7 +84,8 @@ class LinkRateTop(BaseTop):
     def __parse_dev_stat__(self, dev, stat):
         if self.options.random:
             return randint(1, 10000)
-        with open('/sys/class/net/{0}/statistics/{1}'.format(dev, stat.filename)) as devfile:
+        filename = '/sys/class/net/{0}/statistics/{1}'.format(dev, stat.filename)
+        with open(filename) as devfile:
             file_value = int(devfile.read().strip())
             if 'bytes' in stat.filename:
                 return self.__repr_bytes(file_value)
@@ -104,6 +105,9 @@ class LinkRateTop(BaseTop):
         """ May be used for special indent for first column """
         return "{0:<14}".format(value) if column == maxvalue else "{0:>11}".format(value)
 
+    def devices_list_validate(self, dev):
+        return path.isdir('/sys/class/net/{0}'.format(dev))
+
     def devices_list_regex(self):
         """ Returns list of network devices matching --device-regex """
         net_dev_list = listdir('/sys/class/net/')
@@ -112,8 +116,10 @@ class LinkRateTop(BaseTop):
     def devices_list(self):
         """ Return list of network devices regarding --devices / --device-regex """
         if self.options.devices:
-            return self.options.devices.split(',')
-        return self.devices_list_regex()
+            devices = self.options.devices.split(',')
+        else:
+            devices = self.devices_list_regex()
+        return filter(self.devices_list_validate, devices)
 
     def post_optparse(self):
         """ Asserting and applying parsing options """
