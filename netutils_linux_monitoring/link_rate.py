@@ -5,6 +5,7 @@ from random import randint
 from optparse import Option
 from collections import namedtuple
 from netutils_linux_monitoring.base_top import BaseTop
+from netutils_linux_monitoring.layout import make_table
 
 Stat = namedtuple('Stat', ['filename', 'shortname'])
 
@@ -47,20 +48,6 @@ class LinkRateTop(BaseTop):
         ]
         self.specific_options.extend(specific_options)
 
-    def make_header(self, network_top=False):
-        """ generate `table's` header regarding to output options """
-        rx_count = 3 if self.options.simple_mode else 10
-        tx_count = 0 if self.options.rx_only else 3
-        header_columns = [""] + ["RX"] * rx_count + ["TX"] * tx_count
-        ncolumns = [self.__indent__(column, value) for column, value in enumerate(header_columns)]
-        nstats = list(enumerate([Stat("", "")] + self.stats))
-        stats = [self.__indent__(column, stat.shortname) for column, stat in nstats]
-        stats_header1 = " ".join(ncolumns)
-        stats_header2 = " ".join(stats)
-        if network_top:
-            return "\n".join([stats_header1, stats_header2])
-        return "\n".join([self.header, stats_header1, stats_header2])
-
     def parse(self):
         return dict((dev, self.__parse_dev__(dev)) for dev in self.options.devices)
 
@@ -74,11 +61,16 @@ class LinkRateTop(BaseTop):
                     self.diff[dev][stat] = data[stat] - \
                         self.previous[dev][stat]
 
-    def __repr__(self):
-        output = [self.header]
+    def make_header(self):
+        return ['Device'] + [stat.shortname for stat in self.stats]
+
+    def make_rows(self):
+        repr_source = self.repr_source()
         for dev in self.options.devices:
-            output.append("{0:<14} {1}".format(dev, self.__repr_dev__(dev)))
-        return "\n".join(output)
+            yield [dev] + [repr_source[dev][stat] for stat in self.stats]
+
+    def __repr__(self):
+        return BaseTop.header + str(make_table(self.make_header(), rows=list(self.make_rows())))
 
     def __repr_dev__(self, dev):
         repr_source = self.current if not self.options.delta_mode else self.diff
