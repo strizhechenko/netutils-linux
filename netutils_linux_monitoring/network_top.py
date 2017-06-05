@@ -8,7 +8,7 @@ from netutils_linux_monitoring import SoftnetStatTop
 from netutils_linux_monitoring import LinkRateTop
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, ColorsNode, wrap, colorize
+from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, ColorsNode, wrap, colorize, wrap_header
 from netutils_linux_monitoring.layout import make_table
 
 
@@ -49,24 +49,25 @@ class NetworkTop(BaseTop):
             _dev = [wrap(dev, ColorsNode.get(self.numa.devices.get(dev)))]
             stats = [top.repr_source()[dev][stat] for stat in top.stats]
             rows.append(_dev + stats)
-        return wrap("# Network devices\n", Style.BRIGHT) + str(make_table(header, rows=rows))
+        table = make_table(header, rows=rows)
+        return wrap_header("Network devices") + str(table)
 
     def __repr_irq(self):
-        cpu_count = 0
         top = self.tops.get('irqtop')
+        cpu_count = 0
+        output_lines = list()
         if not top.diff_total:
             return ""
-        output_lines = list()
         for line in top.repr_source():
             if line[0] == 'CPU0':
                 cpu_count = len(line)
                 line = colorize_cpu_list(line, self.numa) + ['']
-            else:
+            else:  # hiding useless data such a kind of interrupt etc
                 line = line[1: cpu_count + 1] + [line[-1]]
             output_lines.append(line)
         align_map = ['r'] * cpu_count + ['l']
         table = make_table(output_lines[0], align_map, output_lines[1:])
-        return wrap("# /proc/interrupts\n", Style.BRIGHT) + str(table)
+        return wrap_header("/proc/interrupts") + str(table)
 
     def __repr_cpu(self):
         irqtop = self.tops.get('irqtop')
@@ -102,7 +103,7 @@ class NetworkTop(BaseTop):
             for irq, softirq_rx, softirq_tx, softnet_stat in network_output
         ]
         table = make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows)
-        return wrap("# Load per cpu:\n", Style.BRIGHT) + str(table)
+        return wrap_header("Load per cpu:") + str(table)
 
     def __repr__(self):
         return "\n".join([

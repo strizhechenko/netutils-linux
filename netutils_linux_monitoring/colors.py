@@ -18,6 +18,10 @@ ColorsSocket = {
 }
 
 
+def wrap_header(string):
+    return wrap("# {0}\n".format(string), Style.BRIGHT)
+
+
 def colorize(value, warning, error):
     if value >= error:
         return wrap(value, Fore.RED)
