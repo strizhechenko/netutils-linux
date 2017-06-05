@@ -43,11 +43,9 @@ class NetworkTop(BaseTop):
 
     def __repr_dev(self):
         top = self.tops.get('link-rate')
-        header = None
+        header = ['Device'] + [stat.shortname for stat in top.stats]
         rows = list()
         for dev in top.options.devices:
-            if not header:
-                header = ['Device'] + [stat.shortname for stat in top.stats]
             _dev = [wrap(dev, ColorsNode.get(self.numa.devices.get(dev)))]
             stats = [top.repr_source()[dev][stat] for stat in top.stats]
             rows.append(_dev + stats)
