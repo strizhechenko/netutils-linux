@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from colorama import Style, Fore
-from prettytable import PrettyTable
 from optparse import OptionParser, OptionConflictError
 from netutils_linux_monitoring import IrqTop
 from netutils_linux_monitoring import Softirqs
@@ -10,20 +9,7 @@ from netutils_linux_monitoring import LinkRateTop
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, ColorsNode, wrap, colorize
-
-
-def make_table(header, align_map=None, rows=None):
-    """ Wrapper for pretty table """
-    t = PrettyTable()
-    t.horizontal_char = t.vertical_char = t.junction_char = ' '
-    t.field_names = header
-    if align_map:
-        for field, align in zip(header, align_map):
-            t.align[field] = align
-    if rows:
-        for row in rows:
-            t.add_row(row)
-    return t
+from netutils_linux_monitoring.layout import make_table
 
 
 class NetworkTop(BaseTop):
@@ -57,15 +43,15 @@ class NetworkTop(BaseTop):
 
     def __repr_dev(self):
         top = self.tops.get('link-rate')
-        output = [
-            wrap("# Network devices", Style.BRIGHT),
-            wrap(top.make_header(network_top=True), Style.BRIGHT)
-        ]
+        header = None
+        rows = list()
         for dev in top.options.devices:
-            output.append("{0:<14}{1}".format(
-                wrap(dev, ColorsNode.get(self.numa.devices.get(dev))),
-                top.__repr_dev__(dev)))
-        return "\n".join(output)
+            if not header:
+                header = ['Device'] + [stat.shortname for stat in top.stats]
+            _dev = [wrap(dev, ColorsNode.get(self.numa.devices.get(dev)))]
+            stats = [top.repr_source()[dev][stat] for stat in top.stats]
+            rows.append(_dev + stats)
+        return wrap("# Network devices\n", Style.BRIGHT) + str(make_table(header, rows=rows))
 
     def __repr_irq(self):
         cpu_count = 0

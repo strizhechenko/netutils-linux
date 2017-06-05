@@ -12,9 +12,9 @@ Stat = namedtuple('Stat', ['filename', 'shortname'])
 class LinkRateTop(BaseTop):
     """ Utility for monitoring network devices' pps and error rate """
     stats = [
-        Stat('rx_packets', 'packets'),
-        Stat('rx_bytes', 'bytes'),
-        Stat('rx_errors', 'errors'),
+        Stat('rx_packets', 'rx-packets'),
+        Stat('rx_bytes', 'rx-bytes'),
+        Stat('rx_errors', 'rx-errors'),
         Stat('rx_dropped', 'dropped'),
         Stat('rx_missed_errors', 'missed'),
         Stat('rx_fifo_errors', 'fifo'),
@@ -22,9 +22,9 @@ class LinkRateTop(BaseTop):
         Stat('rx_over_errors', 'overrun'),
         Stat('rx_crc_errors', 'crc'),
         Stat('rx_frame_errors', 'frame'),
-        Stat('tx_packets', 'packets'),
-        Stat('tx_bytes', 'bytes'),
-        Stat('tx_errors', 'errors')
+        Stat('tx_packets', 'tx-packets'),
+        Stat('tx_bytes', 'tx-bytes'),
+        Stat('tx_errors', 'tx-errors')
     ]
 
     def __init__(self):
