@@ -15,5 +15,13 @@ def make_table(header, align_map=None, rows=None):
             t.align[field] = align
     if rows:
         for row in rows:
-            t.add_row(row)
+            if len(row) < len(t.field_names):
+                continue
+            try:
+                t.add_row(row)
+            except Exception as err:
+                print 'fields:', t.field_names
+                print 'row:', row
+                print 'rows:', rows
+                raise err
     return t
