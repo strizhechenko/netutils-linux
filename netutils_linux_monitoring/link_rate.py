@@ -5,6 +5,7 @@ from random import randint
 from optparse import Option
 from collections import namedtuple
 from netutils_linux_monitoring.base_top import BaseTop
+from netutils_linux_monitoring.layout import make_table
 
 Stat = namedtuple('Stat', ['filename', 'shortname'])
 
@@ -12,9 +13,9 @@ Stat = namedtuple('Stat', ['filename', 'shortname'])
 class LinkRateTop(BaseTop):
     """ Utility for monitoring network devices' pps and error rate """
     stats = [
-        Stat('rx_packets', 'packets'),
-        Stat('rx_bytes', 'bytes'),
-        Stat('rx_errors', 'errors'),
+        Stat('rx_packets', 'rx-packets'),
+        Stat('rx_bytes', 'rx-bytes'),
+        Stat('rx_errors', 'rx-errors'),
         Stat('rx_dropped', 'dropped'),
         Stat('rx_missed_errors', 'missed'),
         Stat('rx_fifo_errors', 'fifo'),
@@ -22,9 +23,9 @@ class LinkRateTop(BaseTop):
         Stat('rx_over_errors', 'overrun'),
         Stat('rx_crc_errors', 'crc'),
         Stat('rx_frame_errors', 'frame'),
-        Stat('tx_packets', 'packets'),
-        Stat('tx_bytes', 'bytes'),
-        Stat('tx_errors', 'errors')
+        Stat('tx_packets', 'tx-packets'),
+        Stat('tx_bytes', 'tx-bytes'),
+        Stat('tx_errors', 'tx-errors')
     ]
 
     def __init__(self):
@@ -47,20 +48,6 @@ class LinkRateTop(BaseTop):
         ]
         self.specific_options.extend(specific_options)
 
-    def make_header(self, network_top=False):
-        """ generate `table's` header regarding to output options """
-        rx_count = 3 if self.options.simple_mode else 10
-        tx_count = 0 if self.options.rx_only else 3
-        header_columns = [""] + ["RX"] * rx_count + ["TX"] * tx_count
-        ncolumns = [self.__indent__(column, value) for column, value in enumerate(header_columns)]
-        nstats = list(enumerate([Stat("", "")] + self.stats))
-        stats = [self.__indent__(column, stat.shortname) for column, stat in nstats]
-        stats_header1 = " ".join(ncolumns)
-        stats_header2 = " ".join(stats)
-        if network_top:
-            return "\n".join([stats_header1, stats_header2])
-        return "\n".join([self.header, stats_header1, stats_header2])
-
     def parse(self):
         return dict((dev, self.__parse_dev__(dev)) for dev in self.options.devices)
 
@@ -74,11 +61,16 @@ class LinkRateTop(BaseTop):
                     self.diff[dev][stat] = data[stat] - \
                         self.previous[dev][stat]
 
-    def __repr__(self):
-        output = [self.header]
+    def make_header(self):
+        return ['Device'] + [stat.shortname for stat in self.stats]
+
+    def make_rows(self):
+        repr_source = self.repr_source()
         for dev in self.options.devices:
-            output.append("{0:<14} {1}".format(dev, self.__repr_dev__(dev)))
-        return "\n".join(output)
+            yield [dev] + [repr_source[dev][stat] for stat in self.stats]
+
+    def __repr__(self):
+        return BaseTop.header + str(make_table(self.make_header(), rows=list(self.make_rows())))
 
     def __repr_dev__(self, dev):
         repr_source = self.current if not self.options.delta_mode else self.diff
@@ -135,16 +127,23 @@ class LinkRateTop(BaseTop):
             simple_stats = ('packets', 'bytes', 'errors')
             self.stats = [
                 stat for stat in self.stats if stat.shortname in simple_stats]
-        if any([self.options.bits, self.options.kbits, self.options.mbits]):
-            for i, stat in enumerate(self.stats):
-                if stat.shortname == 'bytes':
-                    if self.options.bits:
-                        self.stats[i] = Stat(stat.filename, 'bits')
-                    elif self.options.kbits:
-                        self.stats[i] = Stat(stat.filename, 'kbits')
-                    elif self.options.mbits:
-                        self.stats[i] = Stat(stat.filename, 'mbits')
+        self.unit_change()
         self.header = self.make_header()
+
+    def unit_change(self):
+        if not any([self.options.bits, self.options.kbits, self.options.mbits]):
+            return
+        for i, stat in enumerate(self.stats):
+            if 'bytes' not in stat.shortname:
+                continue
+            if self.options.bytes:
+                continue
+            elif self.options.bits:
+                self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'bits'))
+            elif self.options.kbits:
+                self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'kbits'))
+            elif self.options.mbits:
+                self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'mbits'))
 
 
 if __name__ == '__main__':

@@ -14,7 +14,7 @@ def read(*paths):
 
 setuptools.setup(
     name='netutils-linux',
-    version='1.2.14',
+    version='1.2.18',
     author='Oleg Strizhechenko',
     author_email='oleg.strizhechenko@gmail.com',
     license='MIT',
@@ -24,7 +24,7 @@ setuptools.setup(
     long_description=(read('README.rst')),
     packages=setuptools.find_packages(exclude=['tests*']),
     scripts=[os.path.join('utils/', script) for script in os.listdir('utils/')],
-    install_requires=['pyyaml', 'ipaddress', 'six'],
+    install_requires=['pyyaml', 'ipaddress', 'six', 'colorama', 'prettytable'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',

@@ -1,4 +1,6 @@
+prettytable
 setuptools
 pyyaml
 ipaddress
 six
+colorama

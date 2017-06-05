@@ -1,30 +1,38 @@
-Colors = {
-    "GREY": '\033[90m',
-    "HEADER": '\033[95m',
-    "OKBLUE": '\033[94m',
-    "OKGREEN": '\033[92m',
-    "WARNING": '\033[93m',
-    "FAIL": '\033[91m',
-    "ENDC": '\033[0m',
-    "BOLD": '\033[1m',
-    "UNDERLINE": '\033[4m',
-}
+from colorama import Fore, Style
+
 
 ColorsNode = {
-    0: Colors['OKGREEN'],
-    1: Colors['FAIL'],
-    2: Colors['WARNING'],
-    3: Colors['OKBLUE'],
-    -1: Colors['ENDC']
+    0: Fore.GREEN,
+    1: Fore.RED,
+    2: Fore.YELLOW,
+    3: Fore.BLUE,
+    -1: Style.RESET_ALL,
 }
 
 ColorsSocket = {
-    0: Colors['OKBLUE'],
-    1: Colors['WARNING'],
-    2: Colors['FAIL'],
-    3: Colors['OKGREEN'],
-    -1: Colors['ENDC']
+    0: Fore.BLUE,
+    1: Fore.YELLOW,
+    2: Fore.RED,
+    3: Fore.GREEN,
+    -1: Style.RESET_ALL,
 }
+
+
+def wrap_header(string):
+    return wrap("# {0}\n".format(string), Style.BRIGHT)
+
+
+def colorize(value, warning, error):
+    if value >= error:
+        return wrap(value, Fore.RED)
+    if value >= warning:
+        return wrap(value, Fore.YELLOW)
+    return wrap(value, Fore.RESET)
+
+
+def wrap(word, color):
+    """ wrap string in given color """
+    return "{0}{1}{2}".format(color, word, Style.RESET_ALL)
 
 
 def __choose_color_scheme(numa):
@@ -42,4 +50,4 @@ def cpu_color(cpu, numa, color_scheme=None):
 def colorize_cpu_list(cpu_list, numa):
     """ return list of highlighted strings with CPU names regarding to NUMA """
     color_scheme = __choose_color_scheme(numa)
-    return [cpu_color(cpu, numa, color_scheme) + cpu + Colors['ENDC'] for cpu in cpu_list]
+    return [wrap(cpu, cpu_color(cpu, numa, color_scheme)) for cpu in cpu_list]
