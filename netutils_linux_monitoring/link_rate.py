@@ -27,6 +27,7 @@ class LinkRateTop(BaseTop):
         Stat('tx_bytes', 'tx-bytes'),
         Stat('tx_errors', 'tx-errors')
     ]
+    align_map = None
 
     def __init__(self):
         BaseTop.__init__(self)
@@ -70,13 +71,7 @@ class LinkRateTop(BaseTop):
             yield [dev] + [repr_source[dev][stat] for stat in self.stats]
 
     def __repr__(self):
-        return BaseTop.header + str(make_table(self.make_header(), rows=list(self.make_rows())))
-
-    def __repr_dev__(self, dev):
-        repr_source = self.current if not self.options.delta_mode else self.diff
-        data = [self.__indent__(n, self.spaces(repr_source[dev][stat]), -1)
-                for n, stat in enumerate(self.stats)]
-        return " ".join(data)
+        return BaseTop.header + str(make_table(self.make_header(), self.align_map, list(self.make_rows())))
 
     def __parse_dev__(self, dev):
         return dict((stat, self.__parse_dev_stat__(dev, stat)) for stat in self.stats)
@@ -135,6 +130,7 @@ class LinkRateTop(BaseTop):
                 stat for stat in self.stats if stat.shortname in simple_stats]
         self.unit_change()
         self.header = self.make_header()
+        self.align_map = ['l'] + ['r'] * (len(self.header) - 1)
 
     def unit_change(self):
         if not any([self.options.bits, self.options.kbits, self.options.mbits]):
