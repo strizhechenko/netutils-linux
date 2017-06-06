@@ -1,6 +1,5 @@
 from random import randint
 from optparse import Option
-from colorama import Fore
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
@@ -87,8 +86,7 @@ class SoftnetStatTop(BaseTop):
         ]
 
     def __repr__(self):
-        return wrap(BaseTop.header + '\n', Fore.LIGHTBLACK_EX) + \
-               str(make_table(self.make_header(), self.align, list(self.make_rows())))
+        return BaseTop.header + str(make_table(self.make_header(), self.align, list(self.make_rows())))
 
 
 if __name__ == '__main__':

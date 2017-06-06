@@ -59,7 +59,7 @@ class LinkRateTop(BaseTop):
                     self.diff[dev][stat] = randint(0, 10000)
                 else:
                     self.diff[dev][stat] = data[stat] - \
-                        self.previous[dev][stat]
+                                           self.previous[dev][stat]
 
     def make_header(self):
         return ['Device'] + [stat.shortname for stat in self.stats]

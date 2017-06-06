@@ -1,5 +1,4 @@
 from optparse import Option
-from colorama import Fore
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
@@ -46,7 +45,7 @@ class Softirqs(BaseTop):
                 self.repr_source().get('NET_TX')[:active_cpu_count]
             ))
         ]
-        return wrap(BaseTop.header, Fore.LIGHTBLACK_EX) + str(make_table(header, ['l', 'r', 'r'], rows))
+        return BaseTop.header + str(make_table(header, ['l', 'r', 'r'], rows))
 
 
 if __name__ == '__main__':

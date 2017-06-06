@@ -2,6 +2,8 @@ from os import system
 from time import sleep
 from random import randint
 from optparse import Option, OptionParser, OptionConflictError
+from colorama import Fore
+from colors import wrap
 
 
 class BaseTop(object):
@@ -9,7 +11,7 @@ class BaseTop(object):
     current = None
     previous = None
     diff = None
-    header = "Press CTRL-C to exit...\n"
+    header = wrap("Press CTRL-C to exit...\n", Fore.LIGHTBLACK_EX)
     options = None
 
     def __init__(self):
@@ -28,17 +30,17 @@ class BaseTop(object):
             Option('--no-delta-small-hide', action='store_false',
                    dest='delta_small_hide', default=True,
                    help="Prevent lines with only small changes or without"
-                   "changes at all from hiding."),
+                        "changes at all from hiding."),
             Option('-l', '--delta-small-hide-limit', default=80, type=int,
                    help='Hides lines with only changes less than this limit'),
             Option('--no-color', dest='color', default=True, action='store_false',
                    help="Don't highlight NUMA nodes or sockets"),
             Option('--spaces', default=False, action='store_true',
                    help="Add spaces in numbers' representation, e.g. '1234567' "
-                   "will be '1 234 567'"),
+                        "will be '1 234 567'"),
             Option('--random', default=False, action='store_true',
                    help="Shows random diff data instead of real evaluation. "
-                   "Helpful for testing on static files")
+                        "Helpful for testing on static files")
         ]
 
     def parse_options(self):

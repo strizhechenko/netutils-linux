@@ -3,7 +3,6 @@
 from random import randint
 from copy import deepcopy
 from optparse import Option
-from colorama import Fore
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import colorize_cpu_list, wrap_header, wrap
 from netutils_linux_monitoring.numa import Numa
@@ -61,7 +60,7 @@ class IrqTop(BaseTop):
             output_lines.append(line)
         align_map = ['r'] * cpu_count + ['l']
         table = make_table(output_lines[0], align_map, output_lines[1:])
-        return wrap(BaseTop.header + '\n', Fore.LIGHTBLACK_EX) + wrap_header("/proc/interrupts") + str(table)
+        return BaseTop.header + str(table)
 
     def eval_diff_total_column(self, column, cpucount):
         """ returns sum of all interrupts on given CPU """
