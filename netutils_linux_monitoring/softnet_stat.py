@@ -1,6 +1,10 @@
 from random import randint
 from optparse import Option
+from colorama import Fore
 from netutils_linux_monitoring.base_top import BaseTop
+from netutils_linux_monitoring.layout import make_table
+from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.colors import cpu_color, wrap
 
 
 class SoftnetStat(object):
@@ -29,10 +33,6 @@ class SoftnetStat(object):
         self.cpu, self.total, self.dropped, self.time_squeeze, self.cpu_collision, self.received_rps = data
         return self
 
-    def __repr__(self):
-        return "CPU: {0:2} total: {1:11} dropped: {2} time_squeeze: {3:4} cpu_collision: {4} received_rps: {5}" \
-            .format(self.cpu, self.total, self.dropped, self.time_squeeze, self.cpu_collision, self.received_rps)
-
     def __sub__(self, other):
         return SoftnetStat().parse_list([
             self.cpu,
@@ -56,13 +56,21 @@ class SoftnetStat(object):
 
 class SoftnetStatTop(BaseTop):
     """ Utility for monitoring packets processing/errors distribution per CPU """
-    def __init__(self):
+
+    align = ['l'] + ['r'] * 5
+
+    def __init__(self, numa=None):
         BaseTop.__init__(self)
         specific_options = [
             Option('--softnet-stat-file', default='/proc/net/softnet_stat',
                    help='Option for testing on MacOS purpose.'),
         ]
+        self.numa = numa
         self.specific_options.extend(specific_options)
+
+    def post_optparse(self):
+        if not self.numa:
+            self.numa = Numa(fake=self.options.random)
 
     def parse(self):
         with open(self.options.softnet_stat_file) as softnet_stat:
@@ -73,8 +81,20 @@ class SoftnetStatTop(BaseTop):
         print self.current
         self.diff = [data - self.previous[cpu] for cpu, data in enumerate(self.current)]
 
+    def make_header(self):
+        return ["CPU", "total", "dropped", "time_squeeze", "cpu_collision", "received_rps"]
+
+    def make_rows(self):
+        return [[
+            wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
+            stat.total, stat.dropped, stat.time_squeeze, stat.cpu_collision, stat.received_rps
+        ]
+            for stat in self.repr_source()
+        ]
+
     def __repr__(self):
-        return "\n".join(map(str, [self.header] + self.repr_source()))
+        return wrap(BaseTop.header + '\n', Fore.LIGHTBLACK_EX) + \
+               str(make_table(self.make_header(), self.align, list(self.make_rows())))
 
 
 if __name__ == '__main__':
