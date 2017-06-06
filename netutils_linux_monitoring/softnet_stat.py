@@ -15,6 +15,7 @@ class SoftnetStat(object):
     time_squeeze = None
     cpu_collision = None
     received_rps = None
+    attributes = ['cpu', 'total', 'dropped', 'time_squeeze', 'cpu_collision', 'received_rps']
 
     def __init__(self, random=False):
         self.random = random
@@ -44,14 +45,7 @@ class SoftnetStat(object):
         ])
 
     def __eq__(self, other):
-        return all([
-            self.cpu == other.cpu,
-            self.total == other.total,
-            self.dropped == other.dropped,
-            self.time_squeeze == other.time_squeeze,
-            self.cpu_collision == other.cpu_collision,
-            self.received_rps == other.received_rps,
-        ])
+        return all([getattr(self, attr) == getattr(other, attr) for attr in self.attributes])
 
 
 class SoftnetStatTop(BaseTop):
