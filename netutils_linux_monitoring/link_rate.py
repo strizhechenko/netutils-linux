@@ -106,7 +106,7 @@ class LinkRateTop(BaseTop):
         return "{0:<14}".format(value) if column == maxvalue else "{0:>11}".format(value)
 
     def devices_list_validate(self, dev):
-        return path.isdir('/sys/class/net/{0}'.format(dev))
+        return self.options.random or path.isdir('/sys/class/net/{0}'.format(dev))
 
     def devices_list_regex(self):
         """ Returns list of network devices matching --device-regex """
