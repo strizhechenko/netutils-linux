@@ -61,9 +61,17 @@ class Assessor(object):
         buffers = netdevinfo.get('buffers') or {}
         return {
             'queues': self.grade_int(queues, 2, 8),
-            'driver': self.grade_str(netdevinfo.get('driver').get('driver'),
-                                     good=['ixgbe', 'igb', 'mlx4_en', 'i40e'],
-                                     bad=['r8169', 'ATL1E', 'e1000', 'e1000e', '8139too']),
+            'driver': {
+                'mlx5_core': 10,                        # 7500 mbit/s
+                'mlx4_en': 9,                           # 6500 mbit/s
+                'i40e': 8,                              # 6000 mbit/s
+                'ixgbe': 7,                             # 4000 mbit/s
+                'igb': 6,                               # 400 mbit/s
+                'bnx2x': 4,                             # 100 mbit/s
+                'e1000e': 3,                            # 80 mbit/s
+                'e1000': 3,                             # 50 mbit/s
+                'r8169': 1, 'ATL1E': 1, '8139too': 1,   # real trash, you should never use it
+            }.get(netdevinfo.get('driver').get('driver'), 2),
             'buffers': {
                 'cur': self.grade_int(buffers.get('cur'), 256, 4096),
                 'max': self.grade_int(buffers.get('max'), 256, 4096),
