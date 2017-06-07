@@ -25,6 +25,8 @@ All these top-like utils don't require root priveledges or sudo usage. So you ca
 .. code :: shell
   pip install --user netutils-linux
 
+Brief explanation about highlighting colors for CPU and device groups: green and red are for NUMA-nodes, blue and yellow for CPU sockets. Screenshots are taken from different hosts with different hardware.
+
 network-top
 ~~~~~~~~~~~
 Most useful util in this repo that includes all top-like utils and allow to monitor interrupts, soft interrupts, network processing statistic for devices and CPUs.
