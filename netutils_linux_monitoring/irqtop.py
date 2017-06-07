@@ -59,6 +59,8 @@ class IrqTop(BaseTop):
                 line = line[1: cpu_count + 1] + [line[-1]]
             output_lines.append(line)
         align_map = ['r'] * cpu_count + ['l']
+        output_lines.insert(1, self.diff_total + ['TOTAL'])
+        output_lines.insert(2, [''] * (cpu_count + 1))
         table = make_table(output_lines[0], align_map, output_lines[1:])
         return BaseTop.header + str(table)
 
