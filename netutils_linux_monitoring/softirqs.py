@@ -45,7 +45,10 @@ class Softirqs(BaseTop):
                 self.repr_source().get('NET_TX')[:active_cpu_count]
             ))
         ]
-        return BaseTop.header + str(make_table(header, ['l', 'r', 'r'], rows))
+        table = make_table(header, ['l', 'r', 'r'], rows)
+        if self.options.clear:
+            return BaseTop.header + str(table)
+        return str(table)
 
 
 if __name__ == '__main__':

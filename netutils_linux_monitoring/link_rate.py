@@ -77,7 +77,10 @@ class LinkRateTop(BaseTop):
             yield [_dev] + [repr_source[dev][stat] for stat in self.stats]
 
     def __repr__(self):
-        return BaseTop.header + str(make_table(self.make_header(), self.align_map, list(self.make_rows())))
+        table = make_table(self.make_header(), self.align_map, list(self.make_rows()))
+        if self.options.clear:
+            return BaseTop.header + str(table)
+        return str(table)
 
     def __parse_dev__(self, dev):
         return dict((stat, self.__parse_dev_stat__(dev, stat)) for stat in self.stats)

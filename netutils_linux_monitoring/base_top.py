@@ -40,7 +40,9 @@ class BaseTop(object):
                         "will be '1 234 567'"),
             Option('--random', default=False, action='store_true',
                    help="Shows random diff data instead of real evaluation. "
-                        "Helpful for testing on static files")
+                        "Helpful for testing on static files"),
+            Option('--no-clear', default=True, dest='clear', action='store_false',
+                   help="Don't clear screen after each iteration. May be useful in scripts/logging to file."),
         ]
 
     def parse_options(self):
@@ -76,7 +78,8 @@ class BaseTop(object):
                 self.options.iterations -= 1
                 sleep(self.options.interval)
                 self.tick()
-                system('clear')
+                if self.options.clear:
+                    system('clear')
                 if self.diff:
                     print self
         except KeyboardInterrupt:

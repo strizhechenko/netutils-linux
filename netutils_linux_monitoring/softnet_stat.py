@@ -71,7 +71,6 @@ class SoftnetStatTop(BaseTop):
             return [SoftnetStat(self.options.random).parse_string(row, cpu) for cpu, row in data]
 
     def eval(self):
-        print self.current
         self.diff = [data - self.previous[cpu] for cpu, data in enumerate(self.current)]
 
     def make_header(self):
@@ -86,7 +85,10 @@ class SoftnetStatTop(BaseTop):
         ]
 
     def __repr__(self):
-        return BaseTop.header + str(make_table(self.make_header(), self.align, list(self.make_rows())))
+        table = make_table(self.make_header(), self.align, list(self.make_rows()))
+        if self.options.clear:
+            return BaseTop.header + str(table)
+        return str(table)
 
 
 if __name__ == '__main__':

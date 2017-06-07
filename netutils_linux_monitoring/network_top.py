@@ -108,12 +108,15 @@ class NetworkTop(BaseTop):
         return wrap_header("Load per cpu:") + str(table)
 
     def __repr__(self):
-        return "\n".join([
+        output = [
             BaseTop.header,
             self.__repr_irq(),
             self.__repr_cpu(),
             self.__repr_dev(),
-        ])
+        ]
+        if not self.options.clear:
+            del output[0]
+        return "\n".join(output)
 
     def parse_options(self):
         """ Tricky way to gather all options in one util without conflicts, parse them and do some logic after parse """
