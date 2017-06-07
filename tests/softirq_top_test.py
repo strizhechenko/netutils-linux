@@ -10,7 +10,7 @@ class SoftirqsTest(unittest.TestCase):
         for cpu in ('dualcore', 'i7'):
             for i in xrange(1, 6):
                 top = Softirqs()
-                top.parse_options()
+                top.parse_options(options={'random': True})
                 top.options.softirqs_file = 'tests/softirqs/{0}/softirqs{1}'.format(cpu, i)
                 self.assertIn('NET_RX', top.parse())
 
