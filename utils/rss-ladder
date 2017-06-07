@@ -87,7 +87,7 @@ tune() {
 	local cpu_bound="$2"
 	local postfix="$3"
 	local queue_count
-	echo "- Распределение прерываний $dev ($postfix) на сокете $cpu_bound"
+	echo "- distribute interrupts of $dev ($postfix) on socket $cpu_bound"
 	interrtupts "$dev" "$postfix" | cat -n > /tmp/interrupts.$dev
 	queue_count="$(wc -l < /tmp/interrupts.$dev)"
 	socket_cpu_list "$cpu_bound" "$queue_count" | cat -n > /tmp/cpu.$cpu_bound
