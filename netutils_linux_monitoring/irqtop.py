@@ -1,20 +1,30 @@
+# coding=utf-8
+
 from random import randint
 from copy import deepcopy
 from optparse import Option
 from netutils_linux_monitoring.base_top import BaseTop
+from netutils_linux_monitoring.colors import colorize_cpu_list, wrap_header, wrap
+from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.layout import make_table
 
 
 class IrqTop(BaseTop):
     """ Utility for monitoring hardware interrupts distribution """
     diff_total = None
 
-    def __init__(self):
+    def __init__(self, numa=None):
         BaseTop.__init__(self)
         specific_options = [
             Option('--interrupts-file', default='/proc/interrupts',
                    help='Option for testing on MacOS purpose.')
         ]
+        self.numa = numa
         self.specific_options.extend(specific_options)
+
+    def post_optparse(self):
+        if not self.numa:
+            self.numa = Numa(fake=self.options.random)
 
     def __int(self, line):
         return [self.int(item) for item in line.strip().split()]
@@ -35,17 +45,22 @@ class IrqTop(BaseTop):
         self.diff_total = self.eval_diff_total()
 
     def __repr__(self):
+        cpu_count = 0
+        output_lines = list()
         if not self.diff_total:
-            return self.header
-        header = ['Total:'] + map(str, self.diff_total)
-        output_lines = [self.header, "\t".join(str(x) for x in header)]
+            return ""
         for line in self.repr_source():
             if line[0] == 'CPU0':
-                line.insert(0, ' ')
-            elif self.skip_zero_line(line):
+                cpu_count = len(line)
+                line = colorize_cpu_list(line, self.numa) + ['']
+            elif self.skip_zero_line(line):  # hiding useless data such a kind of interrupt etc
                 continue
-            output_lines.append("\t".join(map(str, line)))
-        return "\n".join(output_lines)
+            else:  # make line with irq counters as compact as we can, it can be very long!
+                line = line[1: cpu_count + 1] + [line[-1]]
+            output_lines.append(line)
+        align_map = ['r'] * cpu_count + ['l']
+        table = make_table(output_lines[0], align_map, output_lines[1:])
+        return BaseTop.header + str(table)
 
     def eval_diff_total_column(self, column, cpucount):
         """ returns sum of all interrupts on given CPU """
