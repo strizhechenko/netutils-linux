@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from colorama import Style, Fore
+from colorama import Style
 from optparse import OptionParser, OptionConflictError
 from netutils_linux_monitoring import IrqTop
 from netutils_linux_monitoring import Softirqs
@@ -109,7 +109,7 @@ class NetworkTop(BaseTop):
 
     def __repr__(self):
         return "\n".join([
-            wrap(self.header, Fore.LIGHTBLACK_EX),
+            BaseTop.header,
             self.__repr_irq(),
             self.__repr_cpu(),
             self.__repr_dev(),

@@ -6,6 +6,8 @@ from optparse import Option
 from collections import namedtuple
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
+from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.colors import wrap, ColorsNode
 
 Stat = namedtuple('Stat', ['filename', 'shortname'])
 
@@ -27,8 +29,9 @@ class LinkRateTop(BaseTop):
         Stat('tx_bytes', 'tx-bytes'),
         Stat('tx_errors', 'tx-errors')
     ]
+    align_map = None
 
-    def __init__(self):
+    def __init__(self, numa=None):
         BaseTop.__init__(self)
         specific_options = [
             Option('--assert', '--assert-mode', default=False, dest='assert_mode',
@@ -46,6 +49,7 @@ class LinkRateTop(BaseTop):
             Option('--kbits', default=False, action='store_true'),
             Option('--mbits', default=True, action='store_true'),
         ]
+        self.numa = numa
         self.specific_options.extend(specific_options)
 
     def parse(self):
@@ -59,7 +63,7 @@ class LinkRateTop(BaseTop):
                     self.diff[dev][stat] = randint(0, 10000)
                 else:
                     self.diff[dev][stat] = data[stat] - \
-                        self.previous[dev][stat]
+                                           self.previous[dev][stat]
 
     def make_header(self):
         return ['Device'] + [stat.shortname for stat in self.stats]
@@ -67,16 +71,13 @@ class LinkRateTop(BaseTop):
     def make_rows(self):
         repr_source = self.repr_source()
         for dev in self.options.devices:
-            yield [dev] + [repr_source[dev][stat] for stat in self.stats]
+            dev_node = self.numa.devices.get(dev)
+            dev_color = ColorsNode.get(dev_node)
+            _dev = wrap(dev, dev_color)
+            yield [_dev] + [repr_source[dev][stat] for stat in self.stats]
 
     def __repr__(self):
-        return BaseTop.header + str(make_table(self.make_header(), rows=list(self.make_rows())))
-
-    def __repr_dev__(self, dev):
-        repr_source = self.current if not self.options.delta_mode else self.diff
-        data = [self.__indent__(n, self.spaces(repr_source[dev][stat]), -1)
-                for n, stat in enumerate(self.stats)]
-        return " ".join(data)
+        return BaseTop.header + str(make_table(self.make_header(), self.align_map, list(self.make_rows())))
 
     def __parse_dev__(self, dev):
         return dict((stat, self.__parse_dev_stat__(dev, stat)) for stat in self.stats)
@@ -135,6 +136,9 @@ class LinkRateTop(BaseTop):
                 stat for stat in self.stats if stat.shortname in simple_stats]
         self.unit_change()
         self.header = self.make_header()
+        self.align_map = ['l'] + ['r'] * (len(self.header) - 1)
+        if not self.numa:
+            self.numa = Numa(self.options.devices, self.options.random)
 
     def unit_change(self):
         if not any([self.options.bits, self.options.kbits, self.options.mbits]):
