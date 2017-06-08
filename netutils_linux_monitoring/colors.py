@@ -26,7 +26,7 @@ def colorize(value, warning, error):
     if value >= error:
         return wrap(value, Fore.RED)
     if value >= warning:
-        return wrap(value, Fore.YELLOW)
+        return wrap(value, Fore.LIGHTYELLOW_EX)
     return wrap(value, Fore.RESET)
 
 
