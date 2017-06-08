@@ -4,14 +4,14 @@ from colorama import Fore, Style
 ColorsNode = {
     0: Fore.GREEN,
     1: Fore.RED,
-    2: Fore.YELLOW,
+    2: Fore.LIGHTYELLOW_EX,
     3: Fore.BLUE,
     -1: Style.RESET_ALL,
 }
 
 ColorsSocket = {
     0: Fore.BLUE,
-    1: Fore.YELLOW,
+    1: Fore.LIGHTYELLOW_EX,
     2: Fore.RED,
     3: Fore.GREEN,
     -1: Style.RESET_ALL,
