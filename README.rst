@@ -3,9 +3,10 @@ netutils-linux
 
 .. image:: https://travis-ci.org/strizhechenko/netutils-linux.svg?branch=master
    :target: https://travis-ci.org/strizhechenko/netutils-linux
+ 
+It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging. Should work well with Python 2.6 and Python 2.7. Inspired by `packagecloud's blog post`_.
 
-It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging. Should work well with Python 2.6 and Python 2.7.
-
+.. _packagecloud's blog post: https://blog.packagecloud.io/eng/2016/06/22/monitoring-tuning-linux-networking-stack-receiving-data/
 .. _Carbon Reductor: http://www.carbonsoft.ru/products/carbon-reductor-5/
 
 Installation
@@ -25,6 +26,8 @@ All these top-like utils don't require root priveledges or sudo usage. So you ca
 .. code :: shell
   pip install --user netutils-linux
 
+Brief explanation about highlighting colors for CPU and device groups: green and red are for NUMA-nodes, blue and yellow for CPU sockets. Screenshots are taken from different hosts with different hardware.
+
 network-top
 ~~~~~~~~~~~
 Most useful util in this repo that includes all top-like utils and allow to monitor interrupts, soft interrupts, network processing statistic for devices and CPUs.
@@ -37,27 +40,27 @@ irqtop
 - based on /proc/interrupts file
 - Hides the interrupts with small rate to show a better picture.
 
-.. image:: https://cloud.githubusercontent.com/assets/3813830/26623612/b1873510-4607-11e7-930e-08d47975c578.gif
+.. image:: https://user-images.githubusercontent.com/3813830/26898412-470d2ddc-4be5-11e7-9b57-8bb3248db896.gif
 
 softirq-top
 ~~~~~~~~~~~
 - Show you a rate of receiving/transmitting packets
 - Based on /proc/softirqs
 
-.. image:: https://cloud.githubusercontent.com/assets/3813830/26623157/43b62ed4-4606-11e7-805c-aa727bab1ea6.gif
+.. image:: https://user-images.githubusercontent.com/3813830/26898413-470e6b98-4be5-11e7-8e11-c0caabfb8f5f.gif
 
 link-rate
 ~~~~~~~~~
 - Shows how many packets/bytes network interface receives/transmite and how many errors happened
 - Based on /sys/class/net/XXX/statistic/YYY files
 
-.. image:: https://cloud.githubusercontent.com/assets/3813830/26623155/437fd460-4606-11e7-8262-f994a05daf08.gif
+.. image:: https://user-images.githubusercontent.com/3813830/26898411-4707ebec-4be5-11e7-8013-aff315bc07d0.gif
 
 softnet-stat-top
 ~~~~~~~~~~~~~~~~
 Shows various statistic of packets processing per CPU.
 
-.. image:: https://cloud.githubusercontent.com/assets/3813830/26623156/43b2816c-4606-11e7-9450-cd21c579bb70.gif
+.. image:: https://user-images.githubusercontent.com/3813830/26898415-4726de3a-4be5-11e7-8003-7b4bb358111c.gif
 
 missed-pkts-monitor
 ~~~~~~~~~~~~~~~~~~~
