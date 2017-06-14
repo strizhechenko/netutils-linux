@@ -46,8 +46,14 @@ upload: test clean
 	# python setup.py bdist_wheel upload
 
 mac_run: env
+	. env/bin/activate && \
 	network-top --random \
 		--softirqs-file=./tests/softirqs/i7/softirqs1 \
 		--softnet-stat-file=./tests/softnet_stat/softnet_stat1 \
 		--interrupts-file=./tests/interrupts/singlequeue_8cpu/interrupts_short \
+		--devices=eth1,eth2,eth3
+
+mac_run_link_rate: env
+	. env/bin/activate && \
+	link-rate --random \
 		--devices=eth1,eth2,eth3

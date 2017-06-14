@@ -7,7 +7,7 @@ from collections import namedtuple
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
-from netutils_linux_monitoring.colors import wrap, ColorsNode
+from netutils_linux_monitoring.colors import wrap, ColorsNode, colorize
 
 Stat = namedtuple('Stat', ['filename', 'shortname'])
 
@@ -68,13 +68,22 @@ class LinkRateTop(BaseTop):
     def make_header(self):
         return ['Device'] + [stat.shortname for stat in self.stats]
 
+    @staticmethod
+    def colorize_stat(stat, value):
+        if 'errors' in stat.filename or 'dropped' in stat.filename:
+            return colorize(value, 1, 1)
+        return value
+
+    def colorize_stats(self, dev, repr_source):
+        return [self.colorize_stat(stat, repr_source[dev][stat]) for stat in self.stats]
+
     def make_rows(self):
         repr_source = self.repr_source()
         for dev in self.options.devices:
             dev_node = self.numa.devices.get(dev)
             dev_color = ColorsNode.get(dev_node)
             _dev = wrap(dev, dev_color)
-            yield [_dev] + [repr_source[dev][stat] for stat in self.stats]
+            yield [_dev] + self.colorize_stats(dev, repr_source)
 
     def __repr__(self):
         table = make_table(self.make_header(), self.align_map, list(self.make_rows()))
