@@ -1,9 +1,9 @@
-- Распределение прерываний eth0 (-rx-) на сокете 0
+- distribute interrupts of eth0 (-rx-) on socket 0
   - eth0: irq 58 eth0-rx-0 -> 0
   - eth0: irq 59 eth0-rx-1 -> 1
   - eth0: irq 60 eth0-rx-2 -> 2
   - eth0: irq 61 eth0-rx-3 -> 3
-- Распределение прерываний eth0 (-tx-) на сокете 0
+- distribute interrupts of eth0 (-tx-) on socket 0
   - eth0: irq 62 eth0-tx-0 -> 0
   - eth0: irq 63 eth0-tx-1 -> 1
   - eth0: irq 64 eth0-tx-2 -> 2
