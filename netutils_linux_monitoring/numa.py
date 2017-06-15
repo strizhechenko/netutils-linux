@@ -61,9 +61,11 @@ class Numa(object):
         stdout, _ = process.communicate()
         if process.returncode != 0:
             return None
-        layout = [row.split()[1:3] for row in stdout.strip().split('\n')][1:]
-        self.numa_layout = dict(enumerate([int(row[0]) for row in layout]))
-        self.socket_layout = dict(enumerate([int(row[1]) for row in layout]))
+        rows = stdout.strip().split('\n')
+        layouts = [map(int, row.split()[1:3]) for row in rows if 'NODE' not in row]
+        numa_layout, socket_layout = zip(*layouts)
+        self.numa_layout = dict(enumerate(numa_layout))
+        self.socket_layout = dict(enumerate(socket_layout))
 
 if __name__ == '__main__':
     numa = Numa()

@@ -43,31 +43,13 @@ class NetworkTop(BaseTop):
 
     def __repr_dev(self):
         top = self.tops.get('link-rate')
-        header = ['Device'] + [stat.shortname for stat in top.stats]
-        rows = list()
-        for dev in top.options.devices:
-            _dev = [wrap(dev, ColorsNode.get(self.numa.devices.get(dev)))]
-            stats = [top.repr_source()[dev][stat] for stat in top.stats]
-            rows.append(_dev + stats)
-        table = make_table(header, rows=rows)
+        table = make_table(top.make_header(), top.align_map, top.make_rows())
         return wrap_header("Network devices") + str(table)
 
     def __repr_irq(self):
         top = self.tops.get('irqtop')
-        cpu_count = 0
-        output_lines = list()
-        if not top.diff_total:
-            return ""
-        for line in top.repr_source():
-            if line[0] == 'CPU0':
-                cpu_count = len(line)
-                line = colorize_cpu_list(line, self.numa) + ['']
-            elif top.skip_zero_line(line):  # hiding useless data such a kind of interrupt etc
-                continue
-            else:
-                line = line[1: cpu_count + 1] + [line[-1]]
-            output_lines.append(line)
-        align_map = ['r'] * cpu_count + ['l']
+        output_lines, cpu_count = top.make_rows()
+        align_map = top.make_align_map(cpu_count)
         table = make_table(output_lines[0], align_map, output_lines[1:])
         return wrap_header("/proc/interrupts") + str(table)
 
@@ -132,7 +114,3 @@ class NetworkTop(BaseTop):
             top.options = self.options
             if hasattr(top, 'post_optparse'):
                 top.post_optparse()
-
-
-if __name__ == '__main__':
-    NetworkTop().run()
