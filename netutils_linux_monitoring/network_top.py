@@ -120,7 +120,3 @@ class NetworkTop(BaseTop):
             top.options = self.options
             if hasattr(top, 'post_optparse'):
                 top.post_optparse()
-
-
-if __name__ == '__main__':
-    NetworkTop().run()

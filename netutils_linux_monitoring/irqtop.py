@@ -88,7 +88,3 @@ class IrqTop(BaseTop):
     def skip_zero_line(self, line):
         """ returns decision about hide not changed row in __repr__() """
         return self.options.delta_small_hide and not self.has_diff(line) and self.options.delta_mode
-
-
-if __name__ == '__main__':
-    IrqTop().run()

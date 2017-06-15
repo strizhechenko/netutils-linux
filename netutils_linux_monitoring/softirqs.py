@@ -47,7 +47,3 @@ class Softirqs(BaseTop):
         ]
         table = make_table(header, ['l', 'r', 'r'], rows)
         return self.__repr_table__(table)
-
-
-if __name__ == '__main__':
-    Softirqs().run()
