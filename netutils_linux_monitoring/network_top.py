@@ -43,13 +43,7 @@ class NetworkTop(BaseTop):
 
     def __repr_dev(self):
         top = self.tops.get('link-rate')
-        header = ['Device'] + [stat.shortname for stat in top.stats]
-        rows = list()
-        for dev in top.options.devices:
-            _dev = [wrap(dev, ColorsNode.get(self.numa.devices.get(dev)))]
-            stats = [top.repr_source()[dev][stat] for stat in top.stats]
-            rows.append(_dev + stats)
-        table = make_table(header, rows=rows)
+        table = make_table(top.make_header(), top.align_map, top.make_rows())
         return wrap_header("Network devices") + str(table)
 
     def __repr_irq(self):
