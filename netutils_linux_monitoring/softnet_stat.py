@@ -33,14 +33,17 @@ class SoftnetStat(object):
         self.cpu, self.total, self.dropped, self.time_squeeze, self.cpu_collision, self.received_rps = data
         return self
 
+    def sub(self, attr, other, _min, _max):
+        return randint(_min, _max) if self.random else getattr(self, attr) - getattr(other, attr)
+
     def __sub__(self, other):
         return SoftnetStat().parse_list([
             self.cpu,
-            randint(1, 100000) if self.random else self.total - other.total,
-            randint(0, 1) if self.random else self.dropped - other.dropped,
-            randint(0, 10) if self.random else self.time_squeeze - other.time_squeeze,
-            0 if self.random else self.cpu_collision - other.cpu_collision,
-            randint(0, 5) if self.random else self.received_rps - other.received_rps
+            self.sub('total', other, 1, 10000),
+            self.sub('dropped', other, 0, 1),
+            self.sub('time_squeeze', other, 0, 10),
+            self.sub('cpu_collision', other, 0, 0),
+            self.sub('received_rps', other, 0, 5),
         ])
 
     def __eq__(self, other):
