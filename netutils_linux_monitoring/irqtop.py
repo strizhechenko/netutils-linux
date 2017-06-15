@@ -44,7 +44,11 @@ class IrqTop(BaseTop):
                         self.diff[i][j] = column - self.previous[i][j]
         self.diff_total = self.eval_diff_total()
 
-    def __repr__(self):
+    @staticmethod
+    def make_align_map(cpu_count):
+        return ['r'] * cpu_count + ['l']
+
+    def make_rows(self):
         cpu_count = 0
         output_lines = list()
         if not self.diff_total:
@@ -58,7 +62,11 @@ class IrqTop(BaseTop):
             else:  # make line with irq counters as compact as we can, it can be very long!
                 line = line[1: cpu_count + 1] + [line[-1]]
             output_lines.append(line)
-        align_map = ['r'] * cpu_count + ['l']
+        return output_lines, cpu_count
+
+    def __repr__(self):
+        output_lines, cpu_count = self.make_rows()
+        align_map = self.make_align_map(cpu_count)
         output_lines.insert(1, self.diff_total + ['TOTAL'])
         output_lines.insert(2, [''] * (cpu_count + 1))
         table = make_table(output_lines[0], align_map, output_lines[1:])

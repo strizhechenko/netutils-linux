@@ -54,20 +54,8 @@ class NetworkTop(BaseTop):
 
     def __repr_irq(self):
         top = self.tops.get('irqtop')
-        cpu_count = 0
-        output_lines = list()
-        if not top.diff_total:
-            return ""
-        for line in top.repr_source():
-            if line[0] == 'CPU0':
-                cpu_count = len(line)
-                line = colorize_cpu_list(line, self.numa) + ['']
-            elif top.skip_zero_line(line):  # hiding useless data such a kind of interrupt etc
-                continue
-            else:
-                line = line[1: cpu_count + 1] + [line[-1]]
-            output_lines.append(line)
-        align_map = ['r'] * cpu_count + ['l']
+        output_lines, cpu_count = top.make_rows()
+        align_map = top.make_align_map(cpu_count)
         table = make_table(output_lines[0], align_map, output_lines[1:])
         return wrap_header("/proc/interrupts") + str(table)
 
