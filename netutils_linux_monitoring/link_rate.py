@@ -87,9 +87,7 @@ class LinkRateTop(BaseTop):
 
     def __repr__(self):
         table = make_table(self.make_header(), self.align_map, list(self.make_rows()))
-        if self.options.clear:
-            return BaseTop.header + str(table)
-        return str(table)
+        return self.__repr_table__(table)
 
     def __parse_dev__(self, dev):
         return dict((stat, self.__parse_dev_stat__(dev, stat)) for stat in self.stats)

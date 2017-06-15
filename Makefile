@@ -57,3 +57,8 @@ mac_run_link_rate: env
 	. env/bin/activate && \
 	link-rate --random \
 		--devices=eth1,eth2,eth3
+
+mac_run_irqtop: env
+	. env/bin/activate && \
+		irqtop --random \
+		--interrupts-file=./tests/interrupts/singlequeue_8cpu/interrupts_short
