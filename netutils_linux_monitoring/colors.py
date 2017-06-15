@@ -23,11 +23,7 @@ def wrap_header(string):
 
 
 def colorize(value, warning, error):
-    if value >= error:
-        return wrap(value, Fore.RED)
-    if value >= warning:
-        return wrap(value, Fore.LIGHTYELLOW_EX)
-    return wrap(value, Fore.RESET)
+    return wrap(value, Fore.RED if value >= error else Fore.LIGHTYELLOW_EX if value >= warning else Fore.RESET)
 
 
 def wrap(word, color):
