@@ -86,9 +86,7 @@ class SoftnetStatTop(BaseTop):
 
     def __repr__(self):
         table = make_table(self.make_header(), self.align, list(self.make_rows()))
-        if self.options.clear:
-            return BaseTop.header + str(table)
-        return str(table)
+        return self.__repr_table__(table)
 
 
 if __name__ == '__main__':

@@ -106,6 +106,11 @@ class BaseTop(object):
             number /= 1000
         return (str(number % 1000) + sep + output).strip()
 
+    def __repr_table__(self, table):
+        if self.options.clear:
+            return BaseTop.header + str(table)
+        return str(table)
+
     def parse(self):
         """ Should read some file(s) into python structure (dict/list) """
         raise NotImplementedError

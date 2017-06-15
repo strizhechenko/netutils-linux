@@ -70,9 +70,7 @@ class IrqTop(BaseTop):
         output_lines.insert(1, self.diff_total + ['TOTAL'])
         output_lines.insert(2, [''] * (cpu_count + 1))
         table = make_table(output_lines[0], align_map, output_lines[1:])
-        if self.options.clear:
-            return BaseTop.header + str(table)
-        return str(table)
+        return self.__repr_table__(table)
 
     def eval_diff_total_column(self, column, cpucount):
         """ returns sum of all interrupts on given CPU """
