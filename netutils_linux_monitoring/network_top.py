@@ -2,10 +2,7 @@
 
 from colorama import Style
 from optparse import OptionParser, OptionConflictError
-from netutils_linux_monitoring import IrqTop
-from netutils_linux_monitoring import Softirqs
-from netutils_linux_monitoring import SoftnetStatTop
-from netutils_linux_monitoring import LinkRateTop
+from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRateTop
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, ColorsNode, wrap, colorize, wrap_header
