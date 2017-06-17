@@ -72,19 +72,18 @@ class NetworkTop(BaseTop):
         fields = [wrap(word, Style.BRIGHT) for word in fields]
         rows = [
             [
-                wrap("CPU{0}".format(softnet_stat.cpu), cpu_color(softnet_stat.cpu, self.numa)),
+                wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
                 colorize(irq, irqtop.irq_warning, irqtop.irq_error),
                 colorize(softirq_rx, softirq_top.net_rx_warning, softirq_top.net_rx_error),
                 colorize(softirq_tx, softirq_top.net_tx_warning, softirq_top.net_tx_error),
-                colorize(softnet_stat.total, softnet_stat_top.total_warning, softnet_stat_top.total_error),
-                colorize(softnet_stat.dropped, softnet_stat_top.dropped_warning, softnet_stat_top.dropped_error),
-                colorize(softnet_stat.time_squeeze, softnet_stat_top.time_squeeze_warning,
-                         softnet_stat_top.time_squeeze_error),
-                colorize(softnet_stat.cpu_collision, softnet_stat_top.cpu_collision_warning,
+                colorize(stat.total, softnet_stat_top.total_warning, softnet_stat_top.total_error),
+                colorize(stat.dropped, softnet_stat_top.dropped_warning, softnet_stat_top.dropped_error),
+                colorize(stat.time_squeeze, softnet_stat_top.time_squeeze_warning, softnet_stat_top.time_squeeze_error),
+                colorize(stat.cpu_collision, softnet_stat_top.cpu_collision_warning,
                          softnet_stat_top.cpu_collision_error),
-                softnet_stat.received_rps
+                stat.received_rps
             ]
-            for irq, softirq_rx, softirq_tx, softnet_stat in network_output
+            for irq, softirq_rx, softirq_tx, stat in network_output
         ]
         table = make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows)
         return wrap_header("Load per cpu:") + str(table)
