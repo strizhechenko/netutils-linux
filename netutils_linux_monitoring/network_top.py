@@ -70,6 +70,11 @@ class NetworkTop(BaseTop):
             "total", "dropped", "time_squeeze", "cpu_collision", "received_rps",
         ]
         fields = [wrap(word, Style.BRIGHT) for word in fields]
+        rows = self.__repr_cpu_make_rows(irqtop, network_output, softirq_top, softnet_stat_top)
+        table = make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows)
+        return wrap_header("Load per cpu:") + str(table)
+
+    def __repr_cpu_make_rows(self, irqtop, network_output, softirq_top, softnet_stat_top):
         rows = [
             [
                 wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
@@ -85,8 +90,7 @@ class NetworkTop(BaseTop):
             ]
             for irq, softirq_rx, softirq_tx, stat in network_output
         ]
-        table = make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows)
-        return wrap_header("Load per cpu:") + str(table)
+        return rows
 
     def __repr__(self):
         output = [
