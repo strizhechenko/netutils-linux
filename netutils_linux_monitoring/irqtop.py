@@ -4,7 +4,7 @@ from random import randint
 from copy import deepcopy
 from optparse import Option
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import colorize_cpu_list, wrap_header, wrap
+from netutils_linux_monitoring.colors import colorize_cpu_list
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.layout import make_table
 
