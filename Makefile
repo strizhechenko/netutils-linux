@@ -62,3 +62,13 @@ mac_run_irqtop: env
 	. env/bin/activate && \
 		irqtop --random \
 		--interrupts-file=./tests/interrupts/singlequeue_8cpu/interrupts_short
+
+mac_run_softirq_top: env
+	. env/bin/activate && \
+	softirq-top --random \
+		--softirqs-file=./tests/softirqs/i7/softirqs1
+
+mac_run_softnet_stat_top:
+	. env/bin/activate && \
+	softnet-stat-top --random \
+		--softnet-stat-file=./tests/softnet_stat/softnet_stat1
