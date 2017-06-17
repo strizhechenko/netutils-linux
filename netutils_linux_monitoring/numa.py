@@ -67,6 +67,7 @@ class Numa(object):
         self.numa_layout = dict(enumerate(numa_layout))
         self.socket_layout = dict(enumerate(socket_layout))
 
+
 if __name__ == '__main__':
     numa = Numa()
     print 'SOCKET', numa.socket_layout

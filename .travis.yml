@@ -7,4 +7,4 @@ python:
 
 install: make env
 
-script: make test
+script: make test lint

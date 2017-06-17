@@ -3,7 +3,7 @@ from optparse import Option
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
-from netutils_linux_monitoring.colors import cpu_color, wrap
+from netutils_linux_monitoring.colors import cpu_color, wrap, colorize
 
 
 class SoftnetStat(object):
@@ -54,6 +54,10 @@ class SoftnetStatTop(BaseTop):
     """ Utility for monitoring packets processing/errors distribution per CPU """
 
     align = ['l'] + ['r'] * 5
+    total_warning, total_error = 300000, 900000
+    dropped_warning = dropped_error = 1
+    time_squeeze_warning, time_squeeze_error = 1, 300
+    cpu_collision_warning, cpu_collision_error = 1, 1000
 
     def __init__(self, numa=None):
         BaseTop.__init__(self)
@@ -82,7 +86,11 @@ class SoftnetStatTop(BaseTop):
     def make_rows(self):
         return [[
             wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
-            stat.total, stat.dropped, stat.time_squeeze, stat.cpu_collision, stat.received_rps
+            colorize(stat.total, self.total_warning, self.total_error),
+            colorize(stat.dropped, self.dropped_warning, self.dropped_error),
+            colorize(stat.time_squeeze, self.time_squeeze_warning, self.time_squeeze_error),
+            colorize(stat.cpu_collision, self.cpu_collision_warning, self.cpu_collision_error),
+            stat.received_rps
         ]
             for stat in self.repr_source()
         ]

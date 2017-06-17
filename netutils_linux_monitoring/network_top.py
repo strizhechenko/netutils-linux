@@ -5,7 +5,7 @@ from optparse import OptionParser, OptionConflictError
 from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRateTop
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, ColorsNode, wrap, colorize, wrap_header
+from netutils_linux_monitoring.colors import cpu_color, wrap, colorize, wrap_header
 from netutils_linux_monitoring.layout import make_table
 
 
@@ -57,34 +57,37 @@ class NetworkTop(BaseTop):
         # all these evaluations are better to put in softirqs.parse()
         active_cpu = softirq_top.__active_cpu_count__(
             softirq_top.current)
-        softirq_rx = softirq_top.repr_source().get('NET_RX')[:active_cpu]
-        softirq_tx = softirq_top.repr_source().get('NET_TX')[:active_cpu]
         softnet_stat_top_output = softnet_stat_top.repr_source()
         network_output = zip(irqtop.diff_total,
-                             softirq_rx,
-                             softirq_tx,
+                             softirq_top.repr_source()['NET_RX'][:active_cpu],
+                             softirq_top.repr_source()['NET_TX'][:active_cpu],
                              softnet_stat_top_output)
         fields = [
             "CPU", "Interrupts", "NET RX", "NET TX",
             "total", "dropped", "time_squeeze", "cpu_collision", "received_rps",
         ]
         fields = [wrap(word, Style.BRIGHT) for word in fields]
-        rows = [
-            [
-                wrap("CPU{0}".format(softnet_stat.cpu), cpu_color(softnet_stat.cpu, self.numa)),
-                colorize(irq, 40000, 80000),
-                colorize(softirq_rx, 40000, 80000),
-                colorize(softirq_tx, 20000, 30000),
-                colorize(softnet_stat.total, 300000, 900000),
-                colorize(softnet_stat.dropped, 1, 1),
-                colorize(softnet_stat.time_squeeze, 1, 300),
-                colorize(softnet_stat.cpu_collision, 1, 1000),
-                softnet_stat.received_rps
-            ]
-            for irq, softirq_rx, softirq_tx, softnet_stat in network_output
-        ]
+        rows = self.__repr_cpu_make_rows(irqtop, network_output, softirq_top, softnet_stat_top)
         table = make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows)
         return wrap_header("Load per cpu:") + str(table)
+
+    def __repr_cpu_make_rows(self, irqtop, network_output, softirq_top, softnet_stat_top):
+        rows = [
+            [
+                wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
+                colorize(irq, irqtop.irq_warning, irqtop.irq_error),
+                colorize(softirq_rx, softirq_top.net_rx_warning, softirq_top.net_rx_error),
+                colorize(softirq_tx, softirq_top.net_tx_warning, softirq_top.net_tx_error),
+                colorize(stat.total, softnet_stat_top.total_warning, softnet_stat_top.total_error),
+                colorize(stat.dropped, softnet_stat_top.dropped_warning, softnet_stat_top.dropped_error),
+                colorize(stat.time_squeeze, softnet_stat_top.time_squeeze_warning, softnet_stat_top.time_squeeze_error),
+                colorize(stat.cpu_collision, softnet_stat_top.cpu_collision_warning,
+                         softnet_stat_top.cpu_collision_error),
+                stat.received_rps
+            ]
+            for irq, softirq_rx, softirq_tx, stat in network_output
+        ]
+        return rows
 
     def __repr__(self):
         output = [

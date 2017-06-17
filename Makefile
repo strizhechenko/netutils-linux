@@ -32,7 +32,8 @@ clean:
 	find . -name '*~' -exec rm -f {} \;
 
 lint:
-	flake8 twitter > violations.flake8.txt
+	. env/bin/activate && \
+	flake8 netutils_linux_monitoring netutils_linux_tuning netutils_linux_hardware
 
 coverage:
 	nosetests --with-coverage --cover-package=twitter
@@ -62,3 +63,13 @@ mac_run_irqtop: env
 	. env/bin/activate && \
 		irqtop --random \
 		--interrupts-file=./tests/interrupts/singlequeue_8cpu/interrupts_short
+
+mac_run_softirq_top: env
+	. env/bin/activate && \
+	softirq-top --random \
+		--softirqs-file=./tests/softirqs/i7/softirqs1
+
+mac_run_softnet_stat_top:
+	. env/bin/activate && \
+	softnet-stat-top --random \
+		--softnet-stat-file=./tests/softnet_stat/softnet_stat1
