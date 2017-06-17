@@ -8,6 +8,11 @@ from netutils_linux_monitoring.colors import wrap, cpu_color
 class Softirqs(BaseTop):
     """ Utility for monitoring software interrupts distribution """
 
+    net_rx_warning = 40000
+    net_rx_error = 80000
+    net_tx_warning = 20000
+    net_tx_error = 30000
+
     def __init__(self, numa=None):
         BaseTop.__init__(self)
         specific_options = [

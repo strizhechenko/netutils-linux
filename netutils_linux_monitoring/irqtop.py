@@ -4,7 +4,7 @@ from random import randint
 from copy import deepcopy
 from optparse import Option
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import colorize_cpu_list
+from netutils_linux_monitoring.colors import colorize_cpu_list, colorize
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.layout import make_table
 
@@ -12,6 +12,8 @@ from netutils_linux_monitoring.layout import make_table
 class IrqTop(BaseTop):
     """ Utility for monitoring hardware interrupts distribution """
     diff_total = None
+    irq_warning = 40000
+    irq_error = 80000
 
     def __init__(self, numa=None):
         BaseTop.__init__(self)
@@ -67,7 +69,7 @@ class IrqTop(BaseTop):
     def __repr__(self):
         output_lines, cpu_count = self.make_rows()
         align_map = self.make_align_map(cpu_count)
-        output_lines.insert(1, self.diff_total + ['TOTAL'])
+        output_lines.insert(1, [colorize(irq, self.irq_warning, self.irq_error) for irq in self.diff_total] + ['TOTAL'])
         output_lines.insert(2, [''] * (cpu_count + 1))
         table = make_table(output_lines[0], align_map, output_lines[1:])
         return self.__repr_table__(table)

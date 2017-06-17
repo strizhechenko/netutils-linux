@@ -54,7 +54,10 @@ class SoftnetStatTop(BaseTop):
     """ Utility for monitoring packets processing/errors distribution per CPU """
 
     align = ['l'] + ['r'] * 5
-
+    total_warning, total_error = 300000, 900000
+    dropped_warning = dropped_error = 1
+    time_squeeze_warning, time_squeeze_error = 1, 300
+    cpu_collision_warning, cpu_collision_error = 1, 1000
     def __init__(self, numa=None):
         BaseTop.__init__(self)
         specific_options = [

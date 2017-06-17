@@ -60,12 +60,10 @@ class NetworkTop(BaseTop):
         # all these evaluations are better to put in softirqs.parse()
         active_cpu = softirq_top.__active_cpu_count__(
             softirq_top.current)
-        softirq_rx = softirq_top.repr_source().get('NET_RX')[:active_cpu]
-        softirq_tx = softirq_top.repr_source().get('NET_TX')[:active_cpu]
         softnet_stat_top_output = softnet_stat_top.repr_source()
         network_output = zip(irqtop.diff_total,
-                             softirq_rx,
-                             softirq_tx,
+                             softirq_top.repr_source()['NET_RX'][:active_cpu],
+                             softirq_top.repr_source()['NET_TX'][:active_cpu],
                              softnet_stat_top_output)
         fields = [
             "CPU", "Interrupts", "NET RX", "NET TX",
@@ -75,13 +73,15 @@ class NetworkTop(BaseTop):
         rows = [
             [
                 wrap("CPU{0}".format(softnet_stat.cpu), cpu_color(softnet_stat.cpu, self.numa)),
-                colorize(irq, 40000, 80000),
-                colorize(softirq_rx, 40000, 80000),
-                colorize(softirq_tx, 20000, 30000),
-                colorize(softnet_stat.total, 300000, 900000),
-                colorize(softnet_stat.dropped, 1, 1),
-                colorize(softnet_stat.time_squeeze, 1, 300),
-                colorize(softnet_stat.cpu_collision, 1, 1000),
+                colorize(irq, irqtop.irq_warning, irqtop.irq_error),
+                colorize(softirq_rx, softirq_top.net_rx_warning, softirq_top.net_rx_error),
+                colorize(softirq_tx, softirq_top.net_tx_warning, softirq_top.net_tx_error),
+                colorize(softnet_stat.total, softnet_stat_top.total_warning, softnet_stat_top.total_error),
+                colorize(softnet_stat.dropped, softnet_stat_top.dropped_warning, softnet_stat_top.dropped_error),
+                colorize(softnet_stat.time_squeeze, softnet_stat_top.time_squeeze_warning,
+                         softnet_stat_top.time_squeeze_error),
+                colorize(softnet_stat.cpu_collision, softnet_stat_top.cpu_collision_warning,
+                         softnet_stat_top.cpu_collision_error),
                 softnet_stat.received_rps
             ]
             for irq, softirq_rx, softirq_tx, softnet_stat in network_output
