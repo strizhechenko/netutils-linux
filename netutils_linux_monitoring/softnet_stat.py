@@ -58,6 +58,7 @@ class SoftnetStatTop(BaseTop):
     dropped_warning = dropped_error = 1
     time_squeeze_warning, time_squeeze_error = 1, 300
     cpu_collision_warning, cpu_collision_error = 1, 1000
+
     def __init__(self, numa=None):
         BaseTop.__init__(self)
         specific_options = [

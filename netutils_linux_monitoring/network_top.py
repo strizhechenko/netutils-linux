@@ -8,7 +8,7 @@ from netutils_linux_monitoring import SoftnetStatTop
 from netutils_linux_monitoring import LinkRateTop
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import cpu_color, colorize_cpu_list, ColorsNode, wrap, colorize, wrap_header
+from netutils_linux_monitoring.colors import cpu_color, wrap, colorize, wrap_header
 from netutils_linux_monitoring.layout import make_table
 
 
