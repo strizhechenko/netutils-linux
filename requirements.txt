@@ -4,3 +4,4 @@ pyyaml
 ipaddress
 six
 colorama
+flake8
