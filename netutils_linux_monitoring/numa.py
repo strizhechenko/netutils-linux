@@ -4,6 +4,7 @@
 
 import os
 from subprocess import Popen, PIPE
+from six import print_
 
 
 class Numa(object):
@@ -70,5 +71,5 @@ class Numa(object):
 
 if __name__ == '__main__':
     numa = Numa()
-    print 'SOCKET', numa.socket_layout
-    print 'NUMA', numa.numa_layout
+    print_('SOCKET', numa.socket_layout)
+    print_('NUMA', numa.numa_layout)

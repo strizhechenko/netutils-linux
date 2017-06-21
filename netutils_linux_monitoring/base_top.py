@@ -3,7 +3,8 @@ from time import sleep
 from random import randint
 from optparse import Option, OptionParser, OptionConflictError
 from colorama import Fore
-from colors import wrap
+from six import print_, iteritems
+from netutils_linux_monitoring.colors import wrap
 
 
 class BaseTop(object):
@@ -55,7 +56,7 @@ class BaseTop(object):
                 pass
         self.options, _ = parser.parse_args()
         if options:
-            for name, value in options.iteritems():
+            for name, value in iteritems(options):
                 setattr(self.options, name, value)
         if hasattr(self, 'post_optparse'):
             # pylint: disable=E1101
@@ -84,9 +85,9 @@ class BaseTop(object):
                 if self.options.clear:
                     system('clear')
                 if self.diff:
-                    print self
+                    print_(self)
         except KeyboardInterrupt:
-            print
+            print_()
             exit(0)
 
     def repr_source(self):

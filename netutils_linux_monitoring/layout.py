@@ -2,6 +2,7 @@
 
 """ Everything about console output's layout """
 
+from six import print_
 from prettytable import PrettyTable
 
 
@@ -20,8 +21,8 @@ def make_table(header, align_map=None, rows=None):
             try:
                 t.add_row(row)
             except Exception as err:
-                print 'fields:', t.field_names
-                print 'row:', row
-                print 'rows:', rows
+                print_('fields:', t.field_names)
+                print_('row:', row)
+                print_('rows:', rows)
                 raise err
     return t

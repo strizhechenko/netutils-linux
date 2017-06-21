@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
+from six.moves import xrange
 from netutils_linux_monitoring.softirqs import Softirqs
 
 

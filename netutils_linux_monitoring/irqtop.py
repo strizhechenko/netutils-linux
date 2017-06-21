@@ -3,6 +3,7 @@
 from random import randint
 from copy import deepcopy
 from optparse import Option
+from six.moves import xrange
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import colorize_cpu_list, colorize
 from netutils_linux_monitoring.numa import Numa

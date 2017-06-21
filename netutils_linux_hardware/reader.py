@@ -3,8 +3,8 @@
 
 import os
 import yaml
-from parsers import YAMLLike, CPULayout, DiskInfo, MemInfo
-from netdev import ReaderNet
+from netutils_linux_hardware.parsers import YAMLLike, CPULayout, DiskInfo, MemInfo
+from netutils_linux_hardware.netdev import ReaderNet
 
 
 class Reader(object):

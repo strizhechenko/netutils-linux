@@ -1,6 +1,12 @@
 import re
+import math
 import yaml
+from six import print_
 
+
+def round_(x, d=0):
+    p = 10 ** d
+    return float(math.floor((x * p) + math.copysign(0.5, x)))/p
 
 def extract(dictionary, key_sequence):
     key_sequence.reverse()
@@ -35,9 +41,10 @@ class Assessor(object):
             return int(value)
         return 0
 
-    def grade_int(self, value, _min, _max, scale=10):
-        value = self.any2int(value)
-        return min(scale, max(1, int(1 + round((value - _min) * (scale - 1.) / (_max - _min)))))
+    @staticmethod
+    def grade_int(value, _min, _max, scale=10):
+        value = Assessor.any2int(value)
+        return min(scale, max(1, int(1 + round_((value - _min) * (scale - 1.) / (_max - _min)))))
 
     @staticmethod
     def grade_str(value, good=None, bad=None):

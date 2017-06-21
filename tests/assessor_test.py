@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from unittest import TestCase, main
+from six import iteritems
 from netutils_linux_hardware import Assessor
 
 
@@ -30,7 +31,7 @@ class AssessorTest(TestCase):
             "Dlink": 1,
             "Realtek": 1,
         }
-        for k, v in expected.iteritems():
+        for k, v in iteritems(expected):
             self.assertEqual(Assessor.grade_str(k, good, bad), v)
 
     def test_grade_fact(self):

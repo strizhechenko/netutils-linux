@@ -8,6 +8,16 @@ test: env
 		./tests/assessor_test.py & \
 		./tests/link_rate_units.sh
 
+test3: env3
+	. env3/bin/activate && \
+		./tests/rss-ladder && \
+		./tests/rx_buffers_test.py && \
+		./tests/softnet_stat_test.py && \
+		./tests/server-info-show && \
+		./tests/softirq_top_test.py && \
+		./tests/assessor_test.py & \
+		./tests/link_rate_units.sh
+
 help:
 	@echo "  env         create a development environment using virtualenv"
 	@echo "  deps        install dependencies"
@@ -22,6 +32,13 @@ env:
 	. env/bin/activate && \
 	pip install --upgrade -r requirements.txt && \
 	python setup.py install
+
+env3:
+	rm -rf env3
+	virtualenv --python=python3 env3 && \
+		. env3/bin/activate && \
+		pip install --upgrade -r requirements.txt && \
+		python setup.py install
 
 clean:
 	rm -fr env

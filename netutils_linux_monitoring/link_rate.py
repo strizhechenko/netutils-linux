@@ -4,6 +4,7 @@ from copy import deepcopy
 from random import randint
 from optparse import Option
 from collections import namedtuple
+from six import print_, iteritems
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
@@ -57,7 +58,7 @@ class LinkRateTop(BaseTop):
 
     def eval(self):
         self.diff = deepcopy(self.current)
-        for dev, data in self.current.iteritems():
+        for dev, data in iteritems(self.current):
             for stat in self.stats:
                 if self.options.random:
                     self.diff[dev][stat] = randint(0, 10000)
@@ -130,7 +131,7 @@ class LinkRateTop(BaseTop):
             devices = self.options.devices.split(',')
         else:
             devices = self.devices_list_regex()
-        return filter(self.devices_list_validate, devices)
+        return list(filter(self.devices_list_validate, devices))
 
     def post_optparse(self):
         """ Asserting and applying parsing options """
@@ -167,4 +168,4 @@ class LinkRateTop(BaseTop):
 
 
 if __name__ == '__main__':
-    print LinkRateTop().run()
+    print_(LinkRateTop().run())
