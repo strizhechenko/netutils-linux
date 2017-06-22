@@ -12,7 +12,7 @@ class RxBuffersIncreaserTest(unittest.TestCase):
     """
 
     def setUp(self):
-        self.rxbi = RxBuffersIncreaser(upper_bound=2048)
+        self.rxbi = RxBuffersIncreaser()
 
     def test_4096(self):
         self.assertEqual(self.rxbi.determine(256, 4096), 2048)

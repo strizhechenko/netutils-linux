@@ -1,4 +1,5 @@
 from os import system, path
+from six import print_
 from subprocess import Popen, PIPE
 
 
@@ -30,8 +31,8 @@ class RxBuffersIncreaser(object):
 
         ns = '/etc/sysconfig/network-scripts/'
         with open(path.join(ns, 'ifcfg-' + self.dev)) as config:
-            if any(line for line in config.xreadlines() if 'ETHTOOL_OPTS' in line):
-                print "{0}'s RX ring buffer already manually tuned.".format(self.dev)
+            if any(line for line in config.readlines() if 'ETHTOOL_OPTS' in line):
+                print_("{0}'s RX ring buffer already manually tuned.".format(self.dev))
                 exit(0)
         process = Popen(['ethtool', '-i', self.dev], stdout=PIPE, stderr=PIPE)
         _, _ = process.communicate()
@@ -63,9 +64,9 @@ class RxBuffersIncreaser(object):
         self.investigate()
         self.prefered = self.determine()
         if self.prefered == self.current:
-            print "{0}'s RX ring buffer already has fine size.".format(self.dev)
+            print_("{0}'s RX ring buffer already has fine size.".format(self.dev))
             return
         assert self.prefered, "Can't eval prefered RX ring buffer size."
         command = 'ethtool -G {0} rx {1}'.format(self.dev, self.prefered)
-        print 'run:', command
+        print_('run:', command)
         system(command)

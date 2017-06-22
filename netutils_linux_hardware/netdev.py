@@ -2,8 +2,9 @@
 # pylint: disable=C0111, C0103
 
 import os
-from interrupts import IRQQueueCounter
-from parsers import EthtoolBuffers, ReductorMirror, BrctlOutput, YAMLLike
+from six import iteritems
+from netutils_linux_hardware.interrupts import IRQQueueCounter
+from netutils_linux_hardware.parsers import EthtoolBuffers, ReductorMirror, BrctlOutput, YAMLLike
 
 
 class ReaderNet(object):
@@ -38,7 +39,7 @@ class ReaderNet(object):
             driverfile = os.path.join(self.datadir, 'ethtool/i', netdev)
             driverdata = YAMLLike().parse_file_safe(driverfile)
             if driverdata:
-                driverdata = dict((k, v) for k, v in driverdata.iteritems() if k in keys_required)
+                driverdata = dict((k, v) for k, v in iteritems(driverdata) if k in keys_required)
             else:
                 driverdata = dict()
             self.netdevs[netdev]['driver'] = driverdata

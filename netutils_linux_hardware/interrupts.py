@@ -1,7 +1,8 @@
 # coding: utf-8
 # pylint: disable=C0111, C0103
 
-from parsers import Parser
+from six import print_
+from netutils_linux_hardware.parsers import Parser
 
 
 class NICQueues(object):
@@ -28,7 +29,7 @@ class NICQueues(object):
                 return kind
             if kind.isdigit() or kind == 'TxRx':
                 return 'rxtx'
-            print queue
+            print_(queue)
         if queue.count(',') > 0 and dev in queue:
             return 'shared'
         return 'unknown'
@@ -47,7 +48,7 @@ class IRQQueueCounter(Parser):
     @staticmethod
     def all_netdev_queues(text, netdevs):
         for line in text.strip().split('\n'):
-            for netdev in netdevs.iterkeys():
+            for netdev in netdevs:
                 if netdev in line:
                     yield line.strip()
                     continue
@@ -65,5 +66,5 @@ class IRQQueueCounter(Parser):
         netdevs = kwargs['netdevs']
         cpu_count = self.irq2cpucount(text)
         queues_names = self.irq2queues(text, cpu_count, netdevs)
-        for netdev in netdevs.iterkeys():
+        for netdev in netdevs:
             netdevs[netdev]['queues'] = NICQueues().parse(queues_names, netdev)
