@@ -1,12 +1,12 @@
 import re
 import math
 import yaml
-from six import print_
 
 
 def round_(x, d=0):
     p = 10 ** d
     return float(math.floor((x * p) + math.copysign(0.5, x)))/p
+
 
 def extract(dictionary, key_sequence):
     key_sequence.reverse()
