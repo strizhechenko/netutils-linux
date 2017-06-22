@@ -4,7 +4,8 @@ os: linux
 
 python:
   - "2.7"
+  - "3.6"
 
 install: make env
 
-script: make test lint
+script: make test test3 lint
