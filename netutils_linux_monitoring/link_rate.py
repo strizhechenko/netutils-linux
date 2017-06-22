@@ -100,7 +100,7 @@ class LinkRateTop(BaseTop):
         with open(filename) as devfile:
             file_value = int(devfile.read().strip())
             if 'bytes' in stat.filename:
-                return self.__repr_bytes(file_value)
+                return int(self.__repr_bytes(file_value))
             return file_value
 
     def __repr_bytes(self, value):

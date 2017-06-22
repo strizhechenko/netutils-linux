@@ -56,14 +56,25 @@ class Numa(object):
         with open(filename) as fd:
             return int(fd.read().strip())
 
+    def detect_layouts_fallback(self):
+        """
+        In case of running in container where lscpu didn't work
+        """
+        process = Popen(['nproc'], stdout=PIPE, stderr=PIPE)
+        stdout, _ = process.communicate()
+        if process.returncode != 0:
+            return None
+        cpu_count = int(stdout.strip())
+        self.socket_layout = self.numa_layout = dict(enumerate([0] * cpu_count))
+
     def detect_layouts(self):
         """ Determine NUMA and sockets layout """
         process = Popen(['lscpu', '-e'], stdout=PIPE, stderr=PIPE)
         stdout, _ = process.communicate()
         if process.returncode != 0:
-            return None
-        rows = stdout.strip().split('\n')
-        layouts = [list(map(int, row.split()[1:3])) for row in rows if 'NODE' not in row]
+            return self.detect_layouts_fallback()
+        rows = stdout.strip().split(b'\n')
+        layouts = [list(map(int, row.split()[1:3])) for row in rows if b'NODE' not in row]
         numa_layout, socket_layout = zip(*layouts)
         self.numa_layout = dict(enumerate(numa_layout))
         self.socket_layout = dict(enumerate(socket_layout))
