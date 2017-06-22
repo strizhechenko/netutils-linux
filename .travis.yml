@@ -8,4 +8,4 @@ python:
 
 install: make env
 
-script: make test test3 lint
+script: make test lint

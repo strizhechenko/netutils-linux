@@ -1,16 +1,16 @@
-test: env
+test:
 	. env/bin/activate && \
 		./tests/rss-ladder && \
 		./tests/server-info-show && \
-		./tests/link_rate_units.sh && \
-		pytest netutils_linux_*/
+		./tests/link_rate_units.sh
+	pytest netutils_linux_*/
 
-test3: env3
-	. env3/bin/activate && \
-		./tests/rss-ladder && \
-		./tests/server-info-show && \
-		./tests/link_rate_units.sh && \
-		pytest netutils_linux_*/
+env:
+	rm -rf env
+	virtualenv env && \
+	. env/bin/activate && \
+	pip install --upgrade -r requirements.txt && \
+	python setup.py install
 
 help:
 	@echo "  env         create a development environment using virtualenv"
@@ -20,12 +20,13 @@ help:
 	@echo "  coverage    run tests with code coverage"
 	@echo "  test        run tests"
 
-env:
-	rm -rf env
-	virtualenv env && \
-	. env/bin/activate && \
-	pip install --upgrade -r requirements.txt && \
-	python setup.py install
+# only for localhost MacOS testing.
+test3:
+	. env3/bin/activate && \
+		./tests/rss-ladder && \
+		./tests/server-info-show && \
+		./tests/link_rate_units.sh
+	pytest netutils_linux_*/
 
 env3:
 	rm -rf env3
