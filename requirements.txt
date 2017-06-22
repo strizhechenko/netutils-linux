@@ -5,3 +5,4 @@ ipaddress
 six
 colorama
 flake8
+pytest

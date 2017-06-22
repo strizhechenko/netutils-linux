@@ -80,7 +80,8 @@ class SoftnetStatTop(BaseTop):
     def eval(self):
         self.diff = [data - self.previous[cpu] for cpu, data in enumerate(self.current)]
 
-    def make_header(self):
+    @staticmethod
+    def make_header():
         return ["CPU", "total", "dropped", "time_squeeze", "cpu_collision", "received_rps"]
 
     def make_rows(self):

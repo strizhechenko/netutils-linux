@@ -3,6 +3,7 @@
 
 import os
 import yaml
+from six import print_, iteritems
 
 
 class Parser(object):
@@ -29,7 +30,7 @@ class ReductorMirror(Parser):
     @staticmethod
     def parse(text):
         lines = dict((line.split(' ', 1)) for line in text.strip().split('\n'))
-        for netdev, conf in lines.iteritems():
+        for netdev, conf in iteritems(lines):
             output = dict()
             output['conf'] = dict()
             output['conf']['vlan'], output['conf']['ip'] = conf.split()
@@ -53,8 +54,8 @@ class DiskInfo(object):
         }
         """
         d2 = dict()
-        for k, v in d.iteritems():
-            for k2, v2 in v.iteritems():
+        for k, v in iteritems(d):
+            for k2, v2 in iteritems(v):
                 if not d2.get(k2):
                     d2[k2] = dict()
                 d2[k2][k] = v2
@@ -78,11 +79,11 @@ class DiskInfo(object):
             types = ['SSD', 'HDD']
             if not text:
                 return dict()
-            return dict((k, types[v]) for k, v in yaml.load(text
-                                                            .replace(":", ": ")
-                                                            .replace("/sys/block/", "")
-                                                            .replace("/queue/rotational", ""))
-                        .iteritems())
+            return dict((k, types[v]) for k, v in iteritems(yaml.load(text
+                                                                      .replace(":", ": ")
+                                                                      .replace("/sys/block/", "")
+                                                                      .replace("/queue/rotational", ""))
+                                                            ))
 
     class DiskSizeInfo(Parser):
 
@@ -116,7 +117,7 @@ class MemInfo(YAMLLike):
     )
 
     def parse(self, text):
-        return dict((k, int(v.replace(' kB', ''))) for k, v in yaml.load(text).iteritems() if k in self.keys_required)
+        return dict((k, int(v.replace(' kB', ''))) for k, v in iteritems(yaml.load(text)) if k in self.keys_required)
 
 
 class CPULayout(Parser):
@@ -141,7 +142,7 @@ class BrctlOutput(Parser):
             elif key.count('.') == 0:
                 dev = key
             else:
-                print 'QinQ not supported yet. Device: {0}'.format(key)
+                print_('QinQ not supported yet. Device: {0}'.format(key))
                 raise NotImplementedError
 
             netdevs[dev] = dict()

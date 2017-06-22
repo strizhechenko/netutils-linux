@@ -1,4 +1,5 @@
 from optparse import Option
+from six import iteritems
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
@@ -30,7 +31,7 @@ class Softirqs(BaseTop):
         with open(self.options.softirqs_file) as fd:
             metrics = [line.strip().split(':')
                        for line in fd.readlines() if ':' in line]
-            return dict((k, map(int, v.strip().split())) for k, v in metrics)
+            return dict((k, list(map(int, v.strip().split()))) for k, v in metrics)
 
     @staticmethod
     def __active_cpu_count__(data):
@@ -38,17 +39,15 @@ class Softirqs(BaseTop):
 
     def eval(self):
         self.diff = dict((key, self.list_diff(
-            data, self.previous[key])) for key, data in self.current.iteritems())
+            data, self.previous[key])) for key, data in iteritems(self.current))
 
     def __repr__(self):
         active_cpu_count = self.__active_cpu_count__(self.current)
         header = ["CPU", "NET_RX", "NET_TX"]
+        net_rx = self.repr_source().get('NET_RX')[:active_cpu_count]
+        net_tx = self.repr_source().get('NET_TX')[:active_cpu_count]
         rows = [
-            [wrap("CPU{0}".format(n), cpu_color(n, self.numa)), v[0], v[1]] for n, v in
-            enumerate(zip(
-                self.repr_source().get('NET_RX')[:active_cpu_count],
-                self.repr_source().get('NET_TX')[:active_cpu_count]
-            ))
+            [wrap("CPU{0}".format(n), cpu_color(n, self.numa)), v[0], v[1]] for n, v in enumerate(zip(net_rx, net_tx))
         ]
         table = make_table(header, ['l', 'r', 'r'], rows)
         return self.__repr_table__(table)

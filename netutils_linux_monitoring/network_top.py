@@ -2,6 +2,7 @@
 
 from colorama import Style
 from optparse import OptionParser, OptionConflictError
+from six import iteritems, itervalues
 from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRateTop
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
@@ -25,16 +26,16 @@ class NetworkTop(BaseTop):
                          fake=self.options.random)
 
     def parse(self):
-        return dict((top_name, _top.parse()) for top_name, _top in self.tops.iteritems())
+        return dict((top_name, _top.parse()) for top_name, _top in iteritems(self.tops))
 
     def eval(self):
         if all((self.current, self.previous)):
-            self.diff = dict((top_name, _top.diff) for top_name, _top in self.tops.iteritems())
+            self.diff = dict((top_name, _top.diff) for top_name, _top in iteritems(self.tops))
 
     def tick(self):
         self.previous = self.current
         self.current = self.parse()
-        for _top in self.tops.itervalues():
+        for _top in itervalues(self.tops):
             _top.tick()
         self.eval()
 
@@ -103,14 +104,14 @@ class NetworkTop(BaseTop):
     def parse_options(self):
         """ Tricky way to gather all options in one util without conflicts, parse them and do some logic after parse """
         parser = OptionParser()
-        for top in self.tops.itervalues():
+        for top in itervalues(self.tops):
             for opt in top.specific_options:
                 try:
                     parser.add_option(opt)
                 except OptionConflictError:
                     pass  # I don't know how to make a set of options
         self.options, _ = parser.parse_args()
-        for top in self.tops.itervalues():
+        for top in itervalues(self.tops):
             top.options = self.options
             if hasattr(top, 'post_optparse'):
                 top.post_optparse()
