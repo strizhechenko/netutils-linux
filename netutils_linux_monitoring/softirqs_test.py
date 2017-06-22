@@ -15,5 +15,6 @@ class SoftirqsTest(unittest.TestCase):
                 top.options.softirqs_file = 'tests/softirqs/{0}/softirqs{1}'.format(cpu, i)
                 self.assertIn('NET_RX', top.parse())
 
+
 if __name__ == '__main__':
     unittest.main()

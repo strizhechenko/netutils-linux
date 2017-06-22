@@ -60,5 +60,6 @@ class AssessorTest(TestCase):
         self.assertEqual(assessor.grade_list([1], 1, 4), 1)
         self.assertEqual(assessor.grade_list([1, 2, 3, 4], 1, 4), 10)
 
+
 if __name__ == '__main__':
     main()
