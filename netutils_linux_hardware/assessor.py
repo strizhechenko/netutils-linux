@@ -44,7 +44,7 @@ class Assessor(object):
     @staticmethod
     def grade_int(value, _min, _max, scale=10):
         value = Assessor.any2int(value)
-        return min(scale, max(1, int(1 + round_((value - _min) * (scale - 1.) / (_max - _min)))))
+        return min(scale, max(1, int(1 + round_((value - _min) * (scale - 1.) / (_max - _min)+.001))))
 
     @staticmethod
     def grade_str(value, good=None, bad=None):
