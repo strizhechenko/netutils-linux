@@ -1,8 +1,7 @@
 test:
-	. env/bin/activate && \
-		./tests/rss-ladder && \
-		./tests/server-info-show && \
-		./tests/link_rate_units.sh
+	./tests/rss-ladder
+	./tests/server-info-show
+	./tests/link_rate_units.sh
 	pytest netutils_linux_*/
 
 env:
@@ -19,6 +18,21 @@ help:
 	@echo "  lint        check style with flake8"
 	@echo "  coverage    run tests with code coverage"
 	@echo "  test        run tests"
+
+# only for localhost MacOS testing.
+test2:
+	. env2/bin/activate && \
+		./tests/rss-ladder && \
+		./tests/server-info-show && \
+		./tests/link_rate_units.sh
+	pytest netutils_linux_*/
+
+env2:
+	rm -rf env2
+	virtualenv --python=python2 env2 && \
+		. env2/bin/activate && \
+		pip install --upgrade -r requirements.txt && \
+		python setup.py install
 
 # only for localhost MacOS testing.
 test3:
