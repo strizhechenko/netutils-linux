@@ -58,7 +58,6 @@ clean:
 	find . -name '*~' -exec rm -f {} \;
 
 lint:
-	. env/bin/activate && \
 	flake8 netutils_linux_monitoring netutils_linux_tuning netutils_linux_hardware
 
 coverage:
