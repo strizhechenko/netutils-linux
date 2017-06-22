@@ -31,7 +31,7 @@ class RxBuffersIncreaser(object):
 
         ns = '/etc/sysconfig/network-scripts/'
         with open(path.join(ns, 'ifcfg-' + self.dev)) as config:
-            if any(line for line in config.xreadlines() if 'ETHTOOL_OPTS' in line):
+            if any(line for line in config.readlines() if 'ETHTOOL_OPTS' in line):
                 print_("{0}'s RX ring buffer already manually tuned.".format(self.dev))
                 exit(0)
         process = Popen(['ethtool', '-i', self.dev], stdout=PIPE, stderr=PIPE)

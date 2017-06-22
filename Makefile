@@ -1,22 +1,16 @@
 test: env
 	. env/bin/activate && \
 		./tests/rss-ladder && \
-		./tests/rx_buffers_test.py && \
-		./tests/softnet_stat_test.py && \
 		./tests/server-info-show && \
-		./tests/softirq_top_test.py && \
-		./tests/assessor_test.py & \
-		./tests/link_rate_units.sh
+		./tests/link_rate_units.sh && \
+		pytest netutils_linux_*/
 
 test3: env3
 	. env3/bin/activate && \
 		./tests/rss-ladder && \
-		./tests/rx_buffers_test.py && \
-		./tests/softnet_stat_test.py && \
 		./tests/server-info-show && \
-		./tests/softirq_top_test.py && \
-		./tests/assessor_test.py & \
-		./tests/link_rate_units.sh
+		./tests/link_rate_units.sh && \
+		pytest netutils_linux_*/
 
 help:
 	@echo "  env         create a development environment using virtualenv"

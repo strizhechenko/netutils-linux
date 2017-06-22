@@ -63,7 +63,7 @@ class Numa(object):
         if process.returncode != 0:
             return None
         rows = stdout.strip().split('\n')
-        layouts = [map(int, row.split()[1:3]) for row in rows if 'NODE' not in row]
+        layouts = [list(map(int, row.split()[1:3])) for row in rows if 'NODE' not in row]
         numa_layout, socket_layout = zip(*layouts)
         self.numa_layout = dict(enumerate(numa_layout))
         self.socket_layout = dict(enumerate(socket_layout))
