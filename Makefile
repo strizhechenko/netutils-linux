@@ -58,7 +58,7 @@ clean:
 	find . -name '*~' -exec rm -f {} \;
 
 lint:
-	flake8 netutils_linux_monitoring netutils_linux_tuning netutils_linux_hardware
+	./flake8.sh netutils_linux_monitoring netutils_linux_tuning netutils_linux_hardware
 
 coverage:
 	nosetests --with-coverage --cover-package=twitter
