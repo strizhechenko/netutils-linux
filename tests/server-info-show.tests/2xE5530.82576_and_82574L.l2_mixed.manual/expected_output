@@ -1,9 +1,9 @@
 cpu:
   info:
     Architecture: x86_64
-    BogoMIPS: 4847.11
+    BogoMIPS: 4847
     Byte Order: Little Endian
-    CPU MHz: 2399.943
+    CPU MHz: 2399
     CPU family: 6
     CPU op-mode(s): 32-bit, 64-bit
     CPU(s): 16

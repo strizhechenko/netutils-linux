@@ -32,3 +32,6 @@ class Reader(object):
             "disk": DiskInfo().parse(self.path('disks_types'), self.path('lsblk_sizes'), self.path('lsblk_models')),
             "memory": MemInfo().parse_file_safe(self.path('meminfo')),
         }
+        for key in ('CPU MHz', 'BogoMIPS'):
+            if self.info.get('cpu', {}).get('info', {}).get(key):
+                self.info['cpu']['info'][key] = int(self.info['cpu']['info'][key])
