@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# i40e driver sometimes bugs with RSS
+# enabling and disabling RPS enables RSS, IDK why
+# enabling both RPS and RSS is bad idea, so we disable it later
+# don't use this script periodically, it can cause packet drops.
+# only required for system startup.
+
+i40e_tune() {
+	local dev="$1"
+	local all_cpus
+	all_cpus="$(python -c "print hex(int('1' * $(nproc), 2))" | sed 's/^0x//g')"
+	for rps_cpus in /sys/class/net/$dev/queues/*/rps_cpus; do
+		echo "$all_cpus" > $rps_cpus
+	done
+	rss-ladder "$dev"
+	for rps_cpus in /sys/class/net/$dev/queues/*/rps_cpus; do
+		echo 0 > $rps_cpus
+	done
+}
+
+i40e_tune "$@"
