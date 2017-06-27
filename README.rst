@@ -1,9 +1,13 @@
 netutils-linux
 ==============
 
-.. image:: https://travis-ci.org/strizhechenko/netutils-linux.svg?branch=master
+.. |travis| image:: https://travis-ci.org/strizhechenko/netutils-linux.svg?branch=master
    :target: https://travis-ci.org/strizhechenko/netutils-linux
- 
+.. |landscape| image:: https://landscape.io/github/strizhechenko/netutils-linux/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/strizhechenko/netutils-linux/master
+
+|travis| |landscape|
+
 It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging. Should work well with Python 2.6 and Python 2.7. Inspired by `packagecloud's blog post`_.
 
 .. _packagecloud's blog post: https://blog.packagecloud.io/eng/2016/06/22/monitoring-tuning-linux-networking-stack-receiving-data/
