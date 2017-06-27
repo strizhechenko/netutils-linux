@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+from six import print_
 
 dmi_vendor_table = [
     "KVM",
@@ -62,8 +63,9 @@ def main():
         detect_vm_dmi()
     )
     if any(checks):
-        print checks
+        print_(checks)
         return 1
+
 
 if __name__ == '__main__':
     main()
