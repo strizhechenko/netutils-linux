@@ -62,12 +62,6 @@ Shows various statistic of packets processing per CPU.
 
 .. image:: https://user-images.githubusercontent.com/3813830/26898415-4726de3a-4be5-11e7-8003-7b4bb358111c.gif
 
-missed-pkts-monitor
-~~~~~~~~~~~~~~~~~~~
-- Detects when were packets missed (maybe it will give some idea of correlation with something)
-- Easy to use in tactical, not strategic debug, without deployment of graphite/influxdb
-- Based on `ip -s -s link` output
-
 Tuning
 ------
 
