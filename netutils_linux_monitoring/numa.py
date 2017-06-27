@@ -69,12 +69,12 @@ class Numa(object):
 
     def detect_layouts(self):
         """ Determine NUMA and sockets layout """
-        process = Popen(['lscpu', '-e'], stdout=PIPE, stderr=PIPE)
+        process = Popen(['lscpu', '-p'], stdout=PIPE, stderr=PIPE)
         stdout, _ = process.communicate()
         if process.returncode != 0:
             return self.detect_layouts_fallback()
-        rows = stdout.strip().split(b'\n')
-        layouts = [list(map(int, row.split()[1:3])) for row in rows if b'NODE' not in row]
+        rows = [row for row in stdout.strip().split(b'\n') if not row.startswith(b'#')]
+        layouts = [list(map(int, row.split(b',')[2:4])) for row in rows]
         numa_layout, socket_layout = zip(*layouts)
         self.numa_layout = dict(enumerate(numa_layout))
         self.socket_layout = dict(enumerate(socket_layout))
