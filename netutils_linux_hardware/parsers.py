@@ -125,7 +125,8 @@ class CPULayout(Parser):
     def parse(text):
         output = dict((line.strip().split())
                       for line in text.strip().split('\n'))
-        del output['CPU']
+        if output.get('CPU'):
+            del output['CPU']
         return output
 
 

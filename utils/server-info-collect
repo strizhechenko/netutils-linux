@@ -18,7 +18,7 @@ server_info() {
 	lsblk -nlb --output SIZE,MOUNTPOINT,NAME > $TMPDIR/lsblk_sizes
 	lspci > $TMPDIR/lspci
 	lscpu > $TMPDIR/lscpu_info
-	lscpu --extended=CPU,SOCKET > $TMPDIR/lscpu_layout
+	lscpu -p | grep -v '^#' | awk -F ',' '{print $1" "$3}' > $TMPDIR/lscpu_layout
 	fgrep '' /sys/block/*/queue/rotational | egrep -v '[0-9]+/' >  $TMPDIR/disks_types || true
 }
 
