@@ -41,11 +41,12 @@ usage() {
 
 __socket_cpu_list() {
 	local socket="$1"
-	lscpu --extended=CPU,SOCKET | grep -v CPU | egrep "[0-9]+[ ]+$socket$" | awk '{print $1}'
+	# $1 $3 -> CPU SOCKET
+	lscpu -p | grep -v '^#' | awk -F ',' '{print $1" "$3}' | egrep "[0-9]+[ ]+$socket$" | awk '{print $1}'
 }
 
 cpus_list_all() {
-	lscpu --extended=CPU,SOCKET | grep -v CPU | awk '{print $1}'
+	lscpu -p | grep -v '^#' | awk -F ',' '{print $1}'
 }
 
 socket_cpu_list() {
