@@ -1,17 +1,21 @@
 from colorama import Fore, Style
 
+try:
+    yellow = Fore.LIGHTYELLOW_EX
+except AttributeError:
+    yellow = Fore.YELLOW
 
 ColorsNode = {
     0: Fore.GREEN,
     1: Fore.RED,
-    2: Fore.LIGHTYELLOW_EX,
+    2: yellow,
     3: Fore.BLUE,
     -1: Style.RESET_ALL,
 }
 
 ColorsSocket = {
     0: Fore.BLUE,
-    1: Fore.LIGHTYELLOW_EX,
+    1: yellow,
     2: Fore.RED,
     3: Fore.GREEN,
     -1: Style.RESET_ALL,
@@ -23,7 +27,7 @@ def wrap_header(string):
 
 
 def colorize(value, warning, error):
-    return wrap(value, Fore.RED if value >= error else Fore.LIGHTYELLOW_EX if value >= warning else Fore.RESET)
+    return wrap(value, Fore.RED if value >= error else yellow if value >= warning else Fore.RESET)
 
 
 def wrap(word, color):
