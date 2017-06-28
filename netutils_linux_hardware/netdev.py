@@ -2,9 +2,9 @@
 # pylint: disable=C0111, C0103
 
 import os
-from six import iteritems
+from six import iteritems, print_
 from netutils_linux_hardware.interrupts import IRQQueueCounter
-from netutils_linux_hardware.parsers import EthtoolBuffers, ReductorMirror, BrctlOutput, YAMLLike
+from netutils_linux_hardware.parsers import EthtoolBuffers, ReductorMirror, BrctlOutput, YAMLLike, EthtoolFiles
 
 
 class ReaderNet(object):
@@ -17,8 +17,11 @@ class ReaderNet(object):
         self.net_dev_list()
 
     def net_dev_list_bridge(self):
-        bridges = self.path('brctl')
-        return BrctlOutput().parse_file_safe(bridges)
+        result = BrctlOutput().parse_file_safe(self.path('brctl'))
+        # well, it's more like a workaround for non Carbon Reductor hosts
+        if not result:
+            result = EthtoolFiles().parse_file_safe(self.path('ethtool/i'))
+        return result
 
     def net_dev_mirror_info(self):
         config_path = self.path('mirror_info.conf')

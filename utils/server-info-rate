@@ -3,6 +3,7 @@
 # pylint: disable=C0111, C0103
 
 import os
+from six import print_
 from netutils_linux_hardware.reader import Reader
 from netutils_linux_hardware.assessor import Assessor
 
@@ -19,7 +20,7 @@ def main():
         datadir = 'tests/autotune_network.tests/2xE5-2640.i350_and_82599ES.l2_mixed.masterconf'
         # datadir = 'tests/autotune_network.tests/kvm.l3.masterconf'
     data = Reader(datadir).info
-    print Assessor(data)
+    print_(Assessor(data))
 
 if __name__ == '__main__':
     main()

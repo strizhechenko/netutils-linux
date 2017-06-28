@@ -154,6 +154,28 @@ class BrctlOutput(Parser):
         return netdevs
 
 
+class EthtoolFiles(Parser):
+    def parse_file(self, filepath, **kwargs):
+        return self.parse(os.listdir(filepath))
+
+    def parse(self, netdev_keys):
+        netdevs = dict()
+        for key in netdev_keys:
+            if key.count('.') == 1:
+                dev, _ = key.split('.')
+            elif key.count('.') == 0:
+                dev = key
+            else:
+                print_('QinQ not supported yet. Device: {0}'.format(key))
+                raise NotImplementedError
+            netdevs[dev] = dict()
+            netdevs[dev]['conf'] = {
+                'vlan': key.count('.') == 1,
+                'ip': '',
+            }
+        return netdevs
+
+
 class EthtoolBuffers(Parser):
     @staticmethod
     def parse(text):
