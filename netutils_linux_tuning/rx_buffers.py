@@ -30,10 +30,11 @@ class RxBuffersIncreaser(object):
             return int(s.strip('RX:\t\n'))
 
         ns = '/etc/sysconfig/network-scripts/'
-        with open(path.join(ns, 'ifcfg-' + self.dev)) as config:
-            if any(line for line in config.readlines() if 'ETHTOOL_OPTS' in line):
-                print_("{0}'s RX ring buffer already manually tuned.".format(self.dev))
-                exit(0)
+        if path.exists(ns):  # don't check ifcfg on non RHEL-based systems.
+            with open(path.join(ns, 'ifcfg-' + self.dev)) as config:
+                if any(line for line in config.readlines() if 'ETHTOOL_OPTS' in line):
+                    print_("{0}'s RX ring buffer already manually tuned.".format(self.dev))
+                    exit(0)
         process = Popen(['ethtool', '-i', self.dev], stdout=PIPE, stderr=PIPE)
         _, _ = process.communicate()
         # silent fail if called for vlan/bridge/etc
