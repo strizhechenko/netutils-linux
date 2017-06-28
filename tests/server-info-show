@@ -18,7 +18,7 @@ run_test() {
 	if [ "$rc" = '0' ]; then
 		echo OK
 	else
-		diff -U 0 $testdata/$name/expected_output $TMPDIR/output
+		diff -U 5 $testdata/$name/expected_output $TMPDIR/output
 		echo FAIL
 	fi
 	return "$rc"

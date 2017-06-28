@@ -43,8 +43,8 @@ net:
       cur: 2048
       max: 4096
     conf:
-      ip: '-'
-      vlan: false
+      ip: ''
+      vlan: true
     driver:
       driver: i40e
       version: 1.5.10-k

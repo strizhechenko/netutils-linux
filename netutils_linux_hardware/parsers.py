@@ -34,7 +34,9 @@ class ReductorMirror(Parser):
             output = dict()
             output['conf'] = dict()
             output['conf']['vlan'], output['conf']['ip'] = conf.split()
-            output['conf']['vlan'] = (output['conf']['vlan'] == '-')
+            output['conf']['vlan'] = output['conf']['vlan'] != '-'
+            if output['conf']['ip'] == '-':
+                output['conf']['ip'] = ''
             lines[netdev] = output
         return lines
 

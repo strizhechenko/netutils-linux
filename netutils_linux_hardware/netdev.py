@@ -19,7 +19,7 @@ class ReaderNet(object):
         return ReductorMirror().parse_file_safe(self.path('mirror_info.conf'))
 
     def net_dev_list_bridge(self):
-        return BridgeOutput().parse_file_safe(self.path('bridge_links'))
+        return BridgeOutput().parse_file_safe(self.path('bridge_link'))
 
     def net_dev_list_ethtool(self):
         return EthtoolFiles().parse_file_safe(self.path('ethtool/i'))

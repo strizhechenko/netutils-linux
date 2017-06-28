@@ -1,7 +1,0 @@
-bridge name	bridge id		STP enabled	interfaces
-br0		8000.3cfdfea2f910	no		eth0
-br1		8000.3cfdfea2f910	no		eth0.376
-br2		8000.3cfdfea2f910	no		eth0.700
-br3		8000.3cfdfea2f910	no		eth0.83
-br4		8000.3cfdfea2f910	no		eth0.850
-br5		8000.3cfdfea2f910	no		eth0.919
