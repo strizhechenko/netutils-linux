@@ -2,7 +2,7 @@
 # pylint: disable=C0111, C0103
 
 import os
-from six import iteritems, print_
+from six import iteritems
 from netutils_linux_hardware.interrupts import IRQQueueCounter
 from netutils_linux_hardware.parsers import EthtoolBuffers, ReductorMirror, BrctlOutput, YAMLLike, EthtoolFiles
 
