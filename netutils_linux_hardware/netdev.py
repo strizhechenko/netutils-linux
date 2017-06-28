@@ -22,7 +22,7 @@ class ReaderNet(object):
         return BridgeOutput().parse_file_safe(self.path('bridge_link'))
 
     def net_dev_list_ethtool(self):
-        return EthtoolFiles().parse_file_safe(self.path('ethtool/i'))
+        return EthtoolFiles().parse_file(self.path('ethtool/i'))
 
     def net_dev_list_buffers(self):
         for netdev in self.netdevs:
