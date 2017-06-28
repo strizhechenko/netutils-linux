@@ -24,7 +24,6 @@ server_info() {
 
 network_info() {
 	local netdev action
-	brctl show > $TMPDIR/brctl
 	MIRRORCONF_CR7=/usr/local/Reductor/userinfo/mirror_info.conf
 	MIRRORCONF_CR8_INCHROOT="/cfg/userinfo/mirror_info.conf"
 	MIRRORCONF_CR8_OUTCHROOT="/app/reductor/$MIRRORCONF_CR8_INCHROOT"
@@ -35,6 +34,12 @@ network_info() {
 		cp "$MIRRORCONF_CR8_INCHROOT" "$TMPDIR/mirror_info.conf"
 	elif [ -f "$MIRRORCONF_CR8_OUTCHROOT" ]; then
 		cp "$MIRRORCONF_CR8_OUTCHROOT" "$TMPDIR/mirror_info.conf"
+	else
+		# We need bridges data only in case of Carbon Reductor without mirror_info.conf
+		# Other systems don't depend on bridges/configs.
+		if [ -d /usr/local/Reductor ] || [ -d /app/reductor ]; then
+			bridge link > $TMPDIR/bridge_links
+		fi
 	fi
 
 	for netdev in $(grep : /proc/net/dev | awk '{print $1}' | tr -d :); do
