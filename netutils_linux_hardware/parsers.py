@@ -34,9 +34,10 @@ class ReductorMirror(Parser):
             output = dict()
             output['conf'] = dict()
             output['conf']['vlan'], output['conf']['ip'] = conf.split()
-            output['conf']['vlan'] = output['conf']['vlan'] == '-'
+            output['conf']['vlan'] = output['conf']['vlan'] != '-'
+            if output['conf']['ip'] == '-':
+                output['conf']['ip'] = ''
             lines[netdev] = output
-
         return lines
 
 
@@ -130,13 +131,14 @@ class CPULayout(Parser):
         return output
 
 
-class BrctlOutput(Parser):
+class BridgeOutput(Parser):
     @staticmethod
     def parse(text):
         netdevs = dict()
-        netdevs_keys = [line.split()[3]
-                        for line in text.strip().split('\n')[1:]
-                        if len(line.split()) > 3]
+        # 3: eth1 state DOWN : <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 master br1 state disabled
+        # 0 - id, 1 - dev, 2 - _, 3 - state, 4 - _, 5 - details, 6 - _, 7 - mtu, 8 - _, 9 - master
+        __dev__ = 1
+        netdevs_keys = [line.split()[__dev__] for line in text.strip().split('\n')]
         for key in netdevs_keys:
             if key.count('.') == 1:
                 dev, _ = key.split('.')
@@ -146,6 +148,28 @@ class BrctlOutput(Parser):
                 print_('QinQ not supported yet. Device: {0}'.format(key))
                 raise NotImplementedError
 
+            netdevs[dev] = dict()
+            netdevs[dev]['conf'] = {
+                'vlan': key.count('.') == 1,
+                'ip': '',
+            }
+        return netdevs
+
+
+class EthtoolFiles(Parser):
+    def parse_file(self, filepath, **kwargs):
+        return self.parse(os.listdir(filepath))
+
+    def parse(self, netdev_keys):
+        netdevs = dict()
+        for key in netdev_keys:
+            if key.count('.') == 1:
+                dev, _ = key.split('.')
+            elif key.count('.') == 0:
+                dev = key
+            else:
+                print_('QinQ not supported yet. Device: {0}'.format(key))
+                raise NotImplementedError
             netdevs[dev] = dict()
             netdevs[dev]['conf'] = {
                 'vlan': key.count('.') == 1,

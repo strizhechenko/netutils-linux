@@ -1,4 +1,0 @@
-bridge name	bridge id		STP enabled	interfaces
-br0		8000.a0369fa1f458	no		eth6
-br1		8000.a0369fa1f458	no		eth6.404
-br2		8000.a0369fa1f458	no		eth6.900

@@ -4,11 +4,10 @@
 import os
 from six import iteritems
 from netutils_linux_hardware.interrupts import IRQQueueCounter
-from netutils_linux_hardware.parsers import EthtoolBuffers, ReductorMirror, BrctlOutput, YAMLLike
+from netutils_linux_hardware.parsers import EthtoolBuffers, ReductorMirror, BridgeOutput, YAMLLike, EthtoolFiles
 
 
 class ReaderNet(object):
-
     netdevs = None
 
     def __init__(self, datadir, path):
@@ -16,19 +15,19 @@ class ReaderNet(object):
         self.path = path
         self.net_dev_list()
 
-    def net_dev_list_bridge(self):
-        bridges = self.path('brctl')
-        return BrctlOutput().parse_file_safe(bridges)
-
     def net_dev_mirror_info(self):
-        config_path = self.path('mirror_info.conf')
-        return ReductorMirror().parse_file_safe(config_path)
+        return ReductorMirror().parse_file_safe(self.path('mirror_info.conf'))
+
+    def net_dev_list_bridge(self):
+        return BridgeOutput().parse_file_safe(self.path('bridge_link'))
+
+    def net_dev_list_ethtool(self):
+        return EthtoolFiles().parse_file_safe(self.path('ethtool/i'))
 
     def net_dev_list_buffers(self):
         for netdev in self.netdevs:
             buffers_path = os.path.join(self.datadir, 'ethtool/g', netdev)
-            self.netdevs[netdev]['buffers'] = EthtoolBuffers(
-            ).parse_file_safe(buffers_path)
+            self.netdevs[netdev]['buffers'] = EthtoolBuffers().parse_file_safe(buffers_path)
 
     def net_dev_list_drivers(self):
         keys_required = (
@@ -39,13 +38,21 @@ class ReaderNet(object):
             driverfile = os.path.join(self.datadir, 'ethtool/i', netdev)
             driverdata = YAMLLike().parse_file_safe(driverfile)
             if driverdata:
-                driverdata = dict((k, v) for k, v in iteritems(driverdata) if k in keys_required)
+                driverdata = dict((key, v) for key, v in iteritems(driverdata) if key in keys_required)
             else:
                 driverdata = dict()
             self.netdevs[netdev]['driver'] = driverdata
 
     def net_dev_list(self):
-        self.netdevs = self.net_dev_list_bridge() or self.net_dev_mirror_info()
+        """
+        Priority:
+        1. mirror_info.conf (collected only in case of reductor (master conf))
+        2. bridges output (collected only in case of reductor (manual conf))
+        3. ethtool information (non reductor case)
+        """
+        self.netdevs = self.net_dev_mirror_info() or self.net_dev_list_bridge() or self.net_dev_list_ethtool()
+        if not self.netdevs:
+            return
         self.net_dev_list_buffers()
         self.net_dev_list_drivers()
         interrupts = self.path('interrupts')

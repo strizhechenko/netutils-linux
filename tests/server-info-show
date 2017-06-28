@@ -18,7 +18,7 @@ run_test() {
 	if [ "$rc" = '0' ]; then
 		echo OK
 	else
-		diff -U 0 $testdata/$name/expected_output $TMPDIR/output
+		diff -U 5 $testdata/$name/expected_output $TMPDIR/output
 		echo FAIL
 	fi
 	return "$rc"
@@ -29,7 +29,10 @@ retval=0
 # shellcheck disable=SC2044
 for test in $(find $testdata -mindepth 1 -maxdepth 1 -type d); do
 	if [ -f $test/expected_output ]; then
-		run_test $test || retval=1
+		if ! run_test $test; then
+			retval=1
+			break
+		fi
 	fi
 done
 rm -rf $TMPDIR
