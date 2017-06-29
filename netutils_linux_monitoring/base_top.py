@@ -77,9 +77,13 @@ class BaseTop(object):
 
     def run(self):
         """ Default main()-like function for specific top-like utils except meta-utils. """
+        infinite = -1
+        if self.options.iterations != infinite:
+            self.options.iterations += 1
         try:
-            while self.options.iterations > -1:
-                self.options.iterations -= 1
+            while self.options.iterations > 0 or self.options.iterations == infinite:
+                if self.options.iterations != infinite:
+                    self.options.iterations -= 1
                 sleep(self.options.interval)
                 self.tick()
                 if self.options.clear:
