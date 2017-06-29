@@ -14,11 +14,11 @@ server_info() {
 	cat /proc/meminfo > $TMPDIR/meminfo
 	cat /proc/cpuinfo > $TMPDIR/cpuinfo
 	cat /proc/scsi/scsi > $TMPDIR/scsi
-	lsblk -d --output=NAME,MODEL > $TMPDIR/lsblk_models
-	lsblk -nlb --output SIZE,MOUNTPOINT,NAME > $TMPDIR/lsblk_sizes
-	lspci > $TMPDIR/lspci
-	lscpu > $TMPDIR/lscpu_info
-	lscpu -p | grep -v '^#' | awk -F ',' '{print $1" "$3}' > $TMPDIR/lscpu_layout
+	LANG= lsblk -d --output=NAME,MODEL > $TMPDIR/lsblk_models
+	LANG= lsblk -nlb --output SIZE,MOUNTPOINT,NAME > $TMPDIR/lsblk_sizes
+	LANG= lspci > $TMPDIR/lspci
+	LANG= lscpu > $TMPDIR/lscpu_info
+	LANG= lscpu -p | grep -v '^#' | awk -F ',' '{print $1" "$3}' > $TMPDIR/lscpu_layout
 	fgrep '' /sys/block/*/queue/rotational | egrep -v '[0-9]+/' >  $TMPDIR/disks_types || true
 }
 
