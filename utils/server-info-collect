@@ -16,10 +16,10 @@ server_info() {
 	cat /proc/scsi/scsi > $TMPDIR/scsi
 	LANG= lsblk -d --output=NAME,MODEL > $TMPDIR/lsblk_models
 	LANG= lsblk -nlb --output SIZE,MOUNTPOINT,NAME > $TMPDIR/lsblk_sizes
-	LANG= lspci > $TMPDIR/lspci
+	LANG= lspci > $TMPDIR/lspci || true
 	LANG= lscpu > $TMPDIR/lscpu_info
 	LANG= lscpu -p | grep -v '^#' | awk -F ',' '{print $1" "$3}' > $TMPDIR/lscpu_layout
-	fgrep '' /sys/block/*/queue/rotational | egrep -v '[0-9]+/' >  $TMPDIR/disks_types || true
+	fgrep -H '' /sys/block/*/queue/rotational | egrep -v '[0-9]+/' >  $TMPDIR/disks_types || true
 }
 
 network_info() {

@@ -80,11 +80,8 @@ class DiskInfo(object):
             types = ['SSD', 'HDD']
             if not text:
                 return dict()
-            return dict((k, types[v]) for k, v in iteritems(yaml.load(text
-                                                                      .replace(":", ": ")
-                                                                      .replace("/sys/block/", "")
-                                                                      .replace("/queue/rotational", ""))
-                                                            ))
+            data = yaml.load(text.replace(":", ": ").replace("/sys/block/", "").replace("/queue/rotational", ""))
+            return dict((k, types[v]) for k, v in iteritems(data))
 
     class DiskSizeInfo(Parser):
 
