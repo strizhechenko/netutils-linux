@@ -29,12 +29,16 @@ class RxBuffersIncreaser(object):
         def extract_value(s):
             return int(s.strip('RX:\t\n'))
 
+        # We need to be sure that on RHEL system we don't automatically tune buffers
+        # that have been already manually tuned. In non RHEL system we skip this checks.
         ns = '/etc/sysconfig/network-scripts/'
         if path.exists(ns):  # don't check ifcfg on non RHEL-based systems.
-            with open(path.join(ns, 'ifcfg-' + self.dev)) as config:
-                if any(line for line in config.readlines() if 'ETHTOOL_OPTS' in line):
-                    print_("{0}'s RX ring buffer already manually tuned.".format(self.dev))
-                    exit(0)
+            config_file = path.join(ns, 'ifcfg-' + self.dev)
+            if path.exists(config_file):
+                with open(config_file) as config:
+                    if any(line for line in config.readlines() if 'ETHTOOL_OPTS' in line):
+                        print_("{0}'s RX ring buffer already manually tuned.".format(self.dev))
+                        exit(0)
         process = Popen(['ethtool', '-i', self.dev], stdout=PIPE, stderr=PIPE)
         _, _ = process.communicate()
         # silent fail if called for vlan/bridge/etc
