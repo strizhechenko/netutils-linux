@@ -7,3 +7,4 @@ colorama
 flake8
 pytest
 collective.checkdocs
+Pygments
