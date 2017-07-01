@@ -5,6 +5,7 @@
 import os
 from subprocess import Popen, PIPE
 from six import print_
+from netutils_linux_hardware.assessor_math import any2int
 
 
 class Numa(object):
@@ -74,7 +75,7 @@ class Numa(object):
         if process.returncode != 0:
             return self.detect_layouts_fallback()
         rows = [row for row in stdout.strip().split(b'\n') if not row.startswith(b'#')]
-        layouts = [list(map(int, row.split(b',')[2:4])) for row in rows]
+        layouts = [list(map(any2int, row.split(b',')[2:4])) for row in rows]
         numa_layout, socket_layout = zip(*layouts)
         self.numa_layout = dict(enumerate(numa_layout))
         self.socket_layout = dict(enumerate(socket_layout))
