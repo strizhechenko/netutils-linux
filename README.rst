@@ -19,7 +19,8 @@ It's a useful utils to simplify Linux network troubleshooting and performance tu
 
 Installation
 ============
-.. code :: shell
+
+.. code:: shell
 
   pip install netutils-linux
 
@@ -31,7 +32,8 @@ Monitoring
 
 All these top-like utils don't require root priveledges or sudo usage. So you can install and use them as non-priveledged user if you care about security.
 
-.. code :: shell
+.. code:: shell
+
   pip install --user netutils-linux
 
 Brief explanation about highlighting colors for CPU and device groups: green and red are for NUMA-nodes, blue and yellow for CPU sockets. Screenshots are taken from different hosts with different hardware.
