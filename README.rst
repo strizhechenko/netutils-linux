@@ -43,7 +43,7 @@ Most useful util in this repo that includes all top-like utils and allow to moni
 .. image:: https://cloud.githubusercontent.com/assets/3813830/26570951/acacf18c-452c-11e7-8fe7-5d0952f39d8b.gif
 
 irqtop
-~~~~~~~~~~~
+~~~~~~
 - Show you a rate of interrupts
 - based on /proc/interrupts file
 - Hides the interrupts with small rate to show a better picture.
@@ -150,6 +150,7 @@ Example output:
 
 Hardware and its configuration rating
 -------------------------------------
+
 server-info
 ~~~~~~~~~~~
 Much alike lshw but designed for network processing role of server.
