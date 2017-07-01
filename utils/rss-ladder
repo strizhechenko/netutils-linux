@@ -22,7 +22,7 @@ fi
 
 
 usage() {
-	echo "Usage: [PREFIX=-<rx|tx|RxTx|TxRX>-] $0 [--dry-run] [--test] <dev> [cpu socket]"
+	echo "Usage: $0 [--dry-run] [--test] <dev> [cpu socket]"
 	echo
 	echo "# 90% use-case:"
 	echo "Example: $0 eth1"
@@ -33,10 +33,6 @@ usage() {
 	echo "# On multiprocessor machine it's better to explicitely define which socket will be used"
 	echo "Example: $0 eth1 0"
 	echo "Example: $0 eth2 1"
-	echo
-	echo "# Sometimes queue-prefix differs even for one driver. If so, you can redefine it:"
-	echo "Example: PREFIX=-rx- $0 eth3"
-	echo "Example: PREFIX=-tx- $0 eth3"
 }
 
 __socket_cpu_list() {
