@@ -12,7 +12,7 @@ run_test() {
 	cp $testdata/$name/interrupts ./interrupts || return 1
 	cp $testdata/$name/lscpu_output ./lscpu_output || return 2
 	read -a params < $testdata/$name/params
-	rss-ladder "${params[@]}" > ./output || return 3
+	rss-ladder.py --dry-run --test-dir $testdata/$name "${params[@]}" > ./output || return 3
 	cmp -s $testdata/$name/expected output || rc=$?
 	if [ "$rc" = '0' ]; then
 		echo OK
