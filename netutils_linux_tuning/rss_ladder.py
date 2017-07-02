@@ -27,7 +27,7 @@ class RSSLadder(object):
                 lscpu_output = str(lscpu_output)
         self.interrupts = open(interrupts_file).readlines()
         self.numa = Numa(lscpu_output=lscpu_output)
-        for postfix in self.queue_postfixes_detect():
+        for postfix in sorted(self.queue_postfixes_detect()):
             self.smp_affinity_list_apply(self.smp_affinity_list_make(postfix))
 
     @staticmethod
