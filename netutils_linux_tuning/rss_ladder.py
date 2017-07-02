@@ -5,7 +5,7 @@
 import re
 from os.path import join
 from argparse import ArgumentParser
-from six import iteritems, print_, binary_type
+from six import iteritems, print_
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_hardware.assessor_math import any2int
 
