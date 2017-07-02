@@ -32,7 +32,6 @@ class Numa(object):
         if fake:
             self.numa_layout = self.socket_layout = self.__FAKE_LAYOUT
         else:
-
             self.detect_layouts(lscpu_output=lscpu_output)
         if len(set(self.numa_layout.values())) >= 2:
             self.layout = self.numa_layout
@@ -76,18 +75,24 @@ class Numa(object):
         return stdout, process.returncode
 
     def detect_layout_lscpu(self, lscpu_output=None):
+        """
+        :param lscpu_output: <str> with output of `lscpu -p` or None
+        :return: <str> output of `lscpu -p` or None
+        """
         if lscpu_output:
             return lscpu_output
         stdout, return_code = self.__detect_layout_lscpu()
         if return_code != 0:
             return self.detect_layouts_fallback()
+        if isinstance(stdout, bytes):
+            stdout = str(stdout)
         return stdout
 
     def detect_layouts(self, lscpu_output=None):
         """ Determine NUMA and sockets layout """
         stdout = self.detect_layout_lscpu(lscpu_output)
-        rows = [row for row in stdout.strip().split(b'\n') if not row.startswith(b'#')]
-        layouts = [list(map(any2int, row.split(b',')[2:4])) for row in rows]
+        rows = [row for row in stdout.strip().split('\n') if not row.startswith('#')]
+        layouts = [list(map(any2int, row.split(',')[2:4])) for row in rows]
         numa_layout, socket_layout = zip(*layouts)
         self.numa_layout = dict(enumerate(numa_layout))
         self.socket_layout = dict(enumerate(socket_layout))

@@ -5,7 +5,7 @@
 import re
 from os.path import join
 from argparse import ArgumentParser
-from six import iteritems, print_
+from six import iteritems, print_, binary_type
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_hardware.assessor_math import any2int
 
@@ -20,7 +20,11 @@ class RSSLadder(object):
             interrupts_file = join(self.options.test_dir, "interrupts")
             lscpu_output_filename = join(self.options.test_dir, "lscpu_output")
             lscpu_output = open(lscpu_output_filename).read()
-            lscpu_output = bytes(lscpu_output, 'utf-8')  # compatibility with Popen.stdout
+            # Popen.stdout in python 2.7 returns <str>
+            # Popen.stdout in python 3.6 returns <bytes>
+            # read() in both cases return <str>
+            if isinstance(lscpu_output, bytes):
+                lscpu_output = str(lscpu_output)
         self.interrupts = open(interrupts_file).readlines()
         self.numa = Numa(lscpu_output=lscpu_output)
         for postfix in self.queue_postfixes_detect():
