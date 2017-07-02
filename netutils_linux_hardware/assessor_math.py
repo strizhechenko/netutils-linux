@@ -18,6 +18,8 @@ def extract(dictionary, key_sequence):
 
 
 def any2int(value):
+    if isinstance(value, bytes):
+        value = str(value, 'utf-8')
     if isinstance(value, int):
         return value
     elif value is None:
