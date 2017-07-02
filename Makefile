@@ -1,5 +1,5 @@
 test:
-	./tests/rss-ladder
+	./tests/rss-ladder-test
 	./tests/server-info-show
 	./tests/link_rate_units.sh
 	pytest netutils_linux_*/
