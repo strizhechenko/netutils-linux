@@ -19,7 +19,6 @@ class RSSLadder(object):
     def __init__(self):
         interrupts_file = '/proc/interrupts'
         self.options = self.parse_options()
-        print_(self.options)
         lscpu_output = None
         if self.options.test_dir:
             interrupts_file = join(self.options.test_dir, "interrupts")
