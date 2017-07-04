@@ -6,15 +6,20 @@ import re
 from os.path import join
 from argparse import ArgumentParser
 from six import iteritems, print_
+from six.moves import xrange
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_hardware.assessor_math import any2int
 
+MAX_QUEUE_PER_DEVICE = 16
+
 
 class RSSLadder(object):
+    """ Distributor of queues' interrupts by multiple CPUs """
 
     def __init__(self):
         interrupts_file = '/proc/interrupts'
         self.options = self.parse_options()
+        print_(self.options)
         lscpu_output = None
         if self.options.test_dir:
             interrupts_file = join(self.options.test_dir, "interrupts")
@@ -26,7 +31,8 @@ class RSSLadder(object):
             if isinstance(lscpu_output, bytes):
                 lscpu_output = str(lscpu_output)
         self.interrupts = open(interrupts_file).readlines()
-        self.numa = Numa(lscpu_output=lscpu_output)
+        if not self.options.cpus:  # no need to detect topology if user gave us cpu list
+            self.numa = Numa(lscpu_output=lscpu_output)
         for postfix in sorted(self.queue_postfixes_detect()):
             self.smp_affinity_list_apply(self.smp_affinity_list_make(postfix))
 
@@ -41,6 +47,8 @@ class RSSLadder(object):
                             help="If you have 2 NICs with 4 queues and 1 socket with 8 cpus, you may be want "
                                  "distribution like this: eth0: [0, 1, 2, 3]; eth1: [4, 5, 6, 7]; "
                                  "so run: rss-ladder-test eth0; rss-ladder-test --offset=4 eth1")
+        parser.add_argument('-c', '--cpus', help='Explicitly define list of CPUs for binding NICs queues', type=int,
+                            nargs='+')
         parser.add_argument('dev', type=str)
         parser.add_argument('socket', nargs='?', type=int, default=0)
         return parser.parse_args()
@@ -70,12 +78,20 @@ class RSSLadder(object):
         print_("- distribute interrupts of {0} ({1}) on socket {2}".format(
             self.options.dev, postfix, self.options.socket))
         queue_regex = r'{0}{1}[^ \n]+'.format(self.options.dev, postfix)
-        socket_cpus = [k for k, v in iteritems(self.numa.socket_layout) if v == self.options.socket] * 4
-        socket_cpus.reverse()
+        if self.options.cpus:
+            # 16 is in case of someone decide to bind up to 16 queues to one CPU for cache locality
+            # and manually distribute workload by RPS to other CPUs.
+            rss_cpus = self.options.cpus * MAX_QUEUE_PER_DEVICE
+        else:
+            cpus = [k for k, v in iteritems(self.numa.socket_layout) if v == self.options.socket]
+            rss_cpus = cpus * MAX_QUEUE_PER_DEVICE
+        rss_cpus.reverse()
+        for _ in xrange(self.options.offset):
+            rss_cpus.pop()
         for line in self.interrupts:
             queue_name = re.findall(queue_regex, line)
             if queue_name:
-                yield any2int(line.split()[0]), queue_name[0], socket_cpus.pop()
+                yield any2int(line.split()[0]), queue_name[0], rss_cpus.pop()
 
     def smp_affinity_list_apply(self, smp_affinity):
         """
