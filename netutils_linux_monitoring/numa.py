@@ -4,7 +4,9 @@
 
 import os
 from subprocess import Popen, PIPE
+
 from six import print_
+
 from netutils_linux_hardware.assessor_math import any2int
 
 
@@ -12,10 +14,10 @@ class Numa(object):
     """ Class handling NUMA and sockets layout and membership of net-devices """
     __NODE_DIRECTORY = '/sys/devices/system/node/'
     __FAKE_LAYOUT = {
-        0:  0,  1:  0,  2:  0,  3:  0,
-        4:  1,  5:  1,  6:  1,  7:  1,
-        8:  0,  9:  0,  10: 0,  11: 0,
-        12: 1,  13: 1,  14: 1,  15: 1,
+        0: 0, 1: 0, 2: 0, 3: 0,
+        4: 1, 5: 1, 6: 1, 7: 1,
+        8: 0, 9: 0, 10: 0, 11: 0,
+        12: 1, 13: 1, 14: 1, 15: 1,
     }
     __FAKE_DEV = {
         'eth0': 0,
@@ -98,6 +100,6 @@ class Numa(object):
 
 
 if __name__ == '__main__':
-    numa = Numa()
-    print_('SOCKET', numa.socket_layout)
-    print_('NUMA', numa.numa_layout)
+    NUMA = Numa()
+    print_('SOCKET', NUMA.socket_layout)
+    print_('NUMA', NUMA.numa_layout)

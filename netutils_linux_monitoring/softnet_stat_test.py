@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
+
 from netutils_linux_monitoring.softnet_stat import SoftnetStat
 
 

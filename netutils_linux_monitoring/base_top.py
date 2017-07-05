@@ -1,9 +1,11 @@
-from os import system
-from time import sleep
-from random import randint
 from optparse import Option, OptionParser, OptionConflictError
+from os import system
+from random import randint
+from time import sleep
+
 from colorama import Fore
-from six import print_, iteritems
+from six import print_
+
 from netutils_linux_monitoring.colors import wrap
 
 
@@ -43,10 +45,11 @@ class BaseTop(object):
                    help="Shows random diff data instead of real evaluation. "
                         "Helpful for testing on static files"),
             Option('--no-clear', default=True, dest='clear', action='store_false',
-                   help="Don't clear screen after each iteration. May be useful in scripts/logging to file."),
+                   help="Don't clear screen after each iteration. "
+                        "May be useful in scripts/logging to file."),
         ]
 
-    def parse_options(self, options=None):
+    def parse_options(self):
         """ That should be explicitly called in __main__ part of any top-like utils """
         parser = OptionParser()
         for opt in self.specific_options:
@@ -55,9 +58,6 @@ class BaseTop(object):
             except OptionConflictError:
                 pass
         self.options, _ = parser.parse_args()
-        if options:
-            for name, value in iteritems(options):
-                setattr(self.options, name, value)
         if hasattr(self, 'post_optparse'):
             # pylint: disable=E1101
             self.post_optparse()

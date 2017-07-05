@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 
 import optparse
-import ipaddress
+
+from ipaddress import ip_network
+from six import print_
 
 
 def main():
     parser = optparse.OptionParser()
     options, args = parser.parse_args()
     for arg in args:
-        for ip in ipaddress.ip_network(unicode(arg, 'utf-8')):
-            print ip
+        for ip in ip_network(unicode(arg, 'utf-8')):
+            print_(ip)
 
 
 if __name__ == '__main__':

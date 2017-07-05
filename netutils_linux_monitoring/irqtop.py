@@ -1,13 +1,15 @@
 # coding=utf-8
 
-from random import randint
 from copy import deepcopy
 from optparse import Option
+from random import randint
+
 from six.moves import xrange
+
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import colorize_cpu_list, colorize
-from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.layout import make_table
+from netutils_linux_monitoring.numa import Numa
 
 
 class IrqTop(BaseTop):

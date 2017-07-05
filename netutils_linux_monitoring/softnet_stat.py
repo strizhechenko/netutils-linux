@@ -1,9 +1,10 @@
-from random import randint
 from optparse import Option
+from random import randint
+
 from netutils_linux_monitoring.base_top import BaseTop
+from netutils_linux_monitoring.colors import cpu_color, wrap, colorize
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
-from netutils_linux_monitoring.colors import cpu_color, wrap, colorize
 
 
 class SoftnetStat(object):

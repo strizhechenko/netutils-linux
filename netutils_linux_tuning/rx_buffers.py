@@ -1,6 +1,7 @@
 from os import system, path
-from six import print_
 from subprocess import Popen, PIPE
+
+from six import print_
 
 
 class RxBuffersIncreaser(object):

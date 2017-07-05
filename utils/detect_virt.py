@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+
 from six import print_
 
 dmi_vendor_table = [
