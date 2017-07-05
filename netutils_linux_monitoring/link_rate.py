@@ -79,6 +79,8 @@ class LinkRateTop(BaseTop):
         return [self.colorize_stat(stat, repr_source[dev][stat]) for stat in self.stats]
 
     def make_rows(self):
+        if not self.numa.devices:
+            self.numa.devices = self.numa.node_dev_dict(self.options.devices, self.options.random)
         repr_source = self.repr_source()
         for dev in self.options.devices:
             dev_node = self.numa.devices.get(dev)
