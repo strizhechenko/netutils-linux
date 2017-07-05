@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: utf-8
 
 from optparse import OptionParser, OptionConflictError
 
@@ -26,9 +27,15 @@ class NetworkTop(BaseTop):
         self.numa = Numa(fake=self.options.random)
 
     def parse(self):
+        """
+        :return: dict with parsed results for each top-like object.
+        """
         return dict((top_name, _top.parse()) for top_name, _top in iteritems(self.tops))
 
     def eval(self):
+        """
+        :return: evaluates diff for each top-like object.
+        """
         if all((self.current, self.previous)):
             self.diff = dict((top_name, _top.diff) for top_name, _top in iteritems(self.tops))
 

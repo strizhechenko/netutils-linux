@@ -45,7 +45,8 @@ class BaseTop(object):
                    help="Shows random diff data instead of real evaluation. "
                         "Helpful for testing on static files"),
             Option('--no-clear', default=True, dest='clear', action='store_false',
-                   help="Don't clear screen after each iteration. May be useful in scripts/logging to file."),
+                   help="Don't clear screen after each iteration. "
+                        "May be useful in scripts/logging to file."),
         ]
 
     def parse_options(self):

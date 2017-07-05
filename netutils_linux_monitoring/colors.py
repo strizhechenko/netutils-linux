@@ -1,21 +1,21 @@
 from colorama import Fore, Style
 
 try:
-    yellow = Fore.LIGHTYELLOW_EX
+    YELLOW = Fore.LIGHTYELLOW_EX
 except AttributeError:
-    yellow = Fore.YELLOW
+    YELLOW = Fore.YELLOW
 
-ColorsNode = {
+COLORS_NODE = {
     0: Fore.GREEN,
     1: Fore.RED,
-    2: yellow,
+    2: YELLOW,
     3: Fore.BLUE,
     -1: Style.RESET_ALL,
 }
 
-ColorsSocket = {
+COLORS_SOCKET = {
     0: Fore.BLUE,
-    1: yellow,
+    1: YELLOW,
     2: Fore.RED,
     3: Fore.GREEN,
     -1: Style.RESET_ALL,
@@ -31,7 +31,7 @@ def wrap_header(string):
 
 
 def colorize(value, warning, error):
-    return wrap(value, Fore.RED if value >= error else yellow if value >= warning else Fore.RESET)
+    return wrap(value, Fore.RED if value >= error else YELLOW if value >= warning else Fore.RESET)
 
 
 def wrap(word, color):
@@ -40,7 +40,7 @@ def wrap(word, color):
 
 
 def __choose_color_scheme(numa):
-    return ColorsNode if numa.layout_kind == 'NUMA' else ColorsSocket
+    return COLORS_NODE if numa.layout_kind == 'NUMA' else COLORS_SOCKET
 
 
 def cpu_color(cpu, numa, color_scheme=None):

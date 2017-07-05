@@ -8,7 +8,7 @@ from re import match
 from six import print_, iteritems
 
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import wrap, ColorsNode, colorize
+from netutils_linux_monitoring.colors import wrap, COLORS_NODE, colorize
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
 
@@ -86,7 +86,7 @@ class LinkRateTop(BaseTop):
         repr_source = self.repr_source()
         for dev in self.options.devices:
             dev_node = self.numa.devices.get(dev)
-            dev_color = ColorsNode.get(dev_node)
+            dev_color = COLORS_NODE.get(dev_node)
             _dev = wrap(dev, dev_color)
             yield [_dev] + self.colorize_stats(dev, repr_source)
 
