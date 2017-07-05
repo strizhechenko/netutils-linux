@@ -1,14 +1,16 @@
-from re import match
-from os import listdir, path
-from copy import deepcopy
-from random import randint
-from optparse import Option
 from collections import namedtuple
+from copy import deepcopy
+from optparse import Option
+from os import listdir, path
+from random import randint
+from re import match
+
 from six import print_, iteritems
+
 from netutils_linux_monitoring.base_top import BaseTop
+from netutils_linux_monitoring.colors import wrap, ColorsNode, colorize
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
-from netutils_linux_monitoring.colors import wrap, ColorsNode, colorize
 
 Stat = namedtuple('Stat', ['filename', 'shortname'])
 

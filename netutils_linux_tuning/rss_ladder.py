@@ -3,12 +3,14 @@
 """ Receive Side Scaling tuning utility """
 
 import re
-from os.path import join
 from argparse import ArgumentParser
+from os.path import join
+
 from six import iteritems, print_
 from six.moves import xrange
-from netutils_linux_monitoring.numa import Numa
+
 from netutils_linux_hardware.assessor_math import any2int
+from netutils_linux_monitoring.numa import Numa
 
 MAX_QUEUE_PER_DEVICE = 16
 

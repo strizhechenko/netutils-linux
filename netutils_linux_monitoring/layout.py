@@ -2,8 +2,8 @@
 
 """ Everything about console output's layout """
 
-from six import print_
 from prettytable import PrettyTable
+from six import print_
 
 
 def make_table(header, align_map=None, rows=None):

@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 
-from colorama import Style
 from optparse import OptionParser, OptionConflictError
+
+from colorama import Style
 from six import iteritems, itervalues
+
 from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRateTop
-from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import cpu_color, wrap, colorize, wrap_header
 from netutils_linux_monitoring.layout import make_table
+from netutils_linux_monitoring.numa import Numa
 
 
 class NetworkTop(BaseTop):

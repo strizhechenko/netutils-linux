@@ -4,7 +4,9 @@
 
 import os
 from subprocess import Popen, PIPE
+
 from six import print_
+
 from netutils_linux_hardware.assessor_math import any2int
 
 

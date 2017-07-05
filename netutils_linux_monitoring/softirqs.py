@@ -1,9 +1,11 @@
 from optparse import Option
+
 from six import iteritems
+
 from netutils_linux_monitoring.base_top import BaseTop
+from netutils_linux_monitoring.colors import wrap, cpu_color
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
-from netutils_linux_monitoring.colors import wrap, cpu_color
 
 
 class Softirqs(BaseTop):

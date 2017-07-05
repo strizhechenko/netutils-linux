@@ -1,9 +1,11 @@
-from os import system
-from time import sleep
-from random import randint
 from optparse import Option, OptionParser, OptionConflictError
+from os import system
+from random import randint
+from time import sleep
+
 from colorama import Fore
-from six import print_, iteritems
+from six import print_
+
 from netutils_linux_monitoring.colors import wrap
 
 
