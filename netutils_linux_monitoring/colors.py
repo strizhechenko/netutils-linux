@@ -22,6 +22,10 @@ ColorsSocket = {
 }
 
 
+def bright(string):
+    return wrap(string, Style.BRIGHT)
+
+
 def wrap_header(string):
     return wrap("# {0}\n".format(string), Style.BRIGHT)
 

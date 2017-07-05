@@ -2,12 +2,11 @@
 
 from optparse import OptionParser, OptionConflictError
 
-from colorama import Style
 from six import iteritems, itervalues
 
 from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRateTop
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import cpu_color, wrap, colorize, wrap_header
+from netutils_linux_monitoring.colors import cpu_color, wrap, colorize, wrap_header, bright
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
 
@@ -68,7 +67,7 @@ class NetworkTop(BaseTop):
             "CPU", "Interrupts", "NET RX", "NET TX",
             "total", "dropped", "time_squeeze", "cpu_collision", "received_rps",
         ]
-        fields = [wrap(word, Style.BRIGHT) for word in fields]
+        fields = [bright(word) for word in fields]
         rows = self.__repr_cpu_make_rows(irqtop, network_output, softirq_top, softnet_stat_top)
         table = make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows)
         return wrap_header("Load per cpu:") + str(table)
