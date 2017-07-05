@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -eu
+
+softirq="./tests/softirqs/i7/softirqs1"
+irq="./tests/interrupts/singlequeue_8cpu/interrupts_short"
+soft_net_stat="./tests/softnet_stat/softnet_stat1"
+devices="eth1,eth2,eth3"
+
+network-top  --no-clear -n 1 --random \
+	--softirqs-file="$softirq" \
+	--softnet-stat-file="$soft_net_stat" \
+	--interrupts-file="$irq" \
+	--devices="$devices"
+link-rate  --no-clear -n 1 --random --devices="$devices"
+irqtop  --no-clear -n 1 --random --interrupts-file="$irq"
+softirq-top  --no-clear -n 1 --random --softirqs-file="$softirq"
+softnet-stat-top  --no-clear -n 1 --random --softnet-stat-file="$soft_net_stat"
+

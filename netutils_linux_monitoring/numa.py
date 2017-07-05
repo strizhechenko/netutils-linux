@@ -28,7 +28,7 @@ class Numa(object):
     numa_layout = None
     socket_layout = None
 
-    def __init__(self, devices=None, fake=False, lscpu_output=None):
+    def __init__(self, fake=False, lscpu_output=None):
         if fake:
             self.numa_layout = self.socket_layout = self.__FAKE_LAYOUT
         else:
@@ -39,7 +39,6 @@ class Numa(object):
         else:
             self.layout = self.socket_layout
             self.layout_kind = 'SOCKET'
-        self.devices = self.node_dev_dict(devices, fake)
 
     def node_dev_dict(self, devices, fake):
         """ Returns NIC's NUMA bindings dict like {'eth1': 0, 'eth2': 1, 'eth3': 0} """

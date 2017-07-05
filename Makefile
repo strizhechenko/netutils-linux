@@ -2,6 +2,7 @@ test:
 	./tests/rss-ladder-test
 	./tests/server-info-show
 	./tests/link_rate_units.sh
+	./tests/utils_runnable
 	pytest netutils_linux_*/
 
 env:

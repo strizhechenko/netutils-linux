@@ -1,7 +1,5 @@
 #!/bin/bash
 
-. env/bin/activate
-
 set -eux
 
 link-rate --random  --devices=eth1,eth2,eth3 --iterations=1 | grep -q 'rx-mbits'

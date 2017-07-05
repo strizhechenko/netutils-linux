@@ -22,8 +22,7 @@ class NetworkTop(BaseTop):
             'link-rate': LinkRateTop(),
         }
         self.parse_options()
-        self.numa = Numa(devices=self.options.devices,
-                         fake=self.options.random)
+        self.numa = Numa(fake=self.options.random)
 
     def parse(self):
         return dict((top_name, _top.parse()) for top_name, _top in iteritems(self.tops))
