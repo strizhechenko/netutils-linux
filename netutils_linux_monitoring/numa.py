@@ -43,7 +43,10 @@ class Numa(object):
             self.layout_kind = 'SOCKET'
 
     def node_dev_dict(self, devices, fake):
-        """ Returns NIC's NUMA bindings dict like {'eth1': 0, 'eth2': 1, 'eth3': 0} """
+        """
+        :param devices: list of devices
+        :param fake: options.random
+        :return: NIC's NUMA bindings dict like {'eth1': 0, 'eth2': 1, 'eth3': 0} """
         if not devices:
             return dict()
         return dict((dev, self.dev_node(dev, fake)) for dev in devices)
