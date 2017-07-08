@@ -1,23 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env python
 
-set -eu
+# coding=utf-8
 
-if [ "$#" -lt 1 ] || [ "$@" == '--help' ] || [ "$@" == '-h' ]; then
-	echo "Usage: $0 <device>"
-	echo "Example: $0 eth2"
-	exit 1
-fi
+from netutils_linux_tuning.autorps import AutoRPS
 
-sockets="$(lscpu | fgrep 'Socket(s)' | egrep -o '[0-9]+')"
-if [ "$sockets" -gt 1 ]; then
-	echo "This system has more then one socket ($sockets)."
-	echo "$0 in current implementation may cause performance degradation in this case, so we skip it."
-	exit 0
-fi
-
-dev="$1"
-queue_count="$(find /sys/class/net/$dev/queues/ -type d -name "rx-*" | wc -l)"
-cpu_count="$(nproc)"
-if [ "$queue_count" == '1' ] && [ "$cpu_count" -gt 1 ]; then
-	printf "%x\n" $((2**$cpu_count - 1)) > /sys/class/net/$dev/queues/rx-0/rps_cpus
-fi
+if __name__ == '__main__':
+    AutoRPS()
