@@ -38,6 +38,7 @@ class AutoRPS(object):
 
     @staticmethod
     def cpus2mask(cpus, cpus_count):
+        """ There's no need to fill mask with zeroes, kernel does it automatically """
         bitmap = [0] * cpus_count
         for cpu in cpus:
             bitmap[cpu] = 1
