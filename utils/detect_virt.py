@@ -4,7 +4,7 @@ import os
 
 from six import print_
 
-dmi_vendor_table = [
+DMI_VENDOR_TABLE = [
     "KVM",
     "QEMU",
     "VMware",
@@ -25,7 +25,7 @@ def detect_vm_dmi():
             continue
         with open(dmi_file) as dmi_fd:
             dmi_data = dmi_fd.read()
-            if dmi_data in dmi_vendor_table:
+            if dmi_data in DMI_VENDOR_TABLE:
                 return dmi_data
 
 
@@ -49,9 +49,9 @@ def detect_vm_zvm():
             return "ZVM" if 'z/VM' in zvm_fd.read() else "KVM"
 
 
-def detect_by_file(filename, vm):
+def detect_by_file(filename, vm_type):
     if os.path.exists(filename):
-        return vm
+        return vm_type
 
 
 def main():

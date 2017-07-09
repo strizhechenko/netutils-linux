@@ -30,9 +30,8 @@ class Softirqs(BaseTop):
             self.numa = Numa(fake=self.options.random)
 
     def parse(self):
-        with open(self.options.softirqs_file) as fd:
-            metrics = [line.strip().split(':')
-                       for line in fd.readlines() if ':' in line]
+        with open(self.options.softirqs_file) as softirq_file:
+            metrics = [line.strip().split(':') for line in softirq_file.readlines() if ':' in line]
             return dict((k, [int(d) for d in v.strip().split()]) for k, v in metrics)
 
     @staticmethod
