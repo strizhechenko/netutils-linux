@@ -77,16 +77,16 @@ Tuning
 
 rss-ladder
 ~~~~~~~~~~
-Automatically set `smp_affinity_list` for IRQ of NIC rx/tx queues for ixgbe/igb/vmxnet3 drivers (they usually work on CPU0 out of the box).
+Automatically set `smp_affinity_list` for IRQ of NIC rx/tx queues that usually work on CPU0 out of the box).
 
 Based on lscpu's output.
 
-It also supports double/quad ladder in case of multiprocessor systems (but you better explicitly specify queue count == core per socket as NIC's driver's param).
+It also supports double/quad ladder in case of multiprocessor systems (but you better explicitly specify queue count == core per socket as NIC's driver's param). Example output:
 
 .. code::
 
   # rss-ladder eth1 0
-  - Распределение прерываний eth1 (-TxRx-) на сокете 0
+  - distributing interrupts of eth1 (-TxRx-) on socket 0
     - eth1: irq 67 eth1-TxRx-0 -> 0
     - eth1: irq 68 eth1-TxRx-1 -> 1
     - eth1: irq 69 eth1-TxRx-2 -> 2
@@ -98,9 +98,12 @@ It also supports double/quad ladder in case of multiprocessor systems (but you b
 
 autorps
 ~~~~~~~
-Enables RPS of NIC on all available CPUs. It may be good for small servers with cheap network cards or a bunch of VLAN.
+Enables RPS on all available CPUs of NUMA node local for the NIC for all NIC's rx queues. It may be good for small servers with cheap network cards. You also can explicitely pass `--cpus` or `--cpu-mask`. Example output:
 
-Later, there will be a support for enabling RPS only for a subgroup of CPUs based on L3 caches.
+.. code::
+
+  # autorps eth0
+  Using mask 'fc0' for eth0-rx-0.
 
 maximize-cpu-freq
 ~~~~~~~~~~~~~~~~~
