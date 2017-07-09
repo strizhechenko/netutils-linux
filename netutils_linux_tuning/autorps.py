@@ -14,10 +14,11 @@ class AutoRPS(object):
         self.options = self.parse_options()
         self.numa = self.make_numa()
         self.process_options()
-        self.mask_apply()
+        queues = self.detect_queues()
+        self.mask_apply(queues)
 
     def socket_detect(self):
-        if any([self.options.socket, self.options.cpus, self.options.cpu_mask]):
+        if any([self.options.socket is not None, self.options.cpus, self.options.cpu_mask]):
             return
         socket = self.numa.node_dev_dict([self.options.dev], True).get(self.options.dev)
         self.options.socket = 0 if socket == -1 else socket
@@ -42,7 +43,7 @@ class AutoRPS(object):
         bitmap = [0] * cpus_count
         for cpu in cpus:
             bitmap[cpu] = 1
-        return hex(int("".join(map(str, bitmap)), 2))[2:]
+        return hex(int("".join([str(cpu) for cpu in bitmap]), 2))[2:]  # no need to write 0x
 
     def mask_detect(self):
         if self.options.cpu_mask:
@@ -55,16 +56,19 @@ class AutoRPS(object):
         self.socket_detect()
         self.mask_detect()
 
-    def detect_queues(self, queue_dir):
+    def detect_queues_real(self):
+        queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
         return [queue for queue in os.listdir(queue_dir) if queue.startswith('rx')]
 
-    def mask_apply(self):
+    def detect_queues(self):
         if self.options.test_dir:
-            self.mask_apply_test()
-        queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
-        queues = self.detect_queues(queue_dir)
+            return ['rx-0']
+        return self.detect_queues_real()
+
+    def mask_apply(self, queues):
         if len(queues) > 1 and not self.options.force:
             raise OSError("Refuse to use RPS on multiqueue NIC. You may use --force flag to apply RPS for all queues")
+        queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
         for queue in queues:
             print_("Using mask '{0}' for {1}-{2}".format(self.options.cpu_mask, self.options.dev, queue))
             if self.options.dry_run:

@@ -33,16 +33,16 @@ class GradeTest(TestCase):
             "Dlink": 1,
             "Realtek": 1,
         }
-        for k, v in iteritems(expected):
-            self.assertEqual(Grade.str(k, good, bad), v)
+        for k, value in iteritems(expected):
+            self.assertEqual(Grade.str(k, good, bad), value)
 
     def test_grade_fact(self):
         self.assertEqual(Grade.fact(None, True), 1)
-        self.assertEqual(Grade.fact(None, False), 10)
+        self.assertEqual(Grade.fact(None), 10)
         self.assertEqual(Grade.fact("Anything", True), 10)
-        self.assertEqual(Grade.fact("Anything", False), 1)
+        self.assertEqual(Grade.fact("Anything"), 1)
         self.assertEqual(Grade.fact(15, True), 10)
-        self.assertEqual(Grade.fact(15, False), 1)
+        self.assertEqual(Grade.fact(15), 1)
         self.assertEqual(Grade.fact({'x': 'y'}, True), 10)
         self.assertEqual(Grade.fact({}, True), 10)
 
