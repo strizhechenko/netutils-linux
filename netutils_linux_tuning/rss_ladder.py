@@ -52,6 +52,9 @@ class RSSLadder(object):
 
     @staticmethod
     def parse_options():
+        """
+        :return: parsed arguments
+        """
         parser = ArgumentParser()
         parser.add_argument('-t', '--test-dir', type=str,
                             help="Use prepared test dataset in TEST_DIR directory instead of /proc/interrupts.")
@@ -110,12 +113,19 @@ class RSSLadder(object):
                 yield any2int(line.split()[0]), queue_name[0], rss_cpus.pop()
 
     def dev_colorize(self):
+        """
+        :return: highlighted by NUMA-node name of the device
+        """
         if not self.numa or not self.options.color:
             return self.options.dev
         color = COLORS_NODE.get(self.numa.devices.get(self.options.dev))
         return wrap(self.options.dev, color)
 
     def cpu_colorize(self, cpu):
+        """
+        :param cpu: cpu number (0)
+        :return: highlighted by NUMA-node cpu number.
+        """
         if not self.numa or not self.options.color:
             return cpu
         return wrap(cpu, cpu_color(cpu, numa=self.numa))
