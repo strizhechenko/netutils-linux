@@ -1,4 +1,5 @@
 - distribute interrupts of eth1 (-TxRx-) on socket 1
+WARNING: some CPUs process multiple queues, consider reduce queue count for this network device
   - eth1: irq 75 eth1-TxRx-0 -> 6
   - eth1: irq 76 eth1-TxRx-1 -> 7
   - eth1: irq 77 eth1-TxRx-2 -> 8
