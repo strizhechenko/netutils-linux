@@ -55,14 +55,17 @@ class AutoRPS(object):
         self.socket_detect()
         self.mask_detect()
 
-    def detect_queues(self, queue_dir):
+    def detect_queues_real(self):
+        queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
         return [queue for queue in os.listdir(queue_dir) if queue.startswith('rx')]
 
-    def mask_apply(self):
+    def detect_queues(self):
         if self.options.test_dir:
-            self.mask_apply_test()
-        queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
-        queues = self.detect_queues(queue_dir)
+            return ['rx-0']
+        return self.detect_queues_real()
+
+    def mask_apply(self):
+        queues = self.detect_queues()
         if len(queues) > 1 and not self.options.force:
             raise OSError("Refuse to use RPS on multiqueue NIC. You may use --force flag to apply RPS for all queues")
         for queue in queues:
