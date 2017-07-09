@@ -33,7 +33,7 @@ class Softirqs(BaseTop):
         with open(self.options.softirqs_file) as fd:
             metrics = [line.strip().split(':')
                        for line in fd.readlines() if ':' in line]
-            return dict((k, list(map(int, v.strip().split()))) for k, v in metrics)
+            return dict((k, [int(d) for d in v.strip().split()]) for k, v in metrics)
 
     @staticmethod
     def __active_cpu_count__(data):
