@@ -11,7 +11,7 @@ from six.moves import xrange
 
 from netutils_linux_hardware.assessor_math import any2int
 from netutils_linux_monitoring.numa import Numa
-from netutils_linux_monitoring.colors import wrap, YELLOW
+from netutils_linux_monitoring.colors import wrap, YELLOW, cpu_color, COLORS_NODE
 
 MAX_QUEUE_PER_DEVICE = 16
 
@@ -36,8 +36,16 @@ class RSSLadder(object):
         self.interrupts = open(interrupts_file).readlines()
         if not self.options.cpus:  # no need to detect topology if user gave us cpu list
             self.numa = Numa(lscpu_output=lscpu_output)
+            self.socket_detect()
+            self.numa.devices = self.numa.node_dev_dict([self.options.dev], False)
         for postfix in sorted(self.queue_postfixes_detect()):
             self.smp_affinity_list_apply(self.smp_affinity_list_make(postfix))
+
+    def socket_detect(self):
+        if any([self.options.socket is not None, self.options.cpus]):
+            return
+        socket = self.numa.node_dev_dict([self.options.dev], True).get(self.options.dev)
+        self.options.socket = 0 if socket == -1 else socket
 
     @staticmethod
     def parse_options():
@@ -46,6 +54,8 @@ class RSSLadder(object):
                             help="Use prepared test dataset in TEST_DIR directory instead of /proc/interrupts.")
         parser.add_argument('-d', '--dry-run', help="Don't write anything to smp_affinity_list.",
                             action='store_true', default=False)
+        parser.add_argument('--no-color', help='Disable all highlights', dest='color', action='store_false',
+                            default=True)
         parser.add_argument('-o', '--offset', type=int, default=0,
                             help="If you have 2 NICs with 4 queues and 1 socket with 8 cpus, you may be want "
                                  "distribution like this: eth0: [0, 1, 2, 3]; eth1: [4, 5, 6, 7]; "
@@ -53,7 +63,7 @@ class RSSLadder(object):
         parser.add_argument('-c', '--cpus', help='Explicitly define list of CPUs for binding NICs queues', type=int,
                             nargs='+')
         parser.add_argument('dev', type=str)
-        parser.add_argument('socket', nargs='?', type=int, default=0)
+        parser.add_argument('socket', nargs='?', type=int)
         return parser.parse_args()
 
     def queue_postfix_extract(self, line):
@@ -96,6 +106,17 @@ class RSSLadder(object):
             if queue_name:
                 yield any2int(line.split()[0]), queue_name[0], rss_cpus.pop()
 
+    def dev_colorize(self):
+        if not self.numa or not self.options.color:
+            return self.options.dev
+        color = COLORS_NODE.get(self.numa.devices.get(self.options.dev))
+        return wrap(self.options.dev, color)
+
+    def cpu_colorize(self, cpu):
+        if not self.numa or not self.options.color:
+            return cpu
+        return wrap(cpu, cpu_color(cpu, numa=self.numa))
+
     def smp_affinity_list_apply(self, smp_affinity):
         """
         '* 4' is in case of NIC has more queues than socket has CPUs
@@ -105,9 +126,13 @@ class RSSLadder(object):
         cpus = [socket_cpu for irq, queue, socket_cpu in affinity]
         if len(set(cpus)) != len(cpus):
             warning = "WARNING: some CPUs process multiple queues, consider reduce queue count for this network device"
-            print_(wrap(warning, YELLOW))
+            if self.options.color:
+                print_(wrap(warning, YELLOW))
+            else:
+                print_(warning)
         for irq, queue_name, socket_cpu in affinity:
-            print_("  - {0}: irq {1} {2} -> {3}".format(self.options.dev, irq, queue_name, socket_cpu))
+            print_("  - {0}: irq {1} {2} -> {3}".format(
+                self.dev_colorize(), irq, queue_name, self.cpu_colorize(socket_cpu)))
             if self.options.dry_run:
                 continue
             filename = "/proc/irq/{0}/smp_affinity_list".format(irq)
