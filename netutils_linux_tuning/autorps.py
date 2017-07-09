@@ -14,7 +14,8 @@ class AutoRPS(object):
         self.options = self.parse_options()
         self.numa = self.make_numa()
         self.process_options()
-        self.mask_apply()
+        queues = self.detect_queues()
+        self.mask_apply(queues)
 
     def socket_detect(self):
         if any([self.options.socket is not None, self.options.cpus, self.options.cpu_mask]):
@@ -64,10 +65,10 @@ class AutoRPS(object):
             return ['rx-0']
         return self.detect_queues_real()
 
-    def mask_apply(self):
-        queues = self.detect_queues()
+    def mask_apply(self, queues):
         if len(queues) > 1 and not self.options.force:
             raise OSError("Refuse to use RPS on multiqueue NIC. You may use --force flag to apply RPS for all queues")
+        queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
         for queue in queues:
             print_("Using mask '{0}' for {1}-{2}".format(self.options.cpu_mask, self.options.dev, queue))
             if self.options.dry_run:
