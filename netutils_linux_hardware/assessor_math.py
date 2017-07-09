@@ -5,9 +5,14 @@ import re
 import math
 
 
-def round_(x, d=0):
-    p = 10 ** d
-    return float(math.floor((x * p) + math.copysign(0.5, x))) / p
+def round_(value, precision=0):
+    """
+    :param value: float value
+    :param precision: how much digits after ',' we need
+    :return: rounded float value
+    """
+    precision = 10 ** precision
+    return float(math.floor((value * precision) + math.copysign(0.5, value))) / precision
 
 
 def extract(dictionary, key_sequence):
@@ -25,9 +30,9 @@ def any2int(value):
     elif value is None:
         return 0
     elif isinstance(value, str):
-        v = re.sub(r'[^0-9]', '', value)
-        if v.isdigit():
-            return int(v)
+        value = re.sub(r'[^0-9]', '', value)
+        if value.isdigit():
+            return int(value)
     elif isinstance(value, float):
         return int(value)
     return 0
