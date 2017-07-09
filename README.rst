@@ -98,7 +98,7 @@ It also supports double/quad ladder in case of multiprocessor systems (but you b
 
 autorps
 ~~~~~~~
-Enables RPS on all available CPUs of NUMA node local for the NIC for all NIC's rx queues. It may be good for small servers with cheap network cards. You also can explicitely pass `--cpus` or `--cpu-mask`. Example output:
+Enables RPS on all available CPUs of NUMA node local for the NIC for all NIC's rx queues. It may be good for small servers with cheap network cards. You also can explicitely pass ``--cpus`` or ``--cpu-mask``. Example output:
 
 .. code::
 
