@@ -4,7 +4,7 @@
 
 import re
 from argparse import ArgumentParser
-from os.path import join
+from os.path import join, exists
 
 from six import iteritems, print_
 from six.moves import xrange
@@ -31,11 +31,13 @@ class RSSLadder(object):
             # read() in both cases return <str>
             if isinstance(lscpu_output, bytes):
                 lscpu_output = str(lscpu_output)
+        if not exists(interrupts_file):  # unit-tests
+            return
         self.interrupts = open(interrupts_file).readlines()
-        if not self.options.cpus:  # no need to detect topology if user gave us cpu list
-            self.numa = Numa(lscpu_output=lscpu_output)
         for postfix in sorted(self.queue_postfixes_detect()):
             self.smp_affinity_list_apply(self.smp_affinity_list_make(postfix))
+        if not self.options.cpus:  # no need to detect topology if user gave us cpu list
+            self.numa = Numa(lscpu_output=lscpu_output)
 
     @staticmethod
     def parse_options():

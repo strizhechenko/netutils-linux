@@ -1,7 +1,8 @@
 # coding=utf-8
 
-from netutils_linux_tuning.autorps import AutoRPS
 from unittest import TestCase
+
+from netutils_linux_tuning.autorps import AutoRPS
 
 
 class AutoRPSTests(TestCase):
