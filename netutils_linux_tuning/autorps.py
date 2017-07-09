@@ -43,7 +43,7 @@ class AutoRPS(object):
         bitmap = [0] * cpus_count
         for cpu in cpus:
             bitmap[cpu] = 1
-        return hex(int("".join(map(str, bitmap)), 2))[2:]
+        return hex(int("".join([str(cpu) for cpu in bitmap]), 2))[2:]  # no need to write 0x
 
     def mask_detect(self):
         if self.options.cpu_mask:

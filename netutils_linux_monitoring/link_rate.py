@@ -135,7 +135,7 @@ class LinkRateTop(BaseTop):
             devices = self.options.devices.split(',')
         else:
             devices = self.devices_list_regex()
-        return list(filter(self.devices_list_validate, devices))
+        return [dev for dev in devices if self.devices_list_validate(dev)]
 
     def post_optparse(self):
         """ Asserting and applying parsing options """

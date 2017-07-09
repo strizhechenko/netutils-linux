@@ -58,8 +58,8 @@ class Numa(object):
         filename = '/sys/class/net/{0}/device/numa_node'.format(dev)
         if not os.path.isfile(filename):
             return -1
-        with open(filename) as fd:
-            return int(fd.read().strip())
+        with open(filename) as dev_file:
+            return int(dev_file.read().strip())
 
     def detect_layouts_fallback(self):
         """
@@ -96,7 +96,7 @@ class Numa(object):
         """ Determine NUMA and sockets layout """
         stdout = self.detect_layout_lscpu(lscpu_output)
         rows = [row for row in stdout.strip().split('\n') if not row.startswith('#')]
-        layouts = [list(map(any2int, row.split(',')[2:4])) for row in rows]
+        layouts = [[any2int(value) for value in row.split(',')][2:4] for row in rows]
         numa_layout, socket_layout = zip(*layouts)
         self.numa_layout = dict(enumerate(numa_layout))
         self.socket_layout = dict(enumerate(socket_layout))

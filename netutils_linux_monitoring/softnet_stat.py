@@ -93,9 +93,7 @@ class SoftnetStatTop(BaseTop):
             colorize(stat.time_squeeze, self.time_squeeze_warning, self.time_squeeze_error),
             colorize(stat.cpu_collision, self.cpu_collision_warning, self.cpu_collision_error),
             stat.received_rps
-        ]
-            for stat in self.repr_source()
-        ]
+        ] for stat in self.repr_source()]
 
     def __repr__(self):
         table = make_table(self.make_header(), self.align, list(self.make_rows()))

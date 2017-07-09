@@ -27,14 +27,14 @@ class RxBuffersIncreaser(object):
 
     def investigate(self):
         """ get maximum and current rx ring buffers values via ethtool """
-        def extract_value(s):
-            return int(s.strip('RX:\t\n'))
+        def extract_value(line):
+            return int(line.strip('RX:\t\n'))
 
         # We need to be sure that on RHEL system we don't automatically tune buffers
         # that have been already manually tuned. In non RHEL system we skip this checks.
-        ns = '/etc/sysconfig/network-scripts/'
-        if path.exists(ns):  # don't check ifcfg on non RHEL-based systems.
-            config_file = path.join(ns, 'ifcfg-' + self.dev)
+        network_scripts = '/etc/sysconfig/network-scripts/'
+        if path.exists(network_scripts):  # don't check ifcfg on non RHEL-based systems.
+            config_file = path.join(network_scripts, 'ifcfg-' + self.dev)
             if path.exists(config_file):
                 with open(config_file) as config:
                     if any(line for line in config.readlines() if 'ETHTOOL_OPTS' in line):
