@@ -26,8 +26,7 @@ class RSSLadder(object):
             interrupts_file = join(self.options.test_dir, "interrupts")
             lscpu_output_filename = join(self.options.test_dir, "lscpu_output")
             lscpu_output = open(lscpu_output_filename).read()
-            # Popen.stdout in python 2.7 returns <str>
-            # Popen.stdout in python 3.6 returns <bytes>
+            # Popen.stdout: python 2.7 returns <str>, 3.6 returns <bytes>
             # read() in both cases return <str>
             if isinstance(lscpu_output, bytes):
                 lscpu_output = str(lscpu_output)
