@@ -34,10 +34,10 @@ class RSSLadder(object):
         if not exists(interrupts_file):  # unit-tests
             return
         self.interrupts = open(interrupts_file).readlines()
-        for postfix in sorted(self.queue_postfixes_detect()):
-            self.smp_affinity_list_apply(self.smp_affinity_list_make(postfix))
         if not self.options.cpus:  # no need to detect topology if user gave us cpu list
             self.numa = Numa(lscpu_output=lscpu_output)
+        for postfix in sorted(self.queue_postfixes_detect()):
+            self.smp_affinity_list_apply(self.smp_affinity_list_make(postfix))
 
     @staticmethod
     def parse_options():
