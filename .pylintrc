@@ -1,2 +1,7 @@
 [FORMAT]
+# why: because checks should be consistent with default pycharm settings
 max-line-length=120
+
+[MESSAGES CONTROL]
+# why: because I think module/class docstrings are generally useless, naming should be the documentation
+disable=C0111
