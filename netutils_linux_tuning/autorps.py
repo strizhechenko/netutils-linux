@@ -17,7 +17,7 @@ class AutoRPS(object):
         self.mask_apply()
 
     def socket_detect(self):
-        if any([self.options.socket, self.options.cpus, self.options.cpu_mask]):
+        if any([self.options.socket is not None, self.options.cpus, self.options.cpu_mask]):
             return
         socket = self.numa.node_dev_dict([self.options.dev], True).get(self.options.dev)
         self.options.socket = 0 if socket == -1 else socket
