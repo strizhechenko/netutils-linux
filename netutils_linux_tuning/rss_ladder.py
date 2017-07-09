@@ -3,6 +3,7 @@
 """ Receive Side Scaling tuning utility """
 
 import re
+import sys
 from argparse import ArgumentParser
 from os.path import join, exists
 
@@ -19,8 +20,10 @@ MAX_QUEUE_PER_DEVICE = 16
 class RSSLadder(object):
     """ Distributor of queues' interrupts by multiple CPUs """
 
-    def __init__(self):
+    def __init__(self, argv=None):
         interrupts_file = '/proc/interrupts'
+        if argv:
+            sys.argv = [sys.argv[0]] + argv
         self.options = self.parse_options()
         lscpu_output = None
         if self.options.test_dir:

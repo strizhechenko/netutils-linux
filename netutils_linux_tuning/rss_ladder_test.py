@@ -7,7 +7,7 @@ from netutils_linux_tuning.rss_ladder import RSSLadder
 class RSSLadderTests(TestCase):
 
     def setUp(self):
-        self.rss = RSSLadder()
+        self.rss = RSSLadder(argv=['eth0'])
         self.rss.options.dev = 'eth0'
 
     def test_queue_postfix_extract(self):
