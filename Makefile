@@ -1,9 +1,9 @@
 test:
 	pytest netutils_linux_*/
+	./tests/utils_runnable
 	./tests/rss-ladder-test
 	./tests/server-info-show
 	./tests/link_rate_units.sh
-	./tests/utils_runnable
 
 env:
 	rm -rf env
