@@ -11,6 +11,7 @@ from six.moves import xrange
 
 from netutils_linux_hardware.assessor_math import any2int
 from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.colors import wrap, YELLOW
 
 MAX_QUEUE_PER_DEVICE = 16
 
@@ -100,7 +101,12 @@ class RSSLadder(object):
         '* 4' is in case of NIC has more queues than socket has CPUs
         :param smp_affinity: list of tuples(irq, queue_name, socket)
         """
-        for irq, queue_name, socket_cpu in smp_affinity:
+        affinity = list(smp_affinity)
+        cpus = [socket_cpu for irq, queue, socket_cpu in affinity]
+        if len(set(cpus)) != len(cpus):
+            warning = "WARNING: some CPUs process multiple queues, consider reduce queue count for this network device"
+            print_(wrap(warning, YELLOW))
+        for irq, queue_name, socket_cpu in affinity:
             print_("  - {0}: irq {1} {2} -> {3}".format(self.options.dev, irq, queue_name, socket_cpu))
             if self.options.dry_run:
                 continue
