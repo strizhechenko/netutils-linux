@@ -49,8 +49,8 @@ class RxBuffersTune(BaseTune):
         if decision == self.current:
             print_("{0}'s RX ring buffer already has fine size.".format(self.options.dev))
             return
-        assert self.prefered, "Can't eval prefered RX ring buffer size."
-        command = 'ethtool -G {0} rx {1}'.format(self.options.dev, self.prefered)
+        assert decision, "Can't eval prefered RX ring buffer size."
+        command = 'ethtool -G {0} rx {1}'.format(self.options.dev, decision)
         print_('run:', command)
         if not self.options.dry_run:
             system(command)
