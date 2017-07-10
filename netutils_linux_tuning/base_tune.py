@@ -2,7 +2,7 @@
 
 from abc import abstractmethod
 from argparse import ArgumentParser
-
+from six import iteritems
 
 class BaseTune(object):
     """ Base class for all tuning utils """
@@ -11,13 +11,18 @@ class BaseTune(object):
         self.options = self.parse_options()
 
     @staticmethod
-    def parse_options():
-        """ Parse options common for all tune utils """
+    def make_parser():
+        """ Make parser with options common for all tune utils """
         parser = ArgumentParser()
         parser.add_argument('-t', '--test-dir', type=str,
                             help="Use prepared test dataset in TEST_DIR directory instead of running lscpu.")
         parser.add_argument('-d', '--dry-run', help="Don't apply any settings.", action='store_true', default=False)
         return parser
+
+    @staticmethod
+    @abstractmethod
+    def parse_options():
+        """ Parse options for specific util """
 
     @abstractmethod
     def parse(self):
@@ -34,6 +39,7 @@ class BaseTune(object):
 
 class CPUBasedTune(BaseTune):
     """ Base class for all tuning utils dealing with cpu affinity/masks """
+    # pylint: disable=W0223
     numa = None
     options = None
 
@@ -43,11 +49,15 @@ class CPUBasedTune(BaseTune):
         self.options.socket = 0 if socket == -1 else socket
 
     @staticmethod
-    def parse_options():
-        """ Common arguments for CPU based tune-utils """
+    def make_parser():
+        """ Argument parser for CPU based tune-utils """
         parser = BaseTune.parse_options()
         parser.add_argument('-c', '--cpus', help='Explicitly define list of CPUs for binding NICs queues', type=int,
                             nargs='+')
         parser.add_argument('dev', type=str)
         parser.add_argument('socket', nargs='?', type=int)
         return parser
+
+    def cpus_detect_real(self):
+        """ :return: list of cpu ids in given socket """
+        return [k for k, v in iteritems(self.numa.socket_layout) if v == self.options.socket]

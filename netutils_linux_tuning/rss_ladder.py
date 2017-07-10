@@ -6,7 +6,7 @@ import re
 import sys
 from os.path import join, exists
 
-from six import iteritems, print_
+from six import print_
 from six.moves import xrange
 
 from netutils_linux_tuning.base_tune import CPUBasedTune
@@ -123,15 +123,9 @@ class RSSLadder(CPUBasedTune):
         """
         :return: list of cpu ids to use with current queues distribution
         """
-        if self.options.cpus:
-            # 16 is in case of someone decide to bind up to 16 queues to one CPU for cache locality
-            # and manually distribute workload by RPS to other CPUs.
-            rss_cpus = self.options.cpus * MAX_QUEUE_PER_DEVICE
-        else:
-            cpus = [k for k, v in iteritems(self.numa.socket_layout) if v == self.options.socket]
-            rss_cpus = cpus * MAX_QUEUE_PER_DEVICE
+        rss_cpus = self.options.cpus if self.options.cpus else self.cpus_detect_real()
         rss_cpus.reverse()
-        return rss_cpus
+        return rss_cpus * MAX_QUEUE_PER_DEVICE
 
     def dev_colorize(self):
         """
@@ -156,7 +150,7 @@ class RSSLadder(CPUBasedTune):
         """
         :return: parsed arguments
         """
-        parser = CPUBasedTune.parse_options()
+        parser = CPUBasedTune.make_parser()
         parser.add_argument('--no-color', help='Disable all highlights', dest='color', action='store_false',
                             default=True)
         parser.add_argument('-o', '--offset', type=int, default=0,

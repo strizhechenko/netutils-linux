@@ -2,7 +2,7 @@
 """ Receive Packet Steering tuning utility """
 import os
 
-from six import print_, iteritems
+from six import print_
 
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_tuning.base_tune import CPUBasedTune
@@ -48,10 +48,9 @@ class AutoRPS(CPUBasedTune):
         """
         :return: options for AutoRPS
         """
-        parser = CPUBasedTune.parse_options()
+        parser = CPUBasedTune.make_parser()
         parser.add_argument('-f', '--force', help="Work even in case of multiqueue CPU", action='store_true',
                             default=False)
-
         parser.add_argument('-m', '--cpu-mask', help='Explicitly define mask to write in rps_cpus', type=str)
 
         return parser.parse_args()
@@ -79,12 +78,8 @@ class AutoRPS(CPUBasedTune):
         if self.options.cpu_mask:
             return
         if not self.options.cpus:
-            self.detect_cpus()
+            self.options.cpus = self.cpus_detect_real()
         self.options.cpu_mask = self.cpus2mask(self.options.cpus, len(self.numa.socket_layout.keys()))
-
-    def detect_cpus(self):
-        """ detects list of cpus which belong to given socket """
-        self.options.cpus = [k for k, v in iteritems(self.numa.socket_layout) if v == self.options.socket]
 
     def detect_queues_real(self):
         """

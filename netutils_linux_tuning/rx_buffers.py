@@ -45,9 +45,9 @@ class RxBuffersTune(BaseTune):
         """ Just wrapper for static function """
         return self.eval_prefered_size(self.current, self.maximum, self.options.upper_bound)
 
-    def apply(self, prefered):
+    def apply(self, decision):
         """ doing all the job, applying new buffer's size if required """
-        if prefered == self.current:
+        if decision == self.current:
             print_("{0}'s RX ring buffer already has fine size.".format(self.options.dev))
             return
         assert self.prefered, "Can't eval prefered RX ring buffer size."
@@ -61,7 +61,7 @@ class RxBuffersTune(BaseTune):
         """
         :return: parsed options for RxBuffersTune
         """
-        parser = BaseTune.parse_options()
+        parser = BaseTune.make_parser()
         parser.add_argument('-u', '--upper-bound', help="Work even in case of multi-queue CPU", type=int, default=2048)
         parser.add_argument('dev', type=str)
         return parser.parse_args()
@@ -83,8 +83,13 @@ class RxBuffersTune(BaseTune):
         Dies if NIC doesn't support RX buffers size change
         :return: maximum_size, current_size
         """
+
+        def line_value(number):
+            """ extracts integer value from line with given number """
+            return int(ethtool_buffers[number].strip('RX:\t'))
+
         ethtool_buffers = self.run_ethtool('-g', 1).split('\n')
-        return int(ethtool_buffers[2].strip('RX:\t')), int(ethtool_buffers[7].strip('RX:\t'))
+        return line_value(2), line_value(7)
 
     def network_scripts_check(self):
         """
