@@ -7,7 +7,6 @@
 3. Apply it
 """
 
-from argparse import ArgumentParser
 from os import system, path
 from subprocess import Popen, PIPE
 
