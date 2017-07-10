@@ -4,6 +4,7 @@ from abc import abstractmethod
 
 
 class BaseTune(object):
+    """ Base class for all tuning utils """
     def __init__(self):
         self.options = self.parse_options()
 

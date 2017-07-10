@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding=utf-8
 
 import unittest
 from netutils_linux_tuning.rx_buffers import RxBuffersTune
