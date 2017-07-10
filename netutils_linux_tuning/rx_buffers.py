@@ -61,10 +61,7 @@ class RxBuffersTune(BaseTune):
         """
         :return: parsed options for RxBuffersTune
         """
-        parser = ArgumentParser()
-        parser.add_argument('-t', '--test', type=str,
-                            help="Just initialize RXBuffersTune object for test.")
-        parser.add_argument('-d', '--dry-run', help="Don't apply any settings.", action='store_true', default=False)
+        parser = BaseTune.parse_options()
         parser.add_argument('-u', '--upper-bound', help="Work even in case of multi-queue CPU", type=int, default=2048)
         parser.add_argument('dev', type=str)
         return parser.parse_args()

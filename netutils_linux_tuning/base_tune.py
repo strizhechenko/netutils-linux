@@ -12,7 +12,12 @@ class BaseTune(object):
 
     @staticmethod
     def parse_options():
-        """ Parse options specific for tune """
+        """ Parse options common for all tune utils """
+        parser = ArgumentParser()
+        parser.add_argument('-t', '--test-dir', type=str,
+                            help="Use prepared test dataset in TEST_DIR directory instead of running lscpu.")
+        parser.add_argument('-d', '--dry-run', help="Don't apply any settings.", action='store_true', default=False)
+        return parser
 
     @abstractmethod
     def parse(self):
@@ -40,10 +45,7 @@ class CPUBasedTune(BaseTune):
     @staticmethod
     def parse_options():
         """ Common arguments for CPU based tune-utils """
-        parser = ArgumentParser()
-        parser.add_argument('-t', '--test-dir', type=str,
-                            help="Use prepared test dataset in TEST_DIR directory instead of running lscpu.")
-        parser.add_argument('-d', '--dry-run', help="Don't apply any settings.", action='store_true', default=False)
+        parser = BaseTune.parse_options()
         parser.add_argument('-c', '--cpus', help='Explicitly define list of CPUs for binding NICs queues', type=int,
                             nargs='+')
         parser.add_argument('dev', type=str)
