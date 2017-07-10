@@ -25,7 +25,7 @@ class RxBuffersTune(BaseTune):
 
     def __init__(self, args=None):
         BaseTune.__init__(self)
-        if 'test' in args:
+        if args and 'test' in args:
             return
         self.parse()
         self.apply(self.eval())
