@@ -4,6 +4,7 @@ from abc import abstractmethod
 from argparse import ArgumentParser
 from six import iteritems
 
+
 class BaseTune(object):
     """ Base class for all tuning utils """
 
@@ -51,7 +52,7 @@ class CPUBasedTune(BaseTune):
     @staticmethod
     def make_parser():
         """ Argument parser for CPU based tune-utils """
-        parser = BaseTune.parse_options()
+        parser = BaseTune.make_parser()
         parser.add_argument('-c', '--cpus', help='Explicitly define list of CPUs for binding NICs queues', type=int,
                             nargs='+')
         parser.add_argument('dev', type=str)
