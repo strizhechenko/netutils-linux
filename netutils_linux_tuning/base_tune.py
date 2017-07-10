@@ -1,4 +1,5 @@
 # coding=utf-8
+
 from abc import abstractmethod
 
 
@@ -7,7 +8,6 @@ class BaseTune(object):
         self.options = self.parse_options()
 
     @staticmethod
-    @abstractmethod
     def parse_options():
         """ Parse options specific for tune """
 

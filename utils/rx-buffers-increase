@@ -8,7 +8,7 @@ dropped/missing pkts and keeping a latency low.
 import sys
 from os import getenv
 
-from netutils_linux_tuning.rx_buffers import RxBuffersIncreaser
+from netutils_linux_tuning.rx_buffers import RxBuffersTune
 
 __author__ = 'Oleg Strizhechenko <oleg.strizhechenko@gmail.com>'
 
@@ -17,7 +17,7 @@ def main():
     """ Tune NIC's buffers if given in args """
     upper_bound = int(getenv('RX_UPPER_BOUND', '2048'))
     dev = sys.argv[1].split(';')[0]
-    RxBuffersIncreaser(dev, upper_bound).apply()
+    RxBuffersTune(dev, upper_bound).apply()
 
 
 if __name__ == '__main__':
