@@ -1,20 +1,19 @@
 # coding=utf-8
 """ Receive Packet Steering tuning utility """
 import os
-from argparse import ArgumentParser
 
 from six import print_, iteritems
 
 from netutils_linux_monitoring.numa import Numa
-from netutils_linux_tuning.base_tune import BaseTune
+from netutils_linux_tuning.base_tune import CPUBasedTune
 
 
-class AutoRPS(BaseTune):
+class AutoRPS(CPUBasedTune):
     """ Allows to use multi-cpu packets processing for budget NICs """
     numa = None
 
     def __init__(self):
-        BaseTune.__init__(self)
+        CPUBasedTune.__init__(self)
         queues = self.parse()
         self.eval()
         self.apply(queues)
@@ -26,7 +25,8 @@ class AutoRPS(BaseTune):
     def eval(self):
         """ Evaluates CPU mask used as decision for the apply() """
         self.numa = Numa(lscpu_output=self.lscpu())
-        self.socket_detect()
+        if not any([self.options.socket is not None, self.options.cpus, self.options.cpu_mask]):
+            self.socket_detect()
         self.mask_detect()
 
     def apply(self, decision):
@@ -48,18 +48,12 @@ class AutoRPS(BaseTune):
         """
         :return: options for AutoRPS
         """
-        parser = ArgumentParser()
-        parser.add_argument('-t', '--test-dir', type=str,
-                            help="Use prepared test dataset in TEST_DIR directory instead of running lscpu.")
-        parser.add_argument('-d', '--dry-run', help="Don't write anything to smp_affinity_list.",
-                            action='store_true', default=False)
+        parser = CPUBasedTune.parse_options()
         parser.add_argument('-f', '--force', help="Work even in case of multiqueue CPU", action='store_true',
                             default=False)
-        parser.add_argument('-c', '--cpus', help='Explicitly define list of CPUs for binding NICs queues', type=int,
-                            nargs='+')
+
         parser.add_argument('-m', '--cpu-mask', help='Explicitly define mask to write in rps_cpus', type=str)
-        parser.add_argument('dev', type=str)
-        parser.add_argument('socket', nargs='?', type=int)
+
         return parser.parse_args()
 
     @staticmethod
@@ -91,13 +85,6 @@ class AutoRPS(BaseTune):
     def detect_cpus(self):
         """ detects list of cpus which belong to given socket """
         self.options.cpus = [k for k, v in iteritems(self.numa.socket_layout) if v == self.options.socket]
-
-    def socket_detect(self):
-        """ detects socket in the same NUMA node with device or just using socket given in arguments """
-        if any([self.options.socket is not None, self.options.cpus, self.options.cpu_mask]):
-            return
-        socket = self.numa.node_dev_dict([self.options.dev], True).get(self.options.dev)
-        self.options.socket = 0 if socket == -1 else socket
 
     def detect_queues_real(self):
         """

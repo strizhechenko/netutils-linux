@@ -4,13 +4,12 @@
 
 import re
 import sys
-from argparse import ArgumentParser
 from os.path import join, exists
 
 from six import iteritems, print_
 from six.moves import xrange
 
-from netutils_linux_tuning.base_tune import BaseTune
+from netutils_linux_tuning.base_tune import CPUBasedTune
 from netutils_linux_hardware.assessor_math import any2int
 from netutils_linux_monitoring.numa import Numa
 from netutils_linux_monitoring.colors import wrap, YELLOW, cpu_color, COLORS_NODE
@@ -18,7 +17,7 @@ from netutils_linux_monitoring.colors import wrap, YELLOW, cpu_color, COLORS_NOD
 MAX_QUEUE_PER_DEVICE = 16
 
 
-class RSSLadder(BaseTune):
+class RSSLadder(CPUBasedTune):
     """ Distributor of queues' interrupts by multiple CPUs """
 
     numa = None
@@ -27,7 +26,7 @@ class RSSLadder(BaseTune):
     def __init__(self, argv=None):
         if argv:
             sys.argv = [sys.argv[0]] + argv
-        BaseTune.__init__(self)
+        CPUBasedTune.__init__(self)
         self.interrupts_file, lscpu_output = self.parse()
         if not exists(self.interrupts_file):  # unit-tests
             return
@@ -99,15 +98,9 @@ class RSSLadder(BaseTune):
         if self.options.cpus:  # no need to detect topology if user gave us cpu list
             return
         self.numa = Numa(lscpu_output=lscpu_output)
-        self.socket_detect()
+        if not any([self.options.socket is not None, self.options.cpus]):
+            self.socket_detect()
         self.numa.devices = self.numa.node_dev_dict([self.options.dev], False)
-
-    def socket_detect(self):
-        """ Determines socket to bind NIC's queues """
-        if any([self.options.socket is not None, self.options.cpus]):
-            return
-        socket = self.numa.node_dev_dict([self.options.dev], True).get(self.options.dev)
-        self.options.socket = 0 if socket == -1 else socket
 
     def queue_postfix_extract(self, line):
         """
@@ -163,21 +156,13 @@ class RSSLadder(BaseTune):
         """
         :return: parsed arguments
         """
-        parser = ArgumentParser()
-        parser.add_argument('-t', '--test-dir', type=str,
-                            help="Use prepared test dataset in TEST_DIR directory instead of /proc/interrupts.")
-        parser.add_argument('-d', '--dry-run', help="Don't write anything to smp_affinity_list.",
-                            action='store_true', default=False)
+        parser = CPUBasedTune.parse_options()
         parser.add_argument('--no-color', help='Disable all highlights', dest='color', action='store_false',
                             default=True)
         parser.add_argument('-o', '--offset', type=int, default=0,
                             help="If you have 2 NICs with 4 queues and 1 socket with 8 cpus, you may be want "
                                  "distribution like this: eth0: [0, 1, 2, 3]; eth1: [4, 5, 6, 7]; "
                                  "so run: rss-ladder-test eth0; rss-ladder-test --offset=4 eth1")
-        parser.add_argument('-c', '--cpus', help='Explicitly define list of CPUs for binding NICs queues', type=int,
-                            nargs='+')
-        parser.add_argument('dev', type=str)
-        parser.add_argument('socket', nargs='?', type=int)
         return parser.parse_args()
 
 

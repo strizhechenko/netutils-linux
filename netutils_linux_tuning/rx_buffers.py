@@ -38,7 +38,7 @@ class RxBuffersTune(BaseTune):
     def parse(self):
         """ get maximum and current rx ring buffers values via ethtool """
         self.network_scripts_check()
-        self.vlan_check()
+        self.run_ethtool('-i', 1)
         self.maximum, self.current = self.parse_ethtool_buffers()
 
     def eval(self):
@@ -64,30 +64,30 @@ class RxBuffersTune(BaseTune):
         parser = ArgumentParser()
         parser.add_argument('-t', '--test', type=str,
                             help="Just initialize RXBuffersTune object for test.")
-        parser.add_argument('-d', '--dry-run', help="Don't write anything to smp_affinity_list.",
-                            action='store_true', default=False)
+        parser.add_argument('-d', '--dry-run', help="Don't apply any settings.", action='store_true', default=False)
         parser.add_argument('-u', '--upper-bound', help="Work even in case of multi-queue CPU", type=int, default=2048)
         parser.add_argument('dev', type=str)
         return parser.parse_args()
+
+    def run_ethtool(self, key, exit_code):
+        """
+        :param key: key to pass to ethtool command
+        :param exit_code: if command fails, what code to return?
+        :return: stdout of ethtool command
+        """
+        process = Popen(['ethtool', key, self.options.dev], stdout=PIPE, stderr=PIPE)
+        stdout, _ = process.communicate()
+        if process.returncode != 0:
+            exit(exit_code)
+        return stdout
 
     def parse_ethtool_buffers(self):
         """
         Dies if NIC doesn't support RX buffers size change
         :return: maximum_size, current_size
         """
-        process = Popen(['ethtool', '-g', self.options.dev], stdout=PIPE, stderr=PIPE)
-        ethtool_buffers, _ = process.communicate()
-        if process.returncode != 0:
-            exit(1)
-        ethtool_buffers = ethtool_buffers.split('\n')
-        return int(ethtool_buffers[2].strip('RX:\t\n')), int(ethtool_buffers[7].strip('RX:\t\n'))
-
-    def vlan_check(self):
-        """ silent fail if called for vlan/bridge/etc """
-        process = Popen(['ethtool', '-i', self.options.dev], stdout=PIPE, stderr=PIPE)
-        _, _ = process.communicate()
-        if process.returncode != 0:
-            exit(0)
+        ethtool_buffers = self.run_ethtool('-g', 1).split('\n')
+        return int(ethtool_buffers[2].strip('RX:\t')), int(ethtool_buffers[7].strip('RX:\t'))
 
     def network_scripts_check(self):
         """

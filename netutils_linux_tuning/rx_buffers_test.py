@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # coding=utf-8
 
 import unittest
@@ -10,28 +9,20 @@ class RxBuffersTuneTest(unittest.TestCase):
     Just in-memory test of evaluation rx-buffer's size.
     No device's settings changed.
     """
+    dataset = {
+        4096: [(256, 2048), (512, 2048), (2048, 2048), (3072, 3072), (4096, 4096)],
+        511: ((200, 511), (511, 511), (400, 511)),
+        8096: ((200, 2048), (2048, 2048), (3000, 3000), (8096, 8096))
+    }
 
     def setUp(self):
-        self.rxbi = RxBuffersTune(['test'])
+        self.rx = RxBuffersTune(['test'])
         self.default_upper_bound = 2048
 
-    def test_4096(self):
-        self.assertEqual(self.rxbi.eval_prefered_size(256, 4096, self.default_upper_bound), 2048)
-        self.assertEqual(self.rxbi.eval_prefered_size(512, 4096, self.default_upper_bound), 2048)
-        self.assertEqual(self.rxbi.eval_prefered_size(2048, 4096, self.default_upper_bound), 2048)
-        self.assertEqual(self.rxbi.eval_prefered_size(3072, 4096, self.default_upper_bound), 3072)
-        self.assertEqual(self.rxbi.eval_prefered_size(4096, 4096, self.default_upper_bound), 4096)
-
-    def test_511(self):
-        self.assertEqual(self.rxbi.eval_prefered_size(200, 511, self.default_upper_bound), 511)
-        self.assertEqual(self.rxbi.eval_prefered_size(511, 511, self.default_upper_bound), 511)
-        self.assertEqual(self.rxbi.eval_prefered_size(400, 511, self.default_upper_bound), 511)
-
-    def test_8096(self):
-        self.assertEqual(self.rxbi.eval_prefered_size(200, 8096, self.default_upper_bound), 2048)
-        self.assertEqual(self.rxbi.eval_prefered_size(2048, 8096, self.default_upper_bound), 2048)
-        self.assertEqual(self.rxbi.eval_prefered_size(3000, 8096, self.default_upper_bound), 3000)
-        self.assertEqual(self.rxbi.eval_prefered_size(8096, 8096, self.default_upper_bound), 8096)
+    def test_all(self):
+        for max_buffer in self.dataset:
+            for current, expected in self.dataset[max_buffer]:
+                self.assertEqual(self.rx.eval_prefered_size(current, max_buffer, self.default_upper_bound), expected)
 
 
 if __name__ == '__main__':
