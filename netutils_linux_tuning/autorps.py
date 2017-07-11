@@ -11,6 +11,8 @@ from netutils_linux_tuning.base_tune import CPUBasedTune
 class AutoRPS(CPUBasedTune):
     """ Allows to use multi-cpu packets processing for budget NICs """
     numa = None
+    target = 'rps_cpus'
+    queue_prefix = 'rx'
 
     def __init__(self):
         CPUBasedTune.__init__(self)
@@ -20,7 +22,7 @@ class AutoRPS(CPUBasedTune):
 
     def parse(self):
         """ :return: queue list to write cpu mask """
-        return ['rx-0'] if self.options.test_dir else self.detect_queues_real()
+        return ["{0}-0".format(self.queue_prefix)] if self.options.test_dir else self.detect_queues_real()
 
     def eval(self):
         """ Evaluates CPU mask used as decision for the apply() """
@@ -40,20 +42,18 @@ class AutoRPS(CPUBasedTune):
             print_("Using mask '{0}' for {1}-{2}".format(self.options.cpu_mask, self.options.dev, queue))
             if self.options.dry_run:
                 continue
-            with open(os.path.join(queue_dir, queue, 'rps_cpus'), 'w') as queue_file:
+            with open(os.path.join(queue_dir, queue, self.target), 'w') as queue_file:
                 queue_file.write(self.options.cpu_mask)
 
-    @staticmethod
-    def parse_options():
+    def parse_options(self):
         """
         :return: options for AutoRPS
         """
         parser = CPUBasedTune.make_parser()
         parser.add_argument('-f', '--force', help="Work even in case of multiqueue CPU", action='store_true',
                             default=False)
-        parser.add_argument('-m', '--cpu-mask', help='Explicitly define mask to write in rps_cpus', type=str)
-
-        return parser.parse_args()
+        parser.add_argument('-m', '--cpu-mask', help='Explicitly define mask to write in {0}'.format(self.target),
+                            type=str)
 
     @staticmethod
     def cpus2mask(cpus, cpus_count):

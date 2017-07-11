@@ -16,4 +16,6 @@ link-rate  --no-clear -n 1 --random --devices="$devices"
 irqtop  --no-clear -n 1 --random --interrupts-file="$irq"
 softirq-top  --no-clear -n 1 --random --softirqs-file="$softirq"
 softnet-stat-top  --no-clear -n 1 --random --softnet-stat-file="$soft_net_stat"
-
+autorps --help
+autoxps --help
+rss-ladder --help

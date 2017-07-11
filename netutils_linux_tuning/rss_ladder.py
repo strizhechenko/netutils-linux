@@ -145,8 +145,7 @@ class RSSLadder(CPUBasedTune):
             return cpu
         return wrap(cpu, cpu_color(cpu, numa=self.numa))
 
-    @staticmethod
-    def parse_options():
+    def parse_options(self):
         """
         :return: parsed arguments
         """
