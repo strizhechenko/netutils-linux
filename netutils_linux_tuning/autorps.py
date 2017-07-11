@@ -54,6 +54,7 @@ class AutoRPS(CPUBasedTune):
                             default=False)
         parser.add_argument('-m', '--cpu-mask', help='Explicitly define mask to write in {0}'.format(self.target),
                             type=str)
+        return parser.parse_args()
 
     @staticmethod
     def cpus2mask(cpus, cpus_count):
