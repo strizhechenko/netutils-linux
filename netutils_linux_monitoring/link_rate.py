@@ -146,9 +146,9 @@ class LinkRateTop(BaseTop):
             self.stats = [
                 stat for stat in self.stats if stat.filename.startswith('rx')]
         if self.options.simple_mode:
-            simple_stats = ('packets', 'bytes', 'errors')
+            simple_stats = ('rx_packets', 'rx_bytes', 'rx_errors', 'tx_packets', 'tx_bytes', 'tx_errors')
             self.stats = [
-                stat for stat in self.stats if stat.shortname in simple_stats]
+                stat for stat in self.stats if stat.filename in simple_stats]
         self.unit_change()
         self.header = self.make_header()
         self.align_map = ['l'] + ['r'] * (len(self.header) - 1)
