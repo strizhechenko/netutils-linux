@@ -20,9 +20,8 @@ class BaseTune(object):
         parser.add_argument('-d', '--dry-run', help="Don't apply any settings.", action='store_true', default=False)
         return parser
 
-    @staticmethod
     @abstractmethod
-    def parse_options():
+    def parse_options(self):
         """ Parse options for specific util """
 
     @abstractmethod
