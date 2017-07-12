@@ -69,10 +69,14 @@ class IrqTop(BaseTop):
             output_lines.append(line)
         return output_lines, cpu_count
 
+    def colorize_irq_per_cpu(self, irq_per_cpu):
+        """ :returns: highlighed by warning/error irq string """
+        return colorize(irq_per_cpu, self.irq_warning, self.irq_error)
+
     def __repr__(self):
         output_lines, cpu_count = self.make_rows()
         align_map = self.make_align_map(cpu_count)
-        output_lines.insert(1, [colorize(irq, self.irq_warning, self.irq_error) for irq in self.diff_total] + ['TOTAL'])
+        output_lines.insert(1, [self.colorize_irq_per_cpu(irq) for irq in self.diff_total] + ['TOTAL'])
         output_lines.insert(2, [''] * (cpu_count + 1))
         table = make_table(output_lines[0], align_map, output_lines[1:])
         return self.__repr_table__(table)

@@ -83,7 +83,7 @@ class NetworkTop(BaseTop):
         rows = [
             [
                 wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
-                colorize(irq, irqtop.irq_warning, irqtop.irq_error),
+                irqtop.colorize_irq_per_cpu(irq),
                 colorize(softirq_rx, softirq_top.net_rx_warning, softirq_top.net_rx_error),
                 colorize(softirq_tx, softirq_top.net_tx_warning, softirq_top.net_tx_error),
                 colorize(stat.total, softnet_stat_top.total_warning, softnet_stat_top.total_error),
