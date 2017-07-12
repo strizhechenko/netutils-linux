@@ -117,4 +117,4 @@ class SoftnetStatTop(BaseTop):
     @staticmethod
     def colorize_cpu_collision(cpu_collision):
         """ :returns: highlighted by warning/error cpu_collision string """
-        return cpu_collision(1, 1000)
+        return colorize(cpu_collision, 1, 1000)
