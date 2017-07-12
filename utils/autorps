@@ -2,7 +2,7 @@
 
 # coding=utf-8
 
-from netutils_linux_tuning.autorps import AutoRPS
+from netutils_linux_tuning.auto_softirq_tune import AutoRPS
 
 if __name__ == '__main__':
     AutoRPS()
