@@ -6,6 +6,6 @@ how large NIC's buffer may be, etc.
 """
 from netutils_linux_tuning.rx_buffers import RxBuffersTune
 from netutils_linux_tuning.rss_ladder import RSSLadder
-from netutils_linux_tuning.autorps import AutoRPS
+from netutils_linux_tuning.auto_softirq_tune import AutoRPS, AutoXPS
 
-__all__ = ['RxBuffersTune', 'AutoRPS', 'RSSLadder']
+__all__ = ['RxBuffersTune', 'AutoRPS', 'AutoXPS', 'RSSLadder']

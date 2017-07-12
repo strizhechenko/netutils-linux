@@ -2,7 +2,7 @@
 
 from unittest import TestCase
 
-from netutils_linux_tuning.autorps import AutoRPS
+from netutils_linux_tuning.auto_softirq_tune import AutoRPS
 
 
 class AutoRPSTests(TestCase):

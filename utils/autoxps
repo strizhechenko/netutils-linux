@@ -2,7 +2,7 @@
 
 # coding=utf-8
 
-from netutils_linux_tuning.autoxps import AutoXPS
+from netutils_linux_tuning.auto_softirq_tune import AutoXPS
 
 if __name__ == '__main__':
     AutoXPS()

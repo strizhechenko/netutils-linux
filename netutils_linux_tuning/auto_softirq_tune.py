@@ -1,5 +1,6 @@
 # coding=utf-8
-""" Receive Packet Steering tuning utility """
+""" Transmit Packet Steering tuning utility """
+
 import os
 
 from six import print_
@@ -8,11 +9,11 @@ from netutils_linux_monitoring.numa import Numa
 from netutils_linux_tuning.base_tune import CPUBasedTune
 
 
-class AutoRPS(CPUBasedTune):
+class AutoSoftirqTune(CPUBasedTune):
     """ Allows to use multi-cpu packets processing for budget NICs """
     numa = None
-    target = 'rps_cpus'
-    queue_prefix = 'rx'
+    target = None
+    queue_prefix = None
 
     def __init__(self):
         CPUBasedTune.__init__(self)
@@ -87,7 +88,7 @@ class AutoRPS(CPUBasedTune):
         :return: queue list to write cpu mask found by really reading /sys/
         """
         queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
-        return [queue for queue in os.listdir(queue_dir) if queue.startswith('rx')]
+        return [queue for queue in os.listdir(queue_dir) if queue.startswith(self.queue_prefix)]
 
     def lscpu(self):
         """
@@ -98,3 +99,21 @@ class AutoRPS(CPUBasedTune):
         lscpu_output_filename = os.path.join(self.options.test_dir, "lscpu_output")
         lscpu_output = open(lscpu_output_filename).read()
         return str(lscpu_output) if isinstance(lscpu_output, bytes) else lscpu_output
+
+
+class AutoXPS(AutoSoftirqTune):
+    """ Allows to use multi-cpu packets processing for budget NICs """
+    target = 'xps_cpus'
+    queue_prefix = 'tx'
+
+    def __init__(self):
+        AutoSoftirqTune.__init__(self)
+
+
+class AutoRPS(AutoSoftirqTune):
+    """ Allows to use multi-cpu packets processing for budget NICs """
+    target = 'rps_cpus'
+    queue_prefix = 'rx'
+
+    def __init__(self):
+        AutoSoftirqTune.__init__(self)
