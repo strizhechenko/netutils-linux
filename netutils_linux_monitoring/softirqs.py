@@ -3,18 +3,13 @@ from optparse import Option
 from six import iteritems
 
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import wrap, cpu_color
+from netutils_linux_monitoring.colors import wrap, cpu_color, colorize
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
 
 
 class Softirqs(BaseTop):
     """ Utility for monitoring software interrupts distribution """
-
-    net_rx_warning = 40000
-    net_rx_error = 80000
-    net_tx_warning = 20000
-    net_tx_error = 30000
 
     def __init__(self, numa=None):
         BaseTop.__init__(self)
@@ -34,10 +29,6 @@ class Softirqs(BaseTop):
             metrics = [line.strip().split(':') for line in softirq_file.readlines() if ':' in line]
             return dict((k, [int(d) for d in v.strip().split()]) for k, v in metrics)
 
-    @staticmethod
-    def __active_cpu_count__(data):
-        return len([metric for metric in data.get('TIMER') if metric > 0])
-
     def eval(self):
         self.diff = dict((key, self.list_diff(
             data, self.previous[key])) for key, data in iteritems(self.current))
@@ -48,7 +39,22 @@ class Softirqs(BaseTop):
         net_rx = self.repr_source().get('NET_RX')[:active_cpu_count]
         net_tx = self.repr_source().get('NET_TX')[:active_cpu_count]
         rows = [
-            [wrap("CPU{0}".format(n), cpu_color(n, self.numa)), v[0], v[1]] for n, v in enumerate(zip(net_rx, net_tx))
+            [wrap("CPU{0}".format(n), cpu_color(n, self.numa)), self.colorize_net_rx(v[0]), self.colorize_net_tx(v[1])]
+            for n, v in enumerate(zip(net_rx, net_tx))
         ]
         table = make_table(header, ['l', 'r', 'r'], rows)
         return self.__repr_table__(table)
+
+    @staticmethod
+    def colorize_net_rx(net_rx):
+        """ :returns: highlighted by warning/error net_rx string """
+        return colorize(net_rx, 40000, 80000)
+
+    @staticmethod
+    def colorize_net_tx(net_tx):
+        """ :returns: highlighted by warning/error net_tx string """
+        return colorize(net_tx, 20000, 30000)
+
+    @staticmethod
+    def __active_cpu_count__(data):
+        return len([metric for metric in data.get('TIMER') if metric > 0])

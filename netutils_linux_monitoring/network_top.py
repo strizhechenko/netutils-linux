@@ -7,7 +7,7 @@ from six import iteritems, itervalues
 
 from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRateTop
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import cpu_color, wrap, colorize, wrap_header, bright
+from netutils_linux_monitoring.colors import cpu_color, wrap, wrap_header, bright
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
 
@@ -46,6 +46,32 @@ class NetworkTop(BaseTop):
             _top.tick()
         self.eval()
 
+    def __repr__(self):
+        output = [
+            BaseTop.header,
+            self.__repr_irq(),
+            self.__repr_cpu(),
+            self.__repr_dev(),
+        ]
+        if not self.options.clear:
+            del output[0]
+        return "\n".join(output)
+
+    def parse_options(self):
+        """ Tricky way to gather all options in one util without conflicts, parse them and do some logic after parse """
+        parser = OptionParser()
+        for top in itervalues(self.tops):
+            for opt in top.specific_options:
+                try:
+                    parser.add_option(opt)
+                except OptionConflictError:
+                    pass  # I don't know how to make a set of options
+        self.options, _ = parser.parse_args()
+        for top in itervalues(self.tops):
+            top.options = self.options
+            if hasattr(top, 'post_optparse'):
+                top.post_optparse()
+
     def __repr_dev(self):
         top = self.tops.get('link-rate')
         table = make_table(top.make_header(), top.align_map, top.make_rows())
@@ -80,45 +106,17 @@ class NetworkTop(BaseTop):
         return wrap_header("Load per cpu:") + str(table)
 
     def __repr_cpu_make_rows(self, irqtop, network_output, softirq_top, softnet_stat_top):
-        rows = [
+        return [
             [
                 wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
-                colorize(irq, irqtop.irq_warning, irqtop.irq_error),
-                colorize(softirq_rx, softirq_top.net_rx_warning, softirq_top.net_rx_error),
-                colorize(softirq_tx, softirq_top.net_tx_warning, softirq_top.net_tx_error),
-                colorize(stat.total, softnet_stat_top.total_warning, softnet_stat_top.total_error),
-                colorize(stat.dropped, softnet_stat_top.dropped_warning, softnet_stat_top.dropped_error),
-                colorize(stat.time_squeeze, softnet_stat_top.time_squeeze_warning, softnet_stat_top.time_squeeze_error),
-                colorize(stat.cpu_collision, softnet_stat_top.cpu_collision_warning,
-                         softnet_stat_top.cpu_collision_error),
+                irqtop.colorize_irq_per_cpu(irq),
+                softirq_top.colorize_net_rx(net_rx),
+                softirq_top.colorize_net_tx(net_tx),
+                softnet_stat_top.colorize_total(stat.total),
+                softnet_stat_top.colorize_dropped(stat.dropped),
+                softnet_stat_top.colorize_time_squeeze(stat.time_squeeze),
+                softnet_stat_top.colorize_cpu_collision(stat.cpu_collision),
                 stat.received_rps
             ]
-            for irq, softirq_rx, softirq_tx, stat in network_output
+            for irq, net_rx, net_tx, stat in network_output
         ]
-        return rows
-
-    def __repr__(self):
-        output = [
-            BaseTop.header,
-            self.__repr_irq(),
-            self.__repr_cpu(),
-            self.__repr_dev(),
-        ]
-        if not self.options.clear:
-            del output[0]
-        return "\n".join(output)
-
-    def parse_options(self):
-        """ Tricky way to gather all options in one util without conflicts, parse them and do some logic after parse """
-        parser = OptionParser()
-        for top in itervalues(self.tops):
-            for opt in top.specific_options:
-                try:
-                    parser.add_option(opt)
-                except OptionConflictError:
-                    pass  # I don't know how to make a set of options
-        self.options, _ = parser.parse_args()
-        for top in itervalues(self.tops):
-            top.options = self.options
-            if hasattr(top, 'post_optparse'):
-                top.post_optparse()

@@ -15,8 +15,6 @@ from netutils_linux_monitoring.numa import Numa
 class IrqTop(BaseTop):
     """ Utility for monitoring hardware interrupts distribution """
     diff_total = None
-    irq_warning = 40000
-    irq_error = 80000
 
     def __init__(self, numa=None):
         BaseTop.__init__(self)
@@ -69,10 +67,15 @@ class IrqTop(BaseTop):
             output_lines.append(line)
         return output_lines, cpu_count
 
+    @staticmethod
+    def colorize_irq_per_cpu(irq_per_cpu):
+        """ :returns: highlighted by warning/error irq string """
+        return colorize(irq_per_cpu, 40000, 80000)
+
     def __repr__(self):
         output_lines, cpu_count = self.make_rows()
         align_map = self.make_align_map(cpu_count)
-        output_lines.insert(1, [colorize(irq, self.irq_warning, self.irq_error) for irq in self.diff_total] + ['TOTAL'])
+        output_lines.insert(1, [self.colorize_irq_per_cpu(irq) for irq in self.diff_total] + ['TOTAL'])
         output_lines.insert(2, [''] * (cpu_count + 1))
         table = make_table(output_lines[0], align_map, output_lines[1:])
         return self.__repr_table__(table)
