@@ -7,9 +7,14 @@ from random import randint
 from six.moves import xrange
 
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import colorize_cpu_list, colorize
+from netutils_linux_monitoring.colors import colorize_cpu_list, Metric, State
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
+
+
+class IrqPerCpu(Metric):
+    warning = 40000
+    error = 80000
 
 
 class IrqTop(BaseTop):
@@ -67,10 +72,12 @@ class IrqTop(BaseTop):
             output_lines.append(line)
         return output_lines, cpu_count
 
-    @staticmethod
-    def colorize_irq_per_cpu(irq_per_cpu):
+    def colorize_irq_per_cpu(self, irq_per_cpu):
         """ :returns: highlighted by warning/error irq string """
-        return colorize(irq_per_cpu, 40000, 80000)
+        metric = IrqPerCpu().init(irq_per_cpu)
+        if metric.state != State.OK:
+            self.state = metric.state
+        return metric.colorize()
 
     def __repr__(self):
         output_lines, cpu_count = self.make_rows()

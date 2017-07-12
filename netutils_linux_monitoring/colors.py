@@ -22,27 +22,59 @@ COLORS_SOCKET = {
 }
 
 
-class Metric(object):
+class State(object):
+    """ I'd like to use enum from py34+, but I need support for py26 and afraid to use enum34 from PYPI """
+    OK = 0
+    WARNING = 1
+    ERROR = 2
+
+    @staticmethod
+    def fsm(value, warning, error):
+        """ Nice place to apply FSM later """
+        return State.ERROR if value >= error else State.WARNING if value >= warning else State.OK
+
+
+class Metric(State):
     """
     In these utils exist a lot of metrics.
     Many of them have warning/error threshold and need to be highlighted
     """
-    OK = 0
-    WARNING = 1
-    ERROR = 2
+
+    value = None
+    warning = None
+    error = None
+
+    state = State.OK
     colors = {
-        OK: Fore.RESET,
-        ERROR: Fore.RED,
-        WARNING: YELLOW
+        State.OK: Fore.RESET,
+        State.ERROR: Fore.RED,
+        State.WARNING: YELLOW
     }
 
-    def __init__(self, value, warning, error):
-        self.value = value
-        self.state = self.detect_state(warning, error)
+    def __init__(self):
         self.text = self.colorize()
 
-    def detect_state(self, warning, error):
-        return self.ERROR if self.value >= error else self.WARNING if self.value >= warning else self.OK
+    def init(self, value):
+        """ :returns: initialized object (assuming you inherited Metric) """
+        assert self.warning is not None and self.error is not None
+        self.__set_value(value)
+        self.state = State.fsm(value, self.warning, self.error)
+        return self
+
+    def init_raw(self, value, warning, error):
+        """ :returns: initialized object with ready-to-use thresholds """
+        self.__set_warning(warning)
+        self.__set_error(error)
+        return self.init(value)
+
+    def __set_value(self, value):
+        self.value = value
+
+    def __set_warning(self, warning):
+        self.warning = warning
+
+    def __set_error(self, error):
+        self.error = error
 
     def colorize(self):
         return wrap(self.value, Metric.colors[self.state])
@@ -58,7 +90,7 @@ def wrap_header(string):
 
 def colorize(value, warning, error):
     """ Wrapper for Metric class for backward compatibility """
-    return Metric(value, warning, error).text
+    return Metric().init_raw(value, warning, error).colorize()
 
 
 def wrap(word, color):
