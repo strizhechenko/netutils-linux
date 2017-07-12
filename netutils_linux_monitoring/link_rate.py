@@ -5,7 +5,7 @@ from os import listdir, path
 from random import randint
 from re import match
 
-from six import print_, iteritems
+from six import iteritems
 
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import wrap, COLORS_NODE, colorize
@@ -167,7 +167,3 @@ class LinkRateTop(BaseTop):
                 self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'kbits'))
             elif self.options.mbits:
                 self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'mbits'))
-
-
-if __name__ == '__main__':
-    print_(LinkRateTop().run())
