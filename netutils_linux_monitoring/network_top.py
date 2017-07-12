@@ -7,7 +7,7 @@ from six import iteritems, itervalues
 
 from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRateTop
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import cpu_color, wrap, colorize, wrap_header, bright
+from netutils_linux_monitoring.colors import cpu_color, wrap, wrap_header, bright
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.numa import Numa
 
@@ -86,11 +86,10 @@ class NetworkTop(BaseTop):
                 irqtop.colorize_irq_per_cpu(irq),
                 softirq_top.colorize_net_rx(net_rx),
                 softirq_top.colorize_net_tx(net_tx),
-                colorize(stat.total, softnet_stat_top.total_warning, softnet_stat_top.total_error),
-                colorize(stat.dropped, softnet_stat_top.dropped_warning, softnet_stat_top.dropped_error),
-                colorize(stat.time_squeeze, softnet_stat_top.time_squeeze_warning, softnet_stat_top.time_squeeze_error),
-                colorize(stat.cpu_collision, softnet_stat_top.cpu_collision_warning,
-                         softnet_stat_top.cpu_collision_error),
+                softnet_stat_top.colorize_total(stat.total),
+                softnet_stat_top.colorize_dropped(stat.dropped),
+                softnet_stat_top.colorize_time_squeeze(stat.time_squeeze),
+                softnet_stat_top.colorize_cpu_collision(stat.cpu_collision),
                 stat.received_rps
             ]
             for irq, net_rx, net_tx, stat in network_output

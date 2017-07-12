@@ -81,6 +81,10 @@ class SoftnetStatTop(BaseTop):
     def eval(self):
         self.diff = [data - self.previous[cpu] for cpu, data in enumerate(self.current)]
 
+    def __repr__(self):
+        table = make_table(self.make_header(), self.align, list(self.make_rows()))
+        return self.__repr_table__(table)
+
     @staticmethod
     def make_header():
         return ["CPU", "total", "dropped", "time_squeeze", "cpu_collision", "received_rps"]
@@ -88,13 +92,29 @@ class SoftnetStatTop(BaseTop):
     def make_rows(self):
         return [[
             wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
-            colorize(stat.total, self.total_warning, self.total_error),
-            colorize(stat.dropped, self.dropped_warning, self.dropped_error),
-            colorize(stat.time_squeeze, self.time_squeeze_warning, self.time_squeeze_error),
-            colorize(stat.cpu_collision, self.cpu_collision_warning, self.cpu_collision_error),
+            self.colorize_total(stat.total),
+            self.colorize_dropped(stat.dropped),
+            self.colorize_time_squeeze(stat.time_squeeze),
+            self.colorize_cpu_collision(stat.cpu_collision),
             stat.received_rps
         ] for stat in self.repr_source()]
 
-    def __repr__(self):
-        table = make_table(self.make_header(), self.align, list(self.make_rows()))
-        return self.__repr_table__(table)
+    @staticmethod
+    def colorize_total(total):
+        """ :returns: highlighted by warning/error total string """
+        return colorize(total, 300000, 900000)
+
+    @staticmethod
+    def colorize_dropped(dropped):
+        """ :returns: highlighted by warning/error dropped string """
+        return colorize(dropped, 1, 1)
+
+    @staticmethod
+    def colorize_time_squeeze(time_squeeze):
+        """ :returns: highlighted by warning/error time_squeeze string """
+        return colorize(time_squeeze, 1, 300)
+
+    @staticmethod
+    def colorize_cpu_collision(cpu_collision):
+        """ :returns: highlighted by warning/error cpu_collision string """
+        return cpu_collision(1, 1000)
