@@ -84,8 +84,8 @@ class NetworkTop(BaseTop):
             [
                 wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
                 irqtop.colorize_irq_per_cpu(irq),
-                colorize(softirq_rx, softirq_top.net_rx_warning, softirq_top.net_rx_error),
-                colorize(softirq_tx, softirq_top.net_tx_warning, softirq_top.net_tx_error),
+                softirq_top.colorize_net_rx(net_rx),
+                softirq_top.colorize_net_tx(net_tx),
                 colorize(stat.total, softnet_stat_top.total_warning, softnet_stat_top.total_error),
                 colorize(stat.dropped, softnet_stat_top.dropped_warning, softnet_stat_top.dropped_error),
                 colorize(stat.time_squeeze, softnet_stat_top.time_squeeze_warning, softnet_stat_top.time_squeeze_error),
@@ -93,7 +93,7 @@ class NetworkTop(BaseTop):
                          softnet_stat_top.cpu_collision_error),
                 stat.received_rps
             ]
-            for irq, softirq_rx, softirq_tx, stat in network_output
+            for irq, net_rx, net_tx, stat in network_output
         ]
         return rows
 
