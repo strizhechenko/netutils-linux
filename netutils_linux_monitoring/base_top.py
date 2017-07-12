@@ -6,7 +6,7 @@ from time import sleep
 from colorama import Fore
 from six import print_
 
-from netutils_linux_monitoring.colors import wrap
+from netutils_linux_monitoring.colors import wrap, Metric
 
 
 class BaseTop(object):
@@ -16,6 +16,7 @@ class BaseTop(object):
     diff = None
     header = wrap("Press CTRL-C to exit...\n", Fore.LIGHTBLACK_EX)
     options = None
+    state = Metric()
 
     def __init__(self):
         """

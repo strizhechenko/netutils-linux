@@ -5,7 +5,7 @@ from os import listdir, path
 from random import randint
 from re import match
 
-from six import print_, iteritems
+from six import iteritems
 
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import wrap, COLORS_NODE, colorize
@@ -73,9 +73,7 @@ class LinkRateTop(BaseTop):
 
     @staticmethod
     def colorize_stat(stat, value):
-        if 'errors' in stat.filename or 'dropped' in stat.filename:
-            return colorize(value, 1, 1)
-        return value
+        return colorize(value, 1, 1) if 'errors' in stat.filename or 'dropped' in stat.filename else value
 
     def colorize_stats(self, dev, repr_source):
         return [self.colorize_stat(stat, repr_source[dev][stat]) for stat in self.stats]
@@ -169,7 +167,3 @@ class LinkRateTop(BaseTop):
                 self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'kbits'))
             elif self.options.mbits:
                 self.stats[i] = Stat(stat.filename, stat.shortname.replace('bytes', 'mbits'))
-
-
-if __name__ == '__main__':
-    print_(LinkRateTop().run())
