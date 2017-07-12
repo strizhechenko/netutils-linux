@@ -14,10 +14,7 @@ def get_datadir():
     if os.path.isfile(os.path.join(os.getcwd(), 'lspci')):
         return os.getcwd()
     return os.environ.get('DATADIR', default_data_directory)
-
-
-def main():
-    print_(Assessor(Reader(get_datadir()).info))
+    
 
 if __name__ == '__main__':
-    main()
+    print_(Assessor(Reader(get_datadir()).info))
