@@ -88,7 +88,7 @@ class AutoSoftirqTune(CPUBasedTune):
         :return: queue list to write cpu mask found by really reading /sys/
         """
         queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
-        return [queue for queue in os.listdir(queue_dir) if queue.startswith('rx')]
+        return [queue for queue in os.listdir(queue_dir) if queue.startswith(self.queue_prefix)]
 
     def lscpu(self):
         """
