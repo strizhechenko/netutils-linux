@@ -13,12 +13,15 @@ class Softirqs(BaseTop):
 
     def __init__(self, topology=None):
         BaseTop.__init__(self)
-        specific_options = [
-            Option('--softirqs-file', default='/proc/softirqs',
-                   help='Option for testing on MacOS purpose.')
-        ]
         self.topology = topology
-        self.specific_options.extend(specific_options)
+
+    @staticmethod
+    def make_parser(parser=None):
+        if not parser:
+            parser = BaseTop.make_parser()
+        parser.add_argument('--softirqs-file', default='/proc/softirqs',
+                            help='Option for testing on MacOS purpose.')
+        return parser
 
     def post_optparse(self):
         if not self.topology:

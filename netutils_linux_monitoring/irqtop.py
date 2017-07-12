@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from copy import deepcopy
-from optparse import Option
 from random import randint
 
 from six.moves import xrange
@@ -18,12 +17,15 @@ class IrqTop(BaseTop):
 
     def __init__(self, topology=None):
         BaseTop.__init__(self)
-        specific_options = [
-            Option('--interrupts-file', default='/proc/interrupts',
-                   help='Option for testing on MacOS purpose.')
-        ]
         self.topology = topology
-        self.specific_options.extend(specific_options)
+
+    @staticmethod
+    def make_parser(parser=None):
+        if not parser:
+            parser = BaseTop.make_parser()
+        parser.add_argument('--interrupts-file', default='/proc/interrupts',
+                            help='Option for testing on MacOS purpose.')
+        return parser
 
     def post_optparse(self):
         if not self.topology:
