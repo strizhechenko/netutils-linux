@@ -9,20 +9,15 @@ from six import print_
 from netutils_linux_hardware.assessor import Assessor
 from netutils_linux_hardware.reader import Reader
 
+def get_datadir():
+    default_data_directory = 'tests/autotune_network.tests/2xE5-2640.i350_and_82599ES.l2_mixed.masterconf'
+    if os.path.isfile(os.path.join(os.getcwd(), 'lspci')):
+        return os.getcwd()
+    return os.environ.get('DATADIR', default_data_directory)
+
 
 def main():
-    # assess data in current directory
-    if os.path.isfile(os.path.join(os.getcwd(), 'lspci')):
-        datadir = os.getcwd()
-    # assess data in DATADIR directory
-    elif os.getenv('DATADIR'):
-        datadir = os.getenv('DATADIR')
-    # default debugging routine
-    else:
-        datadir = 'tests/autotune_network.tests/2xE5-2640.i350_and_82599ES.l2_mixed.masterconf'
-        # datadir = 'tests/autotune_network.tests/kvm.l3.masterconf'
-    data = Reader(datadir).info
-    print_(Assessor(data))
+    print_(Assessor(Reader(get_datadir()).info))
 
 if __name__ == '__main__':
     main()
