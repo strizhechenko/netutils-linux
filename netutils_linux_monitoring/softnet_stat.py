@@ -1,3 +1,4 @@
+# coding=utf-8
 from optparse import Option
 from random import randint
 
