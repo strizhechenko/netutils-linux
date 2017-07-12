@@ -22,6 +22,32 @@ COLORS_SOCKET = {
 }
 
 
+class Metric(object):
+    """
+    In these utils exist a lot of metrics.
+    Many of them have warning/error threshold and need to be highlighted
+    """
+    OK = 0
+    WARNING = 1
+    ERROR = 2
+    colors = {
+        OK: Fore.RESET,
+        ERROR: Fore.RED,
+        WARNING: YELLOW
+    }
+
+    def __init__(self, value, warning, error):
+        self.value = value
+        self.state = self.detect_state(warning, error)
+        self.text = self.colorize()
+
+    def detect_state(self, warning, error):
+        return self.ERROR if self.value >= error else self.WARNING if self.value >= warning else self.OK
+
+    def colorize(self):
+        return wrap(self.value, Metric.colors[self.state])
+
+
 def bright(string):
     return wrap(string, Style.BRIGHT)
 
@@ -31,7 +57,8 @@ def wrap_header(string):
 
 
 def colorize(value, warning, error):
-    return wrap(value, Fore.RED if value >= error else YELLOW if value >= warning else Fore.RESET)
+    """ Wrapper for Metric class for backward compatibility """
+    return Metric(value, warning, error).text
 
 
 def wrap(word, color):
