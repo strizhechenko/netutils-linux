@@ -9,7 +9,7 @@ from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRate
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import cpu_color, wrap, wrap_header, bright
 from netutils_linux_monitoring.layout import make_table
-from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.topology import Topology
 
 
 class NetworkTop(BaseTop):
@@ -24,7 +24,7 @@ class NetworkTop(BaseTop):
             'link-rate': LinkRateTop(),
         }
         self.parse_options()
-        self.numa = Numa(fake=self.options.random)
+        self.topology = Topology(fake=self.options.random)
 
     def parse(self):
         """
@@ -108,7 +108,7 @@ class NetworkTop(BaseTop):
     def __repr_cpu_make_rows(self, irqtop, network_output, softirq_top, softnet_stat_top):
         return [
             [
-                wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
+                wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.topology)),
                 irqtop.colorize_irq_per_cpu(irq),
                 softirq_top.colorize_net_rx(net_rx),
                 softirq_top.colorize_net_tx(net_tx),

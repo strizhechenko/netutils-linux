@@ -4,7 +4,7 @@ import unittest
 
 from six.moves import xrange
 
-from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.topology import Topology
 from netutils_linux_monitoring.softirqs import Softirqs
 
 
@@ -12,9 +12,9 @@ class SoftirqsTest(unittest.TestCase):
 
     def test_file2data(self):
         for cpu in ('dualcore', 'i7'):
-            numa = Numa(fake=True)
+            topology = Topology(fake=True)
             for i in xrange(1, 6):
-                top = Softirqs(numa)
+                top = Softirqs(topology)
                 top.parse_options()
                 top.options.random = True
                 top.options.softirqs_file = 'tests/softirqs/{0}/softirqs{1}'.format(cpu, i)

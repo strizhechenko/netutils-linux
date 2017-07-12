@@ -5,7 +5,7 @@ from random import randint
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import cpu_color, wrap, colorize
 from netutils_linux_monitoring.layout import make_table
-from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.topology import Topology
 
 
 class SoftnetStat(object):
@@ -61,18 +61,18 @@ class SoftnetStatTop(BaseTop):
     time_squeeze_warning, time_squeeze_error = 1, 300
     cpu_collision_warning, cpu_collision_error = 1, 1000
 
-    def __init__(self, numa=None):
+    def __init__(self, topology=None):
         BaseTop.__init__(self)
         specific_options = [
             Option('--softnet-stat-file', default='/proc/net/softnet_stat',
                    help='Option for testing on MacOS purpose.'),
         ]
-        self.numa = numa
+        self.topology = topology
         self.specific_options.extend(specific_options)
 
     def post_optparse(self):
-        if not self.numa:
-            self.numa = Numa(fake=self.options.random)
+        if not self.topology:
+            self.topology = Topology(fake=self.options.random)
 
     def parse(self):
         with open(self.options.softnet_stat_file) as softnet_stat:
@@ -92,7 +92,7 @@ class SoftnetStatTop(BaseTop):
 
     def make_rows(self):
         return [[
-            wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
+            wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.topology)),
             self.colorize_total(stat.total),
             self.colorize_dropped(stat.dropped),
             self.colorize_time_squeeze(stat.time_squeeze),

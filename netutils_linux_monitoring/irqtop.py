@@ -9,25 +9,25 @@ from six.moves import xrange
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import colorize_cpu_list, colorize
 from netutils_linux_monitoring.layout import make_table
-from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.topology import Topology
 
 
 class IrqTop(BaseTop):
     """ Utility for monitoring hardware interrupts distribution """
     diff_total = None
 
-    def __init__(self, numa=None):
+    def __init__(self, topology=None):
         BaseTop.__init__(self)
         specific_options = [
             Option('--interrupts-file', default='/proc/interrupts',
                    help='Option for testing on MacOS purpose.')
         ]
-        self.numa = numa
+        self.topology = topology
         self.specific_options.extend(specific_options)
 
     def post_optparse(self):
-        if not self.numa:
-            self.numa = Numa(fake=self.options.random)
+        if not self.topology:
+            self.topology = Topology(fake=self.options.random)
 
     def __int(self, line):
         return [self.int(item) for item in line.strip().split()]
@@ -59,7 +59,7 @@ class IrqTop(BaseTop):
         for line in self.repr_source():
             if line[0] == 'CPU0':
                 cpu_count = len(line)
-                line = colorize_cpu_list(line, self.numa) + ['']
+                line = colorize_cpu_list(line, self.topology) + ['']
             elif self.skip_zero_line(line):  # hiding useless data such a kind of interrupt etc
                 continue
             else:  # make line with irq counters as compact as we can, it can be very long!

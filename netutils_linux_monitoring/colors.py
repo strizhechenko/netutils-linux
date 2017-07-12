@@ -39,19 +39,19 @@ def wrap(word, color):
     return "{0}{1}{2}".format(color, word, Style.RESET_ALL)
 
 
-def __choose_color_scheme(numa):
-    return COLORS_NODE if numa.layout_kind == 'NUMA' else COLORS_SOCKET
+def __choose_color_scheme(topology):
+    return COLORS_NODE if topology.layout_kind == 'NUMA' else COLORS_SOCKET
 
 
-def cpu_color(cpu, numa, color_scheme=None):
+def cpu_color(cpu, topology, color_scheme=None):
     if not color_scheme:
-        color_scheme = __choose_color_scheme(numa)
+        color_scheme = __choose_color_scheme(topology)
     if isinstance(cpu, str):
         cpu = int(cpu[3:])
-    return color_scheme.get(numa.layout.get(cpu))
+    return color_scheme.get(topology.layout.get(cpu))
 
 
-def colorize_cpu_list(cpu_list, numa):
+def colorize_cpu_list(cpu_list, topology):
     """ return list of highlighted strings with CPU names regarding to NUMA """
-    color_scheme = __choose_color_scheme(numa)
-    return [wrap(cpu, cpu_color(cpu, numa, color_scheme)) for cpu in cpu_list]
+    color_scheme = __choose_color_scheme(topology)
+    return [wrap(cpu, cpu_color(cpu, topology, color_scheme)) for cpu in cpu_list]

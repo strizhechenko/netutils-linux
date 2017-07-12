@@ -40,12 +40,13 @@ class BaseTune(object):
 class CPUBasedTune(BaseTune):
     """ Base class for all tuning utils dealing with cpu affinity/masks """
     # pylint: disable=W0223
-    numa = None
+    pci = None
+    topology = None
     options = None
 
     def socket_detect(self):
         """ detects socket in the same NUMA node with device """
-        socket = self.numa.node_dev_dict([self.options.dev], True).get(self.options.dev)
+        socket = self.pci.node_dev_dict([self.options.dev], True).get(self.options.dev)
         self.options.socket = 0 if socket == -1 else socket
 
     @staticmethod
@@ -60,4 +61,4 @@ class CPUBasedTune(BaseTune):
 
     def cpus_detect_real(self):
         """ :return: list of cpu ids in given socket """
-        return [k for k, v in iteritems(self.numa.socket_layout) if v == self.options.socket]
+        return [k for k, v in iteritems(self.topology.socket_layout) if v == self.options.socket]

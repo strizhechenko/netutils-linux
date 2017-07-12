@@ -10,7 +10,7 @@ from six import iteritems
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.colors import wrap, COLORS_NODE, colorize
 from netutils_linux_monitoring.layout import make_table
-from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.pci import PCI
 
 Stat = namedtuple('Stat', ['filename', 'shortname'])
 
@@ -34,7 +34,7 @@ class LinkRateTop(BaseTop):
     ]
     align_map = None
 
-    def __init__(self, numa=None):
+    def __init__(self, pci=None):
         BaseTop.__init__(self)
         specific_options = [
             Option('--assert', '--assert-mode', default=False, dest='assert_mode',
@@ -52,7 +52,7 @@ class LinkRateTop(BaseTop):
             Option('--kbits', default=False, action='store_true'),
             Option('--mbits', default=True, action='store_true'),
         ]
-        self.numa = numa
+        self.pci = pci
         self.specific_options.extend(specific_options)
 
     def parse(self):
@@ -79,11 +79,11 @@ class LinkRateTop(BaseTop):
         return [self.colorize_stat(stat, repr_source[dev][stat]) for stat in self.stats]
 
     def make_rows(self):
-        if not self.numa.devices:
-            self.numa.devices = self.numa.node_dev_dict(self.options.devices, self.options.random)
+        if not self.pci.devices:
+            self.pci.devices = self.pci.node_dev_dict(self.options.devices, self.options.random)
         repr_source = self.repr_source()
         for dev in self.options.devices:
-            dev_node = self.numa.devices.get(dev)
+            dev_node = self.pci.devices.get(dev)
             dev_color = COLORS_NODE.get(dev_node)
             _dev = wrap(dev, dev_color)
             yield [_dev] + self.colorize_stats(dev, repr_source)
@@ -150,8 +150,9 @@ class LinkRateTop(BaseTop):
         self.unit_change()
         self.header = self.make_header()
         self.align_map = ['l'] + ['r'] * (len(self.header) - 1)
-        if not self.numa:
-            self.numa = Numa(self.options.devices, self.options.random)
+        if not self.pci:
+            self.pci = PCI()
+            self.pci.devices = self.pci.node_dev_dict(self.options.devices, self.options.random)
 
     def unit_change(self):
         if not any([self.options.bits, self.options.kbits, self.options.mbits]):

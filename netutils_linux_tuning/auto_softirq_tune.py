@@ -5,13 +5,13 @@ import os
 
 from six import print_
 
-from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.topology import Topology
 from netutils_linux_tuning.base_tune import CPUBasedTune
 
 
 class AutoSoftirqTune(CPUBasedTune):
     """ Allows to use multi-cpu packets processing for budget NICs """
-    numa = None
+    topology = None
     target = None
     queue_prefix = None
 
@@ -27,7 +27,7 @@ class AutoSoftirqTune(CPUBasedTune):
 
     def eval(self):
         """ Evaluates CPU mask used as decision for the apply() """
-        self.numa = Numa(lscpu_output=self.lscpu())
+        self.topology = Topology(lscpu_output=self.lscpu())
         if not any([self.options.socket is not None, self.options.cpus, self.options.cpu_mask]):
             self.socket_detect()
         self.mask_detect()
@@ -75,13 +75,13 @@ class AutoSoftirqTune(CPUBasedTune):
         Finds a way to calculate CPU mask to apply:
         1. --cpu-mask
         2. --cpus
-        3. numa.layout
+        3. topology.layout
         """
         if self.options.cpu_mask:
             return
         if not self.options.cpus:
             self.options.cpus = self.cpus_detect_real()
-        self.options.cpu_mask = self.cpus2mask(self.options.cpus, len(self.numa.socket_layout.keys()))
+        self.options.cpu_mask = self.cpus2mask(self.options.cpus, len(self.topology.socket_layout.keys()))
 
     def detect_queues_real(self):
         """
