@@ -11,7 +11,8 @@ from six.moves import xrange
 
 from netutils_linux_tuning.base_tune import CPUBasedTune
 from netutils_linux_hardware.assessor_math import any2int
-from netutils_linux_monitoring.numa import Numa
+from netutils_linux_monitoring.topology import Topology
+from netutils_linux_monitoring.pci import PCI
 from netutils_linux_monitoring.colors import wrap, YELLOW, cpu_color, COLORS_NODE
 
 MAX_QUEUE_PER_DEVICE = 16
@@ -20,13 +21,14 @@ MAX_QUEUE_PER_DEVICE = 16
 class RSSLadder(CPUBasedTune):
     """ Distributor of queues' interrupts by multiple CPUs """
 
-    numa = None
+    topology = None
     interrupts_file = None
 
     def __init__(self, argv=None):
         if argv:
             sys.argv = [sys.argv[0]] + argv
         CPUBasedTune.__init__(self)
+        self.pci = PCI()
         self.interrupts_file, lscpu_output = self.parse()
         if not exists(self.interrupts_file):  # unit-tests
             return
@@ -97,10 +99,10 @@ class RSSLadder(CPUBasedTune):
         """
         if self.options.cpus:  # no need to detect topology if user gave us cpu list
             return
-        self.numa = Numa(lscpu_output=lscpu_output)
+        self.topology = Topology(lscpu_output=lscpu_output)
         if not any([self.options.socket is not None, self.options.cpus]):
             self.socket_detect()
-        self.numa.devices = self.numa.node_dev_dict([self.options.dev], False)
+        self.pci.devices = self.pci.node_dev_dict([self.options.dev], False)
 
     def queue_postfix_extract(self, line):
         """
@@ -131,9 +133,9 @@ class RSSLadder(CPUBasedTune):
         """
         :return: highlighted by NUMA-node name of the device
         """
-        if not self.numa or not self.options.color:
+        if not self.pci or not self.options.color:
             return self.options.dev
-        color = COLORS_NODE.get(self.numa.devices.get(self.options.dev))
+        color = COLORS_NODE.get(self.pci.devices.get(self.options.dev))
         return wrap(self.options.dev, color)
 
     def cpu_colorize(self, cpu):
@@ -141,9 +143,9 @@ class RSSLadder(CPUBasedTune):
         :param cpu: cpu number (0)
         :return: highlighted by NUMA-node cpu number.
         """
-        if not self.numa or not self.options.color:
+        if not self.topology or not self.options.color:
             return cpu
-        return wrap(cpu, cpu_color(cpu, numa=self.numa))
+        return wrap(cpu, cpu_color(cpu, topology=self.topology))
 
     def parse_options(self):
         """
