@@ -46,6 +46,32 @@ class NetworkTop(BaseTop):
             _top.tick()
         self.eval()
 
+    def __repr__(self):
+        output = [
+            BaseTop.header,
+            self.__repr_irq(),
+            self.__repr_cpu(),
+            self.__repr_dev(),
+        ]
+        if not self.options.clear:
+            del output[0]
+        return "\n".join(output)
+
+    def parse_options(self):
+        """ Tricky way to gather all options in one util without conflicts, parse them and do some logic after parse """
+        parser = OptionParser()
+        for top in itervalues(self.tops):
+            for opt in top.specific_options:
+                try:
+                    parser.add_option(opt)
+                except OptionConflictError:
+                    pass  # I don't know how to make a set of options
+        self.options, _ = parser.parse_args()
+        for top in itervalues(self.tops):
+            top.options = self.options
+            if hasattr(top, 'post_optparse'):
+                top.post_optparse()
+
     def __repr_dev(self):
         top = self.tops.get('link-rate')
         table = make_table(top.make_header(), top.align_map, top.make_rows())
@@ -80,7 +106,7 @@ class NetworkTop(BaseTop):
         return wrap_header("Load per cpu:") + str(table)
 
     def __repr_cpu_make_rows(self, irqtop, network_output, softirq_top, softnet_stat_top):
-        rows = [
+        return [
             [
                 wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.numa)),
                 irqtop.colorize_irq_per_cpu(irq),
@@ -94,30 +120,3 @@ class NetworkTop(BaseTop):
             ]
             for irq, net_rx, net_tx, stat in network_output
         ]
-        return rows
-
-    def __repr__(self):
-        output = [
-            BaseTop.header,
-            self.__repr_irq(),
-            self.__repr_cpu(),
-            self.__repr_dev(),
-        ]
-        if not self.options.clear:
-            del output[0]
-        return "\n".join(output)
-
-    def parse_options(self):
-        """ Tricky way to gather all options in one util without conflicts, parse them and do some logic after parse """
-        parser = OptionParser()
-        for top in itervalues(self.tops):
-            for opt in top.specific_options:
-                try:
-                    parser.add_option(opt)
-                except OptionConflictError:
-                    pass  # I don't know how to make a set of options
-        self.options, _ = parser.parse_args()
-        for top in itervalues(self.tops):
-            top.options = self.options
-            if hasattr(top, 'post_optparse'):
-                top.post_optparse()
