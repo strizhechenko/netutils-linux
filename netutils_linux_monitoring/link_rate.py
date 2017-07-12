@@ -73,9 +73,7 @@ class LinkRateTop(BaseTop):
 
     @staticmethod
     def colorize_stat(stat, value):
-        if 'errors' in stat.filename or 'dropped' in stat.filename:
-            return colorize(value, 1, 1)
-        return value
+        return colorize(value, 1, 1) if 'errors' in stat.filename or 'dropped' in stat.filename else value
 
     def colorize_stats(self, dev, repr_source):
         return [self.colorize_stat(stat, repr_source[dev][stat]) for stat in self.stats]
