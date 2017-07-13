@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from optparse import OptionParser, OptionConflictError
-
 from six import iteritems, itervalues
 
 from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRateTop
@@ -59,14 +57,10 @@ class NetworkTop(BaseTop):
 
     def parse_options(self):
         """ Tricky way to gather all options in one util without conflicts, parse them and do some logic after parse """
-        parser = OptionParser()
+        parser = BaseTop.make_parser()
         for top in itervalues(self.tops):
-            for opt in top.specific_options:
-                try:
-                    parser.add_option(opt)
-                except OptionConflictError:
-                    pass  # I don't know how to make a set of options
-        self.options, _ = parser.parse_args()
+            parser = top.make_parser(parser)
+        self.options = parser.parse_args()
         for top in itervalues(self.tops):
             top.options = self.options
             if hasattr(top, 'post_optparse'):
