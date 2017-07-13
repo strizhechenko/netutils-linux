@@ -1,5 +1,3 @@
-from optparse import Option
-
 from six import iteritems
 
 from netutils_linux_monitoring.base_top import BaseTop
