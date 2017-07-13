@@ -1,3 +1,4 @@
+from abc import abstractmethod
 import argparse
 from os import system
 from random import randint
@@ -101,14 +102,14 @@ class BaseTop(object):
             return BaseTop.header + str(table)
         return str(table)
 
+    @abstractmethod
     def parse(self):
         """ Should read some file(s) into python structure (dict/list) """
-        raise NotImplementedError
 
+    @abstractmethod
     def eval(self):
         """ Should evaluate self.diff using self.previous / self.current """
-        raise NotImplementedError
 
+    @abstractmethod
     def __repr__(self):
         """ Should return string, representing self.diff """
-        raise NotImplementedError
