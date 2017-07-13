@@ -7,10 +7,12 @@ netutils-linux
    :target: https://landscape.io/github/strizhechenko/netutils-linux/master
 .. |pypi| image:: https://badge.fury.io/py/netutils-linux.svg
    :target: https://badge.fury.io/py/netutils-linux
-.. |license| image:: https://img.shields.io/badge/License-MIT-yellow.svg
+.. |license| image:: https://img.shields.io/badge/License-MIT-yellow.svg?colorB=green
    :target: https://opensource.org/licenses/MIT
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/netutils-linux.svg?colorB=green
+   :target: https://pypi.python.org/pypi/netutils-linux
 
-|travis| |landscape| |pypi| |license|
+|travis| |landscape| |pypi| |license| |pyversions|
 
 It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging. Should work well with Python 2.6 and Python 2.7. Inspired by `packagecloud's blog post`_.
 
