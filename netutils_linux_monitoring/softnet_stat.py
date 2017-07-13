@@ -1,5 +1,4 @@
 # coding=utf-8
-from optparse import Option
 from random import randint
 
 from netutils_linux_monitoring.base_top import BaseTop
@@ -63,12 +62,15 @@ class SoftnetStatTop(BaseTop):
 
     def __init__(self, topology=None):
         BaseTop.__init__(self)
-        specific_options = [
-            Option('--softnet-stat-file', default='/proc/net/softnet_stat',
-                   help='Option for testing on MacOS purpose.'),
-        ]
         self.topology = topology
-        self.specific_options.extend(specific_options)
+
+    @staticmethod
+    def make_parser(parser=None):
+        if not parser:
+            parser = BaseTop.make_parser()
+        parser.add_argument('--softnet-stat-file', default='/proc/net/softnet_stat',
+                            help='Option for testing on MacOS purpose.')
+        return parser
 
     def post_optparse(self):
         if not self.topology:

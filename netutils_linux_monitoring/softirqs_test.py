@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+# coding=utf-8
 
+import sys
 import unittest
 
 from six.moves import xrange
@@ -15,7 +17,8 @@ class SoftirqsTest(unittest.TestCase):
             topology = Topology(fake=True)
             for i in xrange(1, 6):
                 top = Softirqs(topology)
-                top.parse_options()
+                sys.argv = ['softirqs_test', '--random']
+                top.options = top.make_parser().parse_args()
                 top.options.random = True
                 top.options.softirqs_file = 'tests/softirqs/{0}/softirqs{1}'.format(cpu, i)
                 self.assertTrue('NET_RX' in top.parse())

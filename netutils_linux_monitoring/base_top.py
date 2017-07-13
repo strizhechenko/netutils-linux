@@ -1,4 +1,4 @@
-from optparse import Option, OptionParser, OptionConflictError
+import argparse
 from os import system
 from random import randint
 from time import sleep
@@ -17,50 +17,35 @@ class BaseTop(object):
     header = wrap("Press CTRL-C to exit...\n", Fore.LIGHTBLACK_EX)
     options = None
 
-    def __init__(self):
-        """
-        Base __init__() should only list common options that will be used in
-        all specific top-like utils. All specific top-like utils should extend,
-        but NOT OVERRIDE self.specific_options.
-        """
-        self.specific_options = [
-            Option('-i', '--interval', default=1, type=int,
-                   help='Interval between screen renew in seconds.'),
-            Option('-n', '--iterations', dest='iterations', default=60, type=int,
-                   help="Count of screen's renews, -1 - infinite loop."),
-            Option('--no-delta-mode', action='store_false', dest='delta_mode',
-                   default=True, help="Shows metrics' values instead of growth."),
-            Option('--no-delta-small-hide', action='store_false',
-                   dest='delta_small_hide', default=True,
-                   help="Prevent lines with only small changes or without"
-                        "changes at all from hiding."),
-            Option('-l', '--delta-small-hide-limit', default=80, type=int,
-                   help='Hides lines with only changes less than this limit'),
-            Option('--no-color', dest='color', default=True, action='store_false',
-                   help="Don't highlight NUMA nodes or sockets"),
-            Option('--spaces', default=False, action='store_true',
-                   help="Add spaces in numbers' representation, e.g. '1234567' "
-                        "will be '1 234 567'"),
-            Option('--random', default=False, action='store_true',
-                   help="Shows random diff data instead of real evaluation. "
-                        "Helpful for testing on static files"),
-            Option('--no-clear', default=True, dest='clear', action='store_false',
-                   help="Don't clear screen after each iteration. "
-                        "May be useful in scripts/logging to file."),
-        ]
-
-    def parse_options(self):
+    @staticmethod
+    def make_parser(parser=None):
         """ That should be explicitly called in __main__ part of any top-like utils """
-        parser = OptionParser()
-        for opt in self.specific_options:
-            try:
-                parser.add_option(opt)
-            except OptionConflictError:
-                pass
-        self.options, _ = parser.parse_args()
-        if hasattr(self, 'post_optparse'):
-            # pylint: disable=E1101
-            self.post_optparse()
+        if not parser:
+            parser = argparse.ArgumentParser()
+        parser.add_argument('-i', '--interval', default=1, type=int,
+                            help='Interval between screen renew in seconds.')
+        parser.add_argument('-n', '--iterations', dest='iterations', default=60, type=int,
+                            help="Count of screen's renews, -1 - infinite loop.")
+        parser.add_argument('--no-delta-mode', action='store_false', dest='delta_mode',
+                            default=True, help="Shows metrics' values instead of growth.")
+        parser.add_argument('--no-delta-small-hide', action='store_false',
+                            dest='delta_small_hide', default=True,
+                            help="Prevent lines with only small changes or without"
+                                 "changes at all from hiding.")
+        parser.add_argument('-l', '--delta-small-hide-limit', default=80, type=int,
+                            help='Hides lines with only changes less than this limit')
+        parser.add_argument('--no-color', dest='color', default=True, action='store_false',
+                            help="Don't highlight NUMA nodes or sockets")
+        parser.add_argument('--spaces', default=False, action='store_true',
+                            help="Add spaces in numbers' representation, e.g. '1234567' "
+                                 "will be '1 234 567'")
+        parser.add_argument('--random', default=False, action='store_true',
+                            help="Shows random diff data instead of real evaluation. "
+                                 "Helpful for testing on static files")
+        parser.add_argument('--no-clear', default=True, dest='clear', action='store_false',
+                            help="Don't clear screen after each iteration. "
+                                 "May be useful in scripts/logging to file.")
+        return parser
 
     def tick(self):
         """ Gathers new data + evaluate diff between current & previous data """
