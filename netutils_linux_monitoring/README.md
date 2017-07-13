@@ -14,11 +14,9 @@ There is also an idea of future refactoring in the air: rewrite all the librarie
 - model - `parse()` or separate class for representing data
 - controller - basetop, optparse, etc.
 
-## Why optparse (and not argparse/click)
+## Why argparse (and not click)
 
-Because optparse is the only parser able to define Option() as separate object.
-
-It's possible to do via patching argparse but it's ulgier than using deprecated module, I think.
+Because of tricky magic with inheritance and composition of args in utils. It's +/- easy to build parser with added arguments in functions, but I have no idea how to do the same thing in decorators' style that click provide.
 
 ## How it even works?
 
