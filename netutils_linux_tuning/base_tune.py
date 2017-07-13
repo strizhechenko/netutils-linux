@@ -2,6 +2,7 @@
 
 from abc import abstractmethod
 from argparse import ArgumentParser
+
 from six import iteritems
 
 
@@ -46,7 +47,7 @@ class CPUBasedTune(BaseTune):
 
     def socket_detect(self):
         """ detects socket in the same NUMA node with device """
-        socket = self.pci.node_dev_dict([self.options.dev], True).get(self.options.dev)
+        socket = self.pci.node_dev_dict([self.options.dev]).get(self.options.dev)
         self.options.socket = 0 if socket == -1 else socket
 
     @staticmethod

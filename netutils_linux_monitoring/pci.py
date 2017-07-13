@@ -1,4 +1,8 @@
+# coding=utf-8
 import os
+import sys
+
+from six import print_
 
 
 class PCI(object):
@@ -12,7 +16,7 @@ class PCI(object):
     }
     devices = None
 
-    def node_dev_dict(self, devices, fake):
+    def node_dev_dict(self, devices, fake=False):
         """
         :param devices: list of devices
         :param fake: options.random
@@ -30,3 +34,7 @@ class PCI(object):
             return -1
         with open(filename) as dev_file:
             return int(dev_file.read().strip())
+
+
+if __name__ == '__main__':
+    print_(PCI().node_dev_dict(sys.argv[1:]))
