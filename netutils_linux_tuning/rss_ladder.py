@@ -9,11 +9,10 @@ from os.path import join, exists
 from six import print_
 from six.moves import xrange
 
-from netutils_linux_tuning.base_tune import CPUBasedTune
 from netutils_linux_hardware.assessor_math import any2int
-from netutils_linux_monitoring.topology import Topology
-from netutils_linux_monitoring.pci import PCI
 from netutils_linux_monitoring.colors import wrap, YELLOW, cpu_color, COLORS_NODE
+from netutils_linux_monitoring.topology import Topology
+from netutils_linux_tuning.base_tune import CPUBasedTune
 
 MAX_QUEUE_PER_DEVICE = 16
 
@@ -28,7 +27,6 @@ class RSSLadder(CPUBasedTune):
         if argv:
             sys.argv = [sys.argv[0]] + argv
         CPUBasedTune.__init__(self)
-        self.pci = PCI()
         self.interrupts_file, lscpu_output = self.parse()
         if not exists(self.interrupts_file):  # unit-tests
             return

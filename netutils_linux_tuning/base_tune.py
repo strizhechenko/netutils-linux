@@ -5,6 +5,8 @@ from argparse import ArgumentParser
 
 from six import iteritems
 
+from netutils_linux_monitoring.pci import PCI
+
 
 class BaseTune(object):
     """ Base class for all tuning utils """
@@ -41,9 +43,12 @@ class BaseTune(object):
 class CPUBasedTune(BaseTune):
     """ Base class for all tuning utils dealing with cpu affinity/masks """
     # pylint: disable=W0223
-    pci = None
     topology = None
     options = None
+
+    def __init__(self):
+        BaseTune.__init__(self)
+        self.pci = PCI()
 
     def socket_detect(self):
         """ detects socket in the same NUMA node with device """
