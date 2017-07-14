@@ -48,7 +48,8 @@ class Topology(object):
             return lscpu_output
         stdout, return_code = self.__detect_layout_lscpu()
         if return_code != 0:
-            return self.detect_layouts_fallback()
+            self.detect_layouts_fallback()
+            return
         if isinstance(stdout, bytes):
             stdout = str(stdout)
         return stdout
@@ -59,10 +60,9 @@ class Topology(object):
         """
         process = Popen(['nproc'], stdout=PIPE, stderr=PIPE)
         stdout, _ = process.communicate()
-        if process.returncode != 0:
-            return None
-        cpu_count = int(stdout.strip())
-        self.socket_layout = self.numa_layout = dict(enumerate([0] * cpu_count))
+        if process.returncode == 0:
+            cpu_count = int(stdout.strip())
+            self.socket_layout = self.numa_layout = dict(enumerate([0] * cpu_count))
 
     @staticmethod
     def __detect_layout_lscpu():
