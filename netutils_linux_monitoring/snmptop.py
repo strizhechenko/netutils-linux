@@ -1,17 +1,22 @@
 # coding=utf-8
 
-from random import randint
-from six import print_, iteritems
 from copy import deepcopy
+from random import randint
+
+from six import iteritems
+
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
 
 
 class SnmpTop(BaseTop):
+    """ Utility for monitoring IP/TCP/UDP/ICMP parts of network stack based on /proc/net/snmp values """
+
     protos = ['IP', 'TCP', 'UDP', 'ICMP']
 
     @staticmethod
     def make_parser(parser=None):
+        """ :returns: parser with options for snmptop """
         if not parser:
             parser = BaseTop.make_parser()
         parser.add_argument('--snmp-file', default='/proc/net/snmp',
@@ -22,6 +27,7 @@ class SnmpTop(BaseTop):
         return [self.int(item) for item in line.strip().split()]
 
     def eval(self):
+        """ Evaluates difference between snmp metrics """
         self.diff = deepcopy(self.current)
         for proto, data in iteritems(self.diff):
             for n, metric in enumerate(data):
@@ -33,6 +39,7 @@ class SnmpTop(BaseTop):
                         self.diff[proto][n][1] -= self.previous[proto][n][1]
 
     def parse(self):
+        """ :returns: dict[proto] = list[list[str(key), int(value)]] """
         with open(self.options.snmp_file) as file_fd:
             lines = [self.__int(line) for line in file_fd.readlines()]
         return {
@@ -43,12 +50,18 @@ class SnmpTop(BaseTop):
         }
 
     def __repr__(self):
-        return str(make_table(self.make_header(), self.make_align_map(), self.make_rows()))
+        table = make_table(self.make_header(), self.make_align_map(), self.make_rows())
+        return self.__repr_table__(table)
 
     def make_header(self):
-        return ['IP', '   ', 'TCP', '', 'UDP', ' ', 'ICMP', '  ']
+        """ :returns: header for prettytable output (provides unique invisible whitespace-headers)
+
+        6, 5, 4 spaces are for column blinking avoidance.
+        """
+        return ['IP', ' ' * 6, 'TCP', ' ' * 5, 'UDP', ' ' * 4, 'ICMP', '']
 
     def make_rows(self):
+        """ :returns: rows for prettytable output (filled with empty values) """
         rows = []
         max_len = max(len(subdict) for subdict in self.diff.values())
         for index in range(max_len):
@@ -62,10 +75,5 @@ class SnmpTop(BaseTop):
         return rows
 
     def make_align_map(self):
+        """ :returns: align map for prettytable output (key <-, value -> for each proto """
         return ['l', 'r'] * len(self.protos)
-
-
-if __name__ == '__main__':
-    top = SnmpTop()
-    top.options = top.make_parser().parse_args()
-    top.run()
