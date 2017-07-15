@@ -1,9 +1,7 @@
 # coding=utf-8
 
-import json
-from functools import reduce
-from operator import add
-from six import print_, iteritems
+from six import print_
+
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
 
