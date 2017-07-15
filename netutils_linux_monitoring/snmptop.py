@@ -1,7 +1,8 @@
 # coding=utf-8
 
-from six import print_
-
+from random import randint
+from six import print_, iteritems
+from copy import deepcopy
 from netutils_linux_monitoring.base_top import BaseTop
 from netutils_linux_monitoring.layout import make_table
 
@@ -20,14 +21,25 @@ class SnmpTop(BaseTop):
     def __int(self, line):
         return [self.int(item) for item in line.strip().split()]
 
+    def eval(self):
+        self.diff = deepcopy(self.current)
+        for proto, data in iteritems(self.diff):
+            for n, metric in enumerate(data):
+                key, value = metric
+                if isinstance(value, int):
+                    if self.options.random:
+                        self.diff[proto][n][1] = randint(0, 1000)
+                    else:
+                        self.diff[proto][n][1] -= self.previous[proto][n][1]
+
     def parse(self):
         with open(self.options.snmp_file) as file_fd:
             lines = [self.__int(line) for line in file_fd.readlines()]
         return {
-            "IP": list(zip(lines[0][1:], lines[1][1:])),
-            "ICMP": list(zip(lines[2][1:], lines[3][1:])),
-            "TCP": list(zip(lines[6][3:], lines[7][1:])),
-            "UDP": list(zip(lines[8][3:], lines[9][1:])),
+            "IP": list(map(list, list(zip(lines[0][1:], lines[1][1:])))),
+            "ICMP": list(map(list, list(zip(lines[2][1:], lines[3][1:])))),
+            "TCP": list(map(list, list(zip(lines[6][3:], lines[7][1:])))),
+            "UDP": list(map(list, list(zip(lines[8][3:], lines[9][1:])))),
         }
 
     def __repr__(self):
@@ -38,14 +50,14 @@ class SnmpTop(BaseTop):
 
     def make_rows(self):
         rows = []
-        max_len = max(len(subdict) for subdict in snmp.values())
+        max_len = max(len(subdict) for subdict in self.diff.values())
         for index in range(max_len):
             row = list()
             for proto in self.protos:
-                if index >= len(snmp[proto]):
+                if index >= len(self.diff[proto]):
                     row.extend(['', ''])
                     continue
-                row.extend([snmp[proto][index][0], snmp[proto][index][1]])
+                row.extend([self.diff[proto][index][0], self.diff[proto][index][1]])
             rows.append(row)
         return rows
 
@@ -54,10 +66,6 @@ class SnmpTop(BaseTop):
 
 
 if __name__ == '__main__':
-    import sys
-
-    sys.argv = [sys.argv[0], '--snmp-file=tests/proc_net_snmp/snmp1']
     top = SnmpTop()
     top.options = top.make_parser().parse_args()
-    snmp = top.parse()
-    print_(top)
+    top.run()
