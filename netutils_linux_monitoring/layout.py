@@ -10,7 +10,11 @@ def make_table(header, align_map=None, rows=None):
     """ Wrapper for pretty table """
     table = PrettyTable()
     table.horizontal_char = table.vertical_char = table.junction_char = ' '
-    table.field_names = header
+    try:
+        table.field_names = header
+    except Exception as err:
+        print_(header)
+        raise err
     if align_map:
         for field, align in zip(header, align_map):
             table.align[field] = align
