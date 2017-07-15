@@ -46,6 +46,11 @@ Most useful util in this repo that includes all top-like utils and allow to moni
 
 .. image:: https://cloud.githubusercontent.com/assets/3813830/26570951/acacf18c-452c-11e7-8fe7-5d0952f39d8b.gif
 
+snmptop
+~~~~~~~
+Basic /proc/net/smmp file watcher.
+
+.. image:: https://user-images.githubusercontent.com/3813830/28242466-b51f27dc-69c5-11e7-8076-52819b9b7450.gif
 irqtop
 ~~~~~~
 - Show you a rate of interrupts
