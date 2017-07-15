@@ -38,15 +38,23 @@ class SnmpTop(BaseTop):
                     else:
                         self.diff[proto][n][1] -= self.previous[proto][n][1]
 
+    @staticmethod
+    def __listify(list_of_tuples):
+        """
+        :param list_of_tuples: list[tuple]
+        :return: list[list]
+        """
+        return [list(tpl) for tpl in list_of_tuples]
+
     def parse(self):
         """ :returns: dict[proto] = list[list[str(key), int(value)]] """
         with open(self.options.snmp_file) as file_fd:
             lines = [self.__int(line) for line in file_fd.readlines()]
         return {
-            "IP": list(map(list, list(zip(lines[0][1:], lines[1][1:])))),
-            "ICMP": list(map(list, list(zip(lines[2][1:], lines[3][1:])))),
-            "TCP": list(map(list, list(zip(lines[6][3:], lines[7][1:])))),
-            "UDP": list(map(list, list(zip(lines[8][3:], lines[9][1:])))),
+            'IP': self.__listify(zip(lines[0][1:], lines[1][1:])),
+            'ICMP': self.__listify(zip(lines[2][1:], lines[3][1:])),
+            'TCP': self.__listify(zip(lines[6][1:], lines[7][1:])),
+            'UDP': self.__listify(zip(lines[8][1:], lines[9][1:]))
         }
 
     def __repr__(self):
@@ -63,14 +71,15 @@ class SnmpTop(BaseTop):
     def make_rows(self):
         """ :returns: rows for prettytable output (filled with empty values) """
         rows = []
-        max_len = max(len(subdict) for subdict in self.diff.values())
+        repr_source = self.repr_source()
+        max_len = max(len(subdict) for subdict in repr_source.values())
         for index in range(max_len):
             row = list()
             for proto in self.protos:
-                if index >= len(self.diff[proto]):
+                if index >= len(repr_source[proto]):
                     row.extend(['', ''])
                     continue
-                row.extend([self.diff[proto][index][0], self.diff[proto][index][1]])
+                row.extend([repr_source[proto][index][0], repr_source[proto][index][1]])
             rows.append(row)
         return rows
 
