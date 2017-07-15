@@ -30,13 +30,13 @@ class SnmpTop(BaseTop):
         """ Evaluates difference between snmp metrics """
         self.diff = deepcopy(self.current)
         for proto, data in iteritems(self.diff):
-            for n, metric in enumerate(data):
-                key, value = metric
+            for i, metric in enumerate(data):
+                _, value = metric
                 if isinstance(value, int):
                     if self.options.random:
-                        self.diff[proto][n][1] = randint(0, 1000)
+                        self.diff[proto][i][1] = randint(0, 1000)
                     else:
-                        self.diff[proto][n][1] -= self.previous[proto][n][1]
+                        self.diff[proto][i][1] -= self.previous[proto][i][1]
 
     @staticmethod
     def __listify(list_of_tuples):
@@ -61,7 +61,8 @@ class SnmpTop(BaseTop):
         table = make_table(self.make_header(), self.make_align_map(), self.make_rows())
         return self.__repr_table__(table)
 
-    def make_header(self):
+    @staticmethod
+    def make_header():
         """ :returns: header for prettytable output (provides unique invisible whitespace-headers)
 
         6, 5, 4 spaces are for column blinking avoidance.
