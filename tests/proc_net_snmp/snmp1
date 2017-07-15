@@ -1,0 +1,12 @@
+Ip: Forwarding DefaultTTL InReceives InHdrErrors InAddrErrors ForwDatagrams InUnknownProtos InDiscards InDelivers OutRequests OutDiscards OutNoRoutes ReasmTimeout ReasmReqds ReasmOKs ReasmFails FragOKs FragFails FragCreates
+Ip: 1 64 22199703066 64 0 3991292426 3 0 18205118253 20899686159 1183 0 5 5 0 5 8 0 16
+Icmp: InMsgs InErrors InDestUnreachs InTimeExcds InParmProbs InSrcQuenchs InRedirects InEchos InEchoReps InTimestamps InTimestampReps InAddrMasks InAddrMaskReps OutMsgs OutErrors OutDestUnreachs OutTimeExcds OutParmProbs OutSrcQuenchs OutRedirects OutEchos OutEchoReps OutTimestamps OutTimestampReps OutAddrMasks OutAddrMaskReps
+Icmp: 17864682 762911 13469164 11533 0 53 7 4361700 21720 7 0 0 0 27650690 0 23265781 52 0 0 0 23150 4361700 0 7 0 0
+IcmpMsg: InType0 InType3 InType4 InType5 InType8 InType11 InType13 OutType0 OutType3 OutType8 OutType11 OutType14
+IcmpMsg: 21720 13469164 53 7 4361700 11533 7 4361700 23265781 23150 52 7
+Tcp: RtoAlgorithm RtoMin RtoMax MaxConn ActiveOpens PassiveOpens AttemptFails EstabResets CurrEstab InSegs OutSegs RetransSegs InErrs OutRsts
+Tcp: 1 200 120000 -1 1144887168 1265503546 23608568 26172378 77 17669927663 16338441124 133674663 167169 53028318
+Udp: InDatagrams NoPorts InErrors OutDatagrams RcvbufErrors SndbufErrors
+Udp: 494467706 14809371 76 319088 0 0
+UdpLite: InDatagrams NoPorts InErrors OutDatagrams RcvbufErrors SndbufErrors
+UdpLite: 0 0 0 0 0 0
