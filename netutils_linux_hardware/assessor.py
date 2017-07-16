@@ -4,6 +4,7 @@ from netutils_linux_hardware.grade import Grade
 
 
 class Assessor(object):
+    """ Calculates rates for important system components """
     info = None
     avg = None
 
@@ -15,34 +16,17 @@ class Assessor(object):
     def __str__(self):
         return yaml.dump(self.info, default_flow_style=False).strip()
 
-    def assess_netdev(self, netdev):
-        netdevinfo = extract(self.data, ['net', netdev])
-        queues = sum(
-            len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
-        buffers = netdevinfo.get('buffers') or {}
-        return {
-            'queues': Grade.int(queues, 2, 8),
-            'driver': {
-                'mlx5_core': 10,  # 7500 mbit/s
-                'mlx4_en': 9,  # 6500 mbit/s
-                'i40e': 8,  # 6000 mbit/s
-                'ixgbe': 7,  # 4000 mbit/s
-                'igb': 6,  # 400 mbit/s
-                'bnx2x': 4,  # 100 mbit/s
-                'e1000e': 3,  # 80 mbit/s
-                'e1000': 3,  # 50 mbit/s
-                'r8169': 1, 'ATL1E': 1, '8139too': 1,  # real trash, you should never use it
-            }.get(netdevinfo.get('driver').get('driver'), 2),
-            'buffers': {
-                'cur': Grade.int(buffers.get('cur'), 256, 4096),
-                'max': Grade.int(buffers.get('max'), 256, 4096),
-            },
+    def assess(self):
+        self.info = {
+            'net': self.assess_net(),
+            'cpu': self.assess_cpu(),
+            'memory': self.assess_memory(),
+            'system': self.assess_system(),
+            'disk': self.assess_disks(),
         }
 
-    def assess_netdevs(self):
-        netdevs = self.data.get('net')
-        if netdevs:
-            return dict((netdev, self.assess_netdev(netdev)) for netdev in netdevs)
+    def assess_net(self):
+        return self.__assess(self.assess_netdev, 'net')
 
     def assess_cpu(self):
         cpuinfo = extract(self.data, ['cpu', 'info'])
@@ -74,6 +58,33 @@ class Assessor(object):
                 'Virtualization type': Grade.fact(cpuinfo.get('Hypervisor vendor'), False),
             }
 
+    def assess_disks(self):
+        return self.__assess(self.assess_disk, 'disk')
+
+    def assess_netdev(self, netdev):
+        netdevinfo = extract(self.data, ['net', netdev])
+        queues = sum(
+            len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
+        buffers = netdevinfo.get('buffers') or {}
+        return {
+            'queues': Grade.int(queues, 2, 8),
+            'driver': {
+                'mlx5_core': 10,  # 7500 mbit/s
+                'mlx4_en': 9,  # 6500 mbit/s
+                'i40e': 8,  # 6000 mbit/s
+                'ixgbe': 7,  # 4000 mbit/s
+                'igb': 6,  # 400 mbit/s
+                'bnx2x': 4,  # 100 mbit/s
+                'e1000e': 3,  # 80 mbit/s
+                'e1000': 3,  # 50 mbit/s
+                'r8169': 1, 'ATL1E': 1, '8139too': 1,  # real trash, you should never use it
+            }.get(netdevinfo.get('driver').get('driver'), 2),
+            'buffers': {
+                'cur': Grade.int(buffers.get('cur'), 256, 4096),
+                'max': Grade.int(buffers.get('max'), 256, 4096),
+            },
+        }
+
     def assess_disk(self, disk):
         diskinfo = extract(self.data, ['disk', disk])
         return {
@@ -82,16 +93,7 @@ class Assessor(object):
             'size': Grade.int(diskinfo.get('size'), 50 * (1000 ** 3), 1000 ** 4),
         }
 
-    def assess_disks(self):
-        disks = self.data.get('disk')
-        if disks:
-            return dict((disk, self.assess_disk(disk)) for disk in disks)
-
-    def assess(self):
-        self.info = {
-            'net': self.assess_netdevs(),
-            'cpu': self.assess_cpu(),
-            'memory': self.assess_memory(),
-            'system': self.assess_system(),
-            'disk': self.assess_disks(),
-        }
+    def __assess(self, func, key):
+        items = self.data.get(key)
+        if items:
+            return dict((item, func(item)) for item in items)
