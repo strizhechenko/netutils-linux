@@ -128,36 +128,13 @@ class CPULayout(Parser):
         return output
 
 
-class BridgeOutput(Parser):
+class NetdevParser(Parser):
     @staticmethod
-    def parse(text):
-        netdevs = dict()
-        # 3: eth1 state DOWN : <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 master br1 state disabled
-        # 0 - id, 1 - dev, 2 - _, 3 - state, 4 - _, 5 - details, 6 - _, 7 - mtu, 8 - _, 9 - master
-        __dev__ = 1
-        netdevs_keys = [line.split()[__dev__] for line in text.strip().split('\n')]
-        for key in netdevs_keys:
-            if key.count('.') == 1:
-                dev, _ = key.split('.')
-            elif key.count('.') == 0:
-                dev = key
-            else:
-                print_('QinQ not supported yet. Device: {0}'.format(key))
-                raise NotImplementedError
-
-            netdevs[dev] = dict()
-            netdevs[dev]['conf'] = {
-                'vlan': key.count('.') == 1,
-                'ip': '',
-            }
-        return netdevs
-
-
-class EthtoolFiles(Parser):
-    def parse_file(self, filepath, **kwargs):
-        return self.parse(os.listdir(filepath))
-
-    def parse(self, netdev_keys):
+    def parse(netdev_keys):
+        """
+        :param netdev_keys: list of device names
+        :return: dict[device_name] = {'vlan': bool; 'ip': ''}
+        """
         netdevs = dict()
         for key in netdev_keys:
             if key.count('.') == 1:
@@ -173,6 +150,23 @@ class EthtoolFiles(Parser):
                 'ip': '',
             }
         return netdevs
+
+
+class BridgeOutput(NetdevParser):
+    @staticmethod
+    def parse(text):
+        """ # 0 - id, 1 - dev, 2 - _, 3 - state, 4 - _, 5 - details, 6 - _, 7 - mtu, 8 - _, 9 - master
+        :param text: # 3: eth1 state DOWN : <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 master br1 state disabled
+        :return: analyzed netdevs
+        """
+        __dev__ = 1
+        netdevs_keys = [line.split()[__dev__] for line in text.strip().split('\n')]
+        return NetdevParser.parse(netdevs_keys)
+
+
+class EthtoolFiles(NetdevParser):
+    def parse_file(self, filepath, **kwargs):
+        return self.parse(os.listdir(filepath))
 
 
 class EthtoolBuffers(Parser):
