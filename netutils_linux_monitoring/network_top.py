@@ -57,7 +57,7 @@ class NetworkTop(BaseTop):
 
     def parse_options(self):
         """ Tricky way to gather all options in one util without conflicts, parse them and do some logic after parse """
-        parser = BaseTop.make_parser()
+        parser = BaseTop.make_base_parser()
         for top in itervalues(self.tops):
             parser = top.make_parser(parser)
         self.options = parser.parse_args()

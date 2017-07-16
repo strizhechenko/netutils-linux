@@ -38,10 +38,9 @@ class LinkRateTop(BaseTop):
         BaseTop.__init__(self)
         self.pci = pci
 
-    @staticmethod
-    def make_parser(parser=None):
+    def make_parser(self, parser=None):
         if not parser:
-            parser = BaseTop.make_parser()
+            parser = BaseTop.make_base_parser()
         parser.add_argument('--assert', '--assert-mode', default=False, dest='assert_mode',
                             help='Stops running after errors detected.')
         parser.add_argument('--dev', '--devices', default="", dest='devices',
