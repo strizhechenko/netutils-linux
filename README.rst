@@ -11,8 +11,12 @@ netutils-linux
    :target: https://opensource.org/licenses/MIT
 .. |pyversions| image:: https://img.shields.io/pypi/pyversions/netutils-linux.svg?colorB=green
    :target: https://pypi.python.org/pypi/netutils-linux
+.. |issues| image:: https://img.shields.io/codeclimate/issues/github/strizhechenko/netutils-linux.svg
+   :target: https://codeclimate.com/github/strizhechenko/netutils-linux/issues
+.. |codeclimate| image:: https://img.shields.io/codeclimate/github/strizhechenko/netutils-linux.svg
+   :target: https://codeclimate.com/github/strizhechenko/netutils-linux
 
-|travis| |landscape| |pypi| |license| |pyversions|
+|travis| |landscape| |pypi| |license| |pyversions| |codeclimate| |issues|
 
 It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging. Inspired by `packagecloud's blog post`_.
 
