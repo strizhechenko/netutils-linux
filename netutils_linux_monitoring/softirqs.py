@@ -8,18 +8,11 @@ from netutils_linux_monitoring.topology import Topology
 
 class Softirqs(BaseTop):
     """ Utility for monitoring software interrupts distribution """
+    file_arg, file_value = '--softirqs-file', '/proc/softirqs'
 
     def __init__(self, topology=None):
         BaseTop.__init__(self)
         self.topology = topology
-
-    @staticmethod
-    def make_parser(parser=None):
-        if not parser:
-            parser = BaseTop.make_parser()
-        parser.add_argument('--softirqs-file', default='/proc/softirqs',
-                            help='Option for testing on MacOS purpose.')
-        return parser
 
     def post_optparse(self):
         if not self.topology:

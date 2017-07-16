@@ -11,17 +11,8 @@ from netutils_linux_monitoring.layout import make_table
 
 class SnmpTop(BaseTop):
     """ Utility for monitoring IP/TCP/UDP/ICMP parts of network stack based on /proc/net/snmp values """
-
     protos = ['IP', 'TCP', 'UDP', 'ICMP']
-
-    @staticmethod
-    def make_parser(parser=None):
-        """ :returns: parser with options for snmptop """
-        if not parser:
-            parser = BaseTop.make_parser()
-        parser.add_argument('--snmp-file', default='/proc/net/snmp',
-                            help='Option for testing on MacOS purpose.')
-        return parser
+    file_arg, file_value = '--snmp-file', '/proc/net/snmp'
 
     def __int(self, line):
         return [self.int(item) for item in line.strip().split()]

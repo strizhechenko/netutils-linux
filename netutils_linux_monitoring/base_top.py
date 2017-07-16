@@ -1,5 +1,6 @@
-from abc import abstractmethod
+# coding: utf-8
 import argparse
+from abc import abstractmethod
 from os import system
 from random import randint
 from time import sleep
@@ -17,9 +18,11 @@ class BaseTop(object):
     diff = None
     header = wrap("Press CTRL-C to exit...\n", Fore.LIGHTBLACK_EX)
     options = None
+    file_arg = None
+    file_value = None
 
     @staticmethod
-    def make_parser(parser=None):
+    def make_base_parser(parser=None):
         """ That should be explicitly called in __main__ part of any top-like utils """
         if not parser:
             parser = argparse.ArgumentParser()
@@ -46,6 +49,14 @@ class BaseTop(object):
         parser.add_argument('--no-clear', default=True, dest='clear', action='store_false',
                             help="Don't clear screen after each iteration. "
                                  "May be useful in scripts/logging to file.")
+        return parser
+
+    def make_parser(self, parser=None):
+        if type(self) == BaseTop:
+            raise TypeError("make_parser should not be called directly by BaseTop")
+        if not parser:
+            parser = BaseTop.make_base_parser()
+        parser.add_argument(self.file_arg, default=self.file_value, help='Option for testing on MacOS purpose.')
         return parser
 
     def tick(self):

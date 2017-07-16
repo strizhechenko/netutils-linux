@@ -53,7 +53,7 @@ class SoftnetStat(object):
 
 class SoftnetStatTop(BaseTop):
     """ Utility for monitoring packets processing/errors distribution per CPU """
-
+    file_arg, file_value = '--softnet-stat-file', '/proc/net/softnet_stat'
     align = ['l'] + ['r'] * 5
     total_warning, total_error = 300000, 900000
     dropped_warning = dropped_error = 1
@@ -63,14 +63,6 @@ class SoftnetStatTop(BaseTop):
     def __init__(self, topology=None):
         BaseTop.__init__(self)
         self.topology = topology
-
-    @staticmethod
-    def make_parser(parser=None):
-        if not parser:
-            parser = BaseTop.make_parser()
-        parser.add_argument('--softnet-stat-file', default='/proc/net/softnet_stat',
-                            help='Option for testing on MacOS purpose.')
-        return parser
 
     def post_optparse(self):
         if not self.topology:
