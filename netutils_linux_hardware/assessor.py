@@ -18,15 +18,12 @@ class Assessor(object):
 
     def assess(self):
         self.info = {
-            'net': self.assess_net(),
+            'net': self.__assess(self.assess_netdev, 'net'),
             'cpu': self.assess_cpu(),
             'memory': self.assess_memory(),
             'system': self.assess_system(),
-            'disk': self.assess_disks(),
+            'disk': self.__assess(self.assess_disk, 'disk'),
         }
-
-    def assess_net(self):
-        return self.__assess(self.assess_netdev, 'net')
 
     def assess_cpu(self):
         cpuinfo = extract(self.data, ['cpu', 'info'])
@@ -57,9 +54,6 @@ class Assessor(object):
                 'Hypervisor vendor': Grade.fact(cpuinfo.get('Hypervisor vendor'), False),
                 'Virtualization type': Grade.fact(cpuinfo.get('Hypervisor vendor'), False),
             }
-
-    def assess_disks(self):
-        return self.__assess(self.assess_disk, 'disk')
 
     def assess_netdev(self, netdev):
         netdevinfo = extract(self.data, ['net', netdev])
