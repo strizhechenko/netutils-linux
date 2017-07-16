@@ -39,22 +39,19 @@ class SnmpTop(BaseTop):
                         self.diff[proto][i][1] -= self.previous[proto][i][1]
 
     @staticmethod
-    def __listify(list_of_tuples):
-        """
-        :param list_of_tuples: list[tuple]
-        :return: list[list]
-        """
-        return [list(tpl) for tpl in list_of_tuples]
+    def __listify(lines, keys_id, values_id):
+        """ :returns: list[list] = [[IpReceived, 23123], [IpSend, 231]] """
+        return [list(tpl) for tpl in zip(lines[keys_id][1:], lines[values_id][1:])]
 
     def parse(self):
         """ :returns: dict[proto] = list[list[str(key), int(value)]] """
         with open(self.options.snmp_file) as file_fd:
             lines = [self.__int(line) for line in file_fd.readlines()]
         return {
-            'IP': self.__listify(zip(lines[0][1:], lines[1][1:])),
-            'ICMP': self.__listify(zip(lines[2][1:], lines[3][1:])),
-            'TCP': self.__listify(zip(lines[6][1:], lines[7][1:])),
-            'UDP': self.__listify(zip(lines[8][1:], lines[9][1:]))
+            'IP': self.__listify(lines, 0, 1),
+            'ICMP': self.__listify(lines, 2, 3),
+            'TCP': self.__listify(lines, 6, 7),
+            'UDP': self.__listify(lines, 8, 9)
         }
 
     def __repr__(self):
