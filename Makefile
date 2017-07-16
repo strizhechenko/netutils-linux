@@ -69,7 +69,7 @@ build: clean
 	python setup.py sdist
 	python setup.py bdist_wheel
 
-upload: test clean
+upload: test lint clean
 	python setup.py sdist upload
 	# python setup.py bdist_wheel upload
 
