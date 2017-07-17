@@ -26,11 +26,13 @@ It's a useful utils to simplify Linux network troubleshooting and performance tu
 Installation
 ============
 
-You'll need [pip](https://pip.pypa.io/en/stable/installing/).
+You'll need `pip`_.
 
 .. code:: shell
 
   pip install netutils-linux
+
+.. _pip: https://pip.pypa.io/en/stable/installing/
 
 Utils
 =====
