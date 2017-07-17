@@ -1,5 +1,5 @@
 test:
-	pytest netutils_linux_*/
+	pytest --cov=. netutils_linux_*/
 	./tests/utils_runnable
 	./tests/rss-ladder-test
 	./tests/server-info-show
