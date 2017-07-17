@@ -16,13 +16,9 @@ i40e_tune() {
 	local dev="$1"
 	local all_cpus_mask
 	all_cpus_mask="$(hex_all_cpus)"
-	for rps_cpus in /sys/class/net/$dev/queues/*/rps_cpus; do
-		echo "$all_cpus_mask" > $rps_cpus
-	done
+	autorps "$dev"
 	rss-ladder "$dev"
-	for rps_cpus in /sys/class/net/$dev/queues/*/rps_cpus; do
-		echo 0 > $rps_cpus
-	done
+	autorps --cpu-mask=0 "$dev"
 }
 
 i40e_tune "$@"
