@@ -9,3 +9,4 @@ pytest
 collective.checkdocs
 Pygments
 argparse
+coverage
