@@ -8,7 +8,9 @@ Next you should create directory describing your system.
 
 You need to look at `lscpu` output of tuned system to see socket count and cpu per socket values (you're probably already know it).
 
-mkdir netutils-linux/examples/sockets_${socket_count}_cpus_${cpu_per_socket}_nic_${netdevs_count}.
+```
+mkdir netutils-linux/examples/sockets_${socket_count}_cpus_${cpu_per_socket}_nic_${netdevs_count}
+```
 
 If directory already exists and your scenario differs - add `_1` or `_2` suffix.
 
