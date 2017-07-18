@@ -14,7 +14,7 @@ mkdir netutils-linux/examples/sockets_${socket_count}_cpus_${cpu_per_socket}_nic
 
 If directory already exists and your scenario differs - add `_1` or `_2` suffix.
 
-For example: netutils-linux/examples/sockets_2_cpus_8_nic_4/
+For example: `netutils-linux/examples/sockets_2_cpus_8_nic_4/`
 
 Add a README.md based on [README.tmplt.md](https://github.com/strizhechenko/netutils-linux/tree/master/examples)
 
