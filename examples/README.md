@@ -16,7 +16,7 @@ If directory already exists and your scenario differs - add `_1` or `_2` suffix.
 
 For example: `netutils-linux/examples/sockets_2_cpus_8_nic_4/`
 
-Add a README.md based on [README.tmplt.md](https://github.com/strizhechenko/netutils-linux/tree/master/examples) (replace commands with their output).
+Add a README.md based on [README.tmplt.md](https://github.com/strizhechenko/netutils-linux/blob/master/examples/README.tmplt.md) (replace commands with their output).
 
 ```
 git status
