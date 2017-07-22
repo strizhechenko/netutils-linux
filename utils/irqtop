@@ -2,9 +2,5 @@
 
 from netutils_linux_monitoring.irqtop import IrqTop
 
-
 if __name__ == '__main__':
-    top = IrqTop()
-    top.options = top.make_parser().parse_args()
-    top.post_optparse()
-    top.run()
+    IrqTop().main()
