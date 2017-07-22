@@ -5,6 +5,4 @@
 from netutils_linux_monitoring.snmptop import SnmpTop
 
 if __name__ == '__main__':
-    top = SnmpTop()
-    top.options = top.make_parser().parse_args()
-    top.run()
+    SnmpTop().main()

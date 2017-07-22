@@ -124,3 +124,10 @@ class BaseTop(object):
     @abstractmethod
     def __repr__(self):
         """ Should return string, representing self.diff """
+
+    def main(self):
+        """ Default entry point for most of top-like utils """
+        self.options = self.make_parser().parse_args()
+        if hasattr(self, 'post_optparse'):
+            self.post_optparse()
+        self.run()
