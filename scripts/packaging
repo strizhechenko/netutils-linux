@@ -1,0 +1,20 @@
+#!/bin/bash
+
+build() {
+	fpm -s python -t rpm ipaddress
+	fpm -s python -t rpm -d PyYAML --python-disable-dependency pyyaml netutils-linux
+}
+
+is_master_push() {
+	[ "${TRAVIS_PULL_REQUEST_BRANCH:-}" == "" -a "${TRAVIS_BRANCH:-}" == "master" ]
+
+}
+
+upload() {
+	if is_master_push; then
+		package_cloud push strizhechenko/netutils-linux/el/6 python-ipaddress* || true
+		package_cloud push strizhechenko/netutils-linux/el/6 python-netutils-linux* || true
+	fi
+}
+
+build && upload
