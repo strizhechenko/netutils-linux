@@ -57,6 +57,7 @@ clean:
 	find . -name '*.pyc' -exec rm -f {} \;
 	find . -name '*.pyo' -exec rm -f {} \;
 	find . -name '*~' -exec rm -f {} \;
+	rm -f *.rpm
 
 lint:
 	./flake8.sh netutils_linux_monitoring netutils_linux_tuning netutils_linux_hardware
