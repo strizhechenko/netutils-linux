@@ -8,6 +8,14 @@ python:
   - "3.4"
   - "3.6"
 
+before_install:
+  - gem install fpm
+  - gem install package_cloud
+  - sudo apt-get install rpm
+
 install: pip install --upgrade -r requirements.txt && python setup.py install
 
-script: make test lint
+script:
+  - make test
+  - make lint
+  - make rpm rpm_upload
