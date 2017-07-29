@@ -55,7 +55,7 @@ Most useful util in this repo that includes almost all linux network stack perfo
 - `/proc/interrupts` (vectors with small amount of irqs/second are hidden by default)
 - `/proc/net/softnet_stat` - packet distribution and errors/squeeze rate between CPUs.
 - `/proc/softirqs` (only NET_RX and NET_TX values).
-- `/sys/class/net/XXX/statistic/YYY` files (you can specify units, mbits are default)
+- `/sys/class/net/<NET_DEVICE>/statistic/<METRIC>` files (you can specify units, mbits are default)
 
 .. image:: https://user-images.githubusercontent.com/3813830/26898411-4707ebec-4be5-11e7-8013-aff315bc07d0.gif
 
