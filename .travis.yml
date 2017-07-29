@@ -11,7 +11,7 @@ python:
 before_install:
   - gem install fpm
   - gem install package_cloud
-  - apt install rpm rpmbuild
+  - apt-get install rpm rpmbuild
 
 install: pip install --upgrade -r requirements.txt && python setup.py install
 
