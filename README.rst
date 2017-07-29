@@ -57,7 +57,7 @@ Most useful util in this repo that includes almost all linux network stack perfo
 - `/proc/softirqs` (only NET_RX and NET_TX values).
 - `/sys/class/net/<NET_DEVICE>/statistic/<METRIC>` files (you can specify units, mbits are default)
 
-.. image:: https://user-images.githubusercontent.com/3813830/26898411-4707ebec-4be5-11e7-8013-aff315bc07d0.gif
+.. image:: https://cloud.githubusercontent.com/assets/3813830/26570951/acacf18c-452c-11e7-8fe7-5d0952f39d8b.gif
 
 There are also separate utils if you want to look at only specific metrics: irqtop, softirq-top, softnet-stat-top, link-rate.
 
