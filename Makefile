@@ -100,3 +100,15 @@ mac_run_softnet_stat_top:
 	. env/bin/activate && \
 	softnet-stat-top --random \
 		--softnet-stat-file=./tests/softnet_stat/softnet_stat1
+
+ipaddress_rpm:
+	fpm -s python -t rpm ipaddress
+
+ipaddress_rpm_upload: ipaddress_rpm
+	package_cloud push strizhechenko/netutils-linux/el/6 python-ipaddress*
+
+netutils_linux_rpm:
+	fpm -s python -t rpm -d PyYAML --python-disable-dependency pyyaml netutils-linux
+
+netutils_linux_rpm_upload: netutils_linux_rpm
+	package_cloud push strizhechenko/netutils-linux/el/6 python-netutils-linux*
