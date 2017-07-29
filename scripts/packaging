@@ -2,7 +2,7 @@
 
 build() {
 	fpm -s python -t rpm ipaddress
-        fpm -s python -t rpm -d PyYAML --python-disable-dependency pyyaml netutils-linux
+	fpm -s python -t rpm -d PyYAML --python-disable-dependency pyyaml netutils-linux
 }
 
 is_master_push() {
