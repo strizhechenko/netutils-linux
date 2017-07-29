@@ -18,5 +18,4 @@ install: pip install --upgrade -r requirements.txt && python setup.py install
 script:
   - make test
   - make lint
-  - make ipaddress_rpm ipaddress_rpm_upload
-  - make netutils_linux_rpm netutils_linux_rpm_upload
+  - make rpm rpm_upload
