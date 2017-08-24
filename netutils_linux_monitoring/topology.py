@@ -36,7 +36,7 @@ class Topology(object):
         stdout = self.detect_layout_lscpu(lscpu_output)
         rows = [row for row in stdout.strip().split('\n') if not row.startswith('#')]
         layouts = [[any2int(value) for value in row.split(',')][2:4] for row in rows]
-        numa_layout, socket_layout = zip(*layouts)
+        socket_layout, numa_layout = zip(*layouts)
         self.numa_layout = dict(enumerate(numa_layout))
         self.socket_layout = dict(enumerate(socket_layout))
 
