@@ -131,9 +131,10 @@ class RSSLadder(CPUBasedTune):
         """
         :return: highlighted by NUMA-node name of the device
         """
-        if not self.pci or not self.options.color:
+        if not self.pci or not self.options.color or not self.pci.devices:
             return self.options.dev
-        color = COLORS_NODE.get(self.pci.devices.get(self.options.dev))
+        dev_color = self.pci.devices.get(self.options.dev)
+        color = COLORS_NODE.get(dev_color)
         return wrap(self.options.dev, color)
 
     def cpu_colorize(self, cpu):

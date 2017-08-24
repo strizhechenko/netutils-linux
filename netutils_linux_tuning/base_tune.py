@@ -67,4 +67,4 @@ class CPUBasedTune(BaseTune):
 
     def cpus_detect_real(self):
         """ :return: list of cpu ids in given socket """
-        return [k for k, v in iteritems(self.topology.socket_layout) if v == self.options.socket]
+        return [k for k, v in iteritems(self.topology.layout) if v == self.options.socket]
