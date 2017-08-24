@@ -145,7 +145,7 @@ server-info
 ~~~~~~~~~~~
 Much alike lshw but designed for network processing role of server.
 
-.. code::
+.. code:: yaml
 
   # server-info show
   cpu:
@@ -209,7 +209,7 @@ Much alike lshw but designed for network processing role of server.
 
 It also can rate hardware and its features in range of 1..10.
 
-.. code::
+.. code:: yaml
 
   # server-info rate
   cpu:
