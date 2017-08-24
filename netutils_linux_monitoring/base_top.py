@@ -49,6 +49,7 @@ class BaseTop(object):
         parser.add_argument('--no-clear', default=True, dest='clear', action='store_false',
                             help="Don't clear screen after each iteration. "
                                  "May be useful in scripts/logging to file.")
+        parser.add_argument('--lscpu-output', help='Specify file with lscpu -p output')
         return parser
 
     def make_parser(self, parser=None):

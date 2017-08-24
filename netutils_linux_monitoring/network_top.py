@@ -22,7 +22,9 @@ class NetworkTop(BaseTop):
             'link-rate': LinkRateTop(),
         }
         self.parse_options()
-        self.topology = Topology(fake=self.options.random)
+        self.topology = Topology(fake=self.options.random, lscpu_output=self.options.lscpu_output)
+        for top in self.tops.values():
+            top.topology = self.topology
 
     def parse(self):
         """
@@ -61,6 +63,8 @@ class NetworkTop(BaseTop):
         for top in itervalues(self.tops):
             parser = top.make_parser(parser)
         self.options = parser.parse_args()
+        if self.options.lscpu_output:
+            self.options.lscpu_output = open(self.options.lscpu_output).read()
         for top in itervalues(self.tops):
             top.options = self.options
             if hasattr(top, 'post_optparse'):

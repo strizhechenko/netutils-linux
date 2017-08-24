@@ -22,7 +22,7 @@ class Topology(object):
     socket_layout = None
 
     def __init__(self, fake=False, lscpu_output=None):
-        if fake:
+        if fake and not lscpu_output:
             self.numa_layout = self.socket_layout = self.__FAKE_LAYOUT
         else:
             self.detect_layouts(lscpu_output=lscpu_output)
