@@ -2,6 +2,7 @@
 
 # coding: utf-8
 
+from sys import version_info
 from subprocess import Popen, PIPE
 
 from six import print_
@@ -51,7 +52,10 @@ class Topology(object):
             self.detect_layouts_fallback()
             return
         if isinstance(stdout, bytes):
-            stdout = str(stdout)
+            if version_info.major == 3:
+                stdout = stdout.decode()
+            else:
+                stdout = str(stdout)
         return stdout
 
     def detect_layouts_fallback(self):
