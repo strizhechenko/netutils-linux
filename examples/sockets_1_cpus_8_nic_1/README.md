@@ -93,13 +93,17 @@ Cannot get device channel parameters
 
 ## commands
 
-Replace this example with command you've run on your server and delete this line.
+eth4 just receiving traffic
 
 ``` shell
-# eth4 just receiving traffic
 rx-buffers-increase eth0
-# despite of having 4 RSS queues only 1 queue really works.
-# CPU0 will do receive packets and write them into memory
-# CPU1..CPU7 will do all the hardlifting and packet processing.
+```
+
+Despite of having 4 RSS queues only 1 queue really works.
+
+- CPU0 will do receive packets and write them into memory
+- CPU1..CPU7 will do all the hardlifting and packet processing.
+
+``` shell
 autorps eth4 -c 1 2 3 4 5 6 7
 ```
