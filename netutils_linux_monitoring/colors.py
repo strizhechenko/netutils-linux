@@ -2,8 +2,10 @@ from colorama import Fore, Style
 
 try:
     YELLOW = Fore.LIGHTYELLOW_EX
+    GREY = Fore.LIGHTBLACK_EX
 except AttributeError:
     YELLOW = Fore.YELLOW
+    GREY = Fore.CYAN
 
 COLORS_NODE = {
     0: Fore.GREEN,

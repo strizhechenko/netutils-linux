@@ -5,10 +5,9 @@ from os import system
 from random import randint
 from time import sleep
 
-from colorama import Fore
 from six import print_
 
-from netutils_linux_monitoring.colors import wrap
+from netutils_linux_monitoring.colors import wrap, GREY
 
 
 class BaseTop(object):
@@ -16,7 +15,7 @@ class BaseTop(object):
     current = None
     previous = None
     diff = None
-    header = wrap("Press CTRL-C to exit...\n", Fore.LIGHTBLACK_EX)
+    header = wrap("Press CTRL-C to exit...\n", GREY)
     options = None
     file_arg = None
     file_value = None
