@@ -5,10 +5,9 @@ from os import system
 from random import randint
 from time import sleep
 
-from colors import GREY
 from six import print_
 
-from netutils_linux_monitoring.colors import wrap
+from netutils_linux_monitoring.colors import wrap, GREY
 
 
 class BaseTop(object):
