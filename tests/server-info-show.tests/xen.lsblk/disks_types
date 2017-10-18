@@ -1,0 +1,2 @@
+/sys/block/xvda/queue/rotational:1
+/sys/block/xvdb/queue/rotational:1
