@@ -2,6 +2,7 @@
 # pylint: disable=C0111, C0103
 
 import os
+
 import yaml
 from six import print_, iteritems
 
@@ -89,8 +90,11 @@ class DiskInfo(object):
             self.types_data = set(types_data)
 
         def parse(self, text):
+            # split grepped text into list
             data = (line.split() for line in text.strip().split('\n'))
-            data = (line for line in data if set(line).intersection(self.types_data))
+            # remove partitions, we're interested only in disk-drives
+            data = (line if len(line) == 2 else [line[0], line[2]] for line in data if
+                    set(line).intersection(self.types_data))
             return dict((k, int(v)) for v, k in data)
 
     class DiskModelsInfo(Parser):
