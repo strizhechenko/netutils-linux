@@ -14,6 +14,13 @@ class Softirqs(BaseTop):
         BaseTop.__init__(self)
         self.topology = topology
 
+    def make_parser(self, parser=None):
+        if not parser:
+            parser = super(Softirqs, self).make_parser()
+        parser.add_argument('--all', default=False, dest='all_mode',
+                            help='Display all metrics.')
+        return parser
+
     def post_optparse(self):
         if not self.topology:
             self.topology = Topology(fake=self.options.random)
@@ -29,20 +36,36 @@ class Softirqs(BaseTop):
 
     def __repr__(self):
         active_cpu_count = self.__active_cpu_count__(self.current)
-        header = ["CPU", "NET_RX", "NET_TX"]
+        header = ["CPU", "NET_RX", "NET_TX", "TIMER", "HI", "BLOCK", "IRQ_POLL", "TASKLET", "SCHED", "HRTIMER", "RCU"]
         net_rx = self.repr_source().get('NET_RX')[:active_cpu_count]
         net_tx = self.repr_source().get('NET_TX')[:active_cpu_count]
+        timer = self.repr_source().get('TIMER')[:active_cpu_count]
+        hi = self.repr_source().get('HI')[:active_cpu_count]
+        block = self.repr_source().get('BLOCK')[:active_cpu_count]
+        irq_poll = self.repr_source().get('IRQ_POLL')[:active_cpu_count]
+        tasklet = self.repr_source().get('TASKLET')[:active_cpu_count]
+        sched = self.repr_source().get('SCHED')[:active_cpu_count]
+        hrtimer = self.repr_source().get('HRTIMER')[:active_cpu_count]
+        rcu = self.repr_source().get('RCU')[:active_cpu_count]
         rows = [
             [
                 wrap("CPU{0}".format(n), cpu_color(n, self.topology)),
                 self.colorize_net_rx(v[0]),
-                self.colorize_net_tx(v[1])
+                self.colorize_net_tx(v[1]),
+                self.colorize_net_tx(v[2]),
+                self.colorize_net_tx(v[3]),
+                self.colorize_net_tx(v[4]),
+                self.colorize_net_tx(v[5]),
+                self.colorize_net_tx(v[6]),
+                self.colorize_net_tx(v[7]),
+                self.colorize_net_tx(v[8]),
+                self.colorize_net_tx(v[9])
             ]
-            for n, v in enumerate(zip(net_rx, net_tx))
+            for n, v in enumerate(zip(net_rx, net_tx, timer, hi, block, irq_poll, tasklet, sched, hrtimer, rcu))
         ]
-        table = make_table(header, ['l', 'r', 'r'], rows)
+        table = make_table(header, ['l', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r'], rows)
         return self.__repr_table__(table)
-
+   
     @staticmethod
     def colorize_net_rx(net_rx):
         """ :returns: highlighted by warning/error net_rx string """
