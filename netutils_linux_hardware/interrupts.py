@@ -55,7 +55,7 @@ class IRQQueueCounter(Parser):
 
     def irq2queues(self, text, cpu_count, netdevs):
         netdev_queues = self.all_netdev_queues(text, netdevs)
-        return [" ".join(line.split()[cpu_count + 2:]) for line in netdev_queues]
+        return [' '.join(line.split()[cpu_count + 2:]) for line in netdev_queues]
 
     @staticmethod
     def irq2cpucount(text):

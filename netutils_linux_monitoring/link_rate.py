@@ -43,10 +43,10 @@ class LinkRateTop(BaseTop):
             parser = BaseTop.make_base_parser()
         parser.add_argument('--assert', '--assert-mode', default=False, dest='assert_mode',
                             help='Stops running after errors detected.')
-        parser.add_argument('--dev', '--devices', default="", dest='devices',
+        parser.add_argument('--dev', '--devices', default='', dest='devices',
                             help='Comma-separated list of devices to monitor.')
         parser.add_argument('--device-regex', default='^.*$',
-                            help="Regex-mask for devices to monitor.")
+                            help='Regex-mask for devices to monitor.')
         parser.add_argument('-s', '--simple', default=False, dest='simple_mode', action='store_true',
                             help='Hides different kinds of error, showing only general counters.')
         parser.add_argument('--rx', '--rx-only', dest='rx_only', default=False, action='store_true',

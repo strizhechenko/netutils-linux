@@ -10,5 +10,5 @@ class RSSLadderTests(TestCase):
         self.rss = RSSLadder(argv=['--dry-run', 'eth0'])
 
     def test_queue_postfix_extract(self):
-        line = "31312 0 0 0 blabla eth0-TxRx-0"
+        line = '31312 0 0 0 blabla eth0-TxRx-0'
         self.assertEqual(self.rss.queue_postfix_extract(line), '-TxRx-')

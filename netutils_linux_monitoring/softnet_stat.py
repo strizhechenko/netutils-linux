@@ -82,11 +82,11 @@ class SoftnetStatTop(BaseTop):
 
     @staticmethod
     def make_header():
-        return ["CPU", "total", "dropped", "time_squeeze", "cpu_collision", "received_rps"]
+        return ['CPU', 'total', 'dropped', 'time_squeeze', 'cpu_collision', 'received_rps']
 
     def make_rows(self):
         return [[
-            wrap("CPU{0}".format(stat.cpu), cpu_color(stat.cpu, self.topology)),
+            wrap('CPU{0}'.format(stat.cpu), cpu_color(stat.cpu, self.topology)),
             self.colorize_total(stat.total),
             self.colorize_dropped(stat.dropped),
             self.colorize_time_squeeze(stat.time_squeeze),

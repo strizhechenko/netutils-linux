@@ -38,8 +38,8 @@ class RSSLadder(CPUBasedTune):
         interrupts_file = '/proc/interrupts'
         lscpu_output = None
         if self.options.test_dir:
-            interrupts_file = join(self.options.test_dir, "interrupts")
-            lscpu_output_filename = join(self.options.test_dir, "lscpu_output")
+            interrupts_file = join(self.options.test_dir, 'interrupts')
+            lscpu_output_filename = join(self.options.test_dir, 'lscpu_output')
             lscpu_output = open(lscpu_output_filename).read()
             # Popen.stdout: python 2.7 returns <str>, 3.6 returns <bytes>
             # read() in both cases return <str>
@@ -61,26 +61,26 @@ class RSSLadder(CPUBasedTune):
         affinity = list(decision)
         cpus = [socket_cpu for irq, queue, socket_cpu in affinity]
         if len(set(cpus)) != len(cpus):
-            warning = "WARNING: some CPUs process multiple queues, consider reduce queue count for this network device"
+            warning = 'WARNING: some CPUs process multiple queues, consider reduce queue count for this network device'
             if self.options.color:
                 print_(wrap(warning, YELLOW))
             else:
                 print_(warning)
         for irq, queue_name, socket_cpu in affinity:
-            print_("  - {0}: irq {1} {2} -> {3}".format(
+            print_('  - {0}: irq {1} {2} -> {3}'.format(
                 self.dev_colorize(), irq, queue_name, self.cpu_colorize(socket_cpu)))
             if self.options.dry_run:
                 continue
-            filename = "/proc/irq/{0}/smp_affinity_list".format(irq)
+            filename = '/proc/irq/{0}/smp_affinity_list'.format(irq)
             with open(filename, 'w') as irq_file:
                 irq_file.write(str(socket_cpu))
 
     def __eval(self, postfix, interrupts):
         """
-        :param postfix: "-TxRx-"
+        :param postfix: '-TxRx-'
         :return: list of tuples(irq, queue_name, socket)
         """
-        print_("- distribute interrupts of {0} ({1}) on socket {2}".format(
+        print_('- distribute interrupts of {0} ({1}) on socket {2}'.format(
             self.options.dev, postfix, self.options.socket))
         queue_regex = r'{0}{1}[^ \n]+'.format(self.options.dev, postfix)
         rss_cpus = self.rss_cpus_detect()
@@ -104,8 +104,8 @@ class RSSLadder(CPUBasedTune):
 
     def queue_postfix_extract(self, line):
         """
-        :param line: "31312 0 0 0 blabla eth0-TxRx-0"
-        :return: "-TxRx-"
+        :param line: '31312 0 0 0 blabla eth0-TxRx-0'
+        :return: '-TxRx-'
         """
         queue_regex = r'{0}[^ \n]+'.format(self.options.dev)
         queue_name = re.findall(queue_regex, line)
@@ -115,7 +115,7 @@ class RSSLadder(CPUBasedTune):
     def queue_postfixes_detect(self, interrupts):
         """
         self.dev: eth0
-        :return: "-TxRx-"
+        :return: '-TxRx-'
         """
         return set([line for line in [self.queue_postfix_extract(line) for line in interrupts] if line])
 
@@ -154,9 +154,9 @@ class RSSLadder(CPUBasedTune):
         parser.add_argument('--no-color', help='Disable all highlights', dest='color', action='store_false',
                             default=True)
         parser.add_argument('-o', '--offset', type=int, default=0,
-                            help="If you have 2 NICs with 4 queues and 1 socket with 8 cpus, you may be want "
-                                 "distribution like this: eth0: [0, 1, 2, 3]; eth1: [4, 5, 6, 7]; "
-                                 "so run: rss-ladder-test eth0; rss-ladder-test --offset=4 eth1")
+                            help='If you have 2 NICs with 4 queues and 1 socket with 8 cpus, you may be want '
+                                 'distribution like this: eth0: [0, 1, 2, 3]; eth1: [4, 5, 6, 7]; '
+                                 'so run: rss-ladder-test eth0; rss-ladder-test --offset=4 eth1')
         return parser.parse_args()
 
 
