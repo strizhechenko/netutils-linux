@@ -29,12 +29,12 @@ class Softirqs(BaseTop):
 
     def __repr__(self):
         active_cpu_count = self.__active_cpu_count__(self.current)
-        header = ["CPU", "NET_RX", "NET_TX"]
+        header = ['CPU', 'NET_RX', 'NET_TX']
         net_rx = self.repr_source().get('NET_RX')[:active_cpu_count]
         net_tx = self.repr_source().get('NET_TX')[:active_cpu_count]
         rows = [
             [
-                wrap("CPU{0}".format(n), cpu_color(n, self.topology)),
+                wrap('CPU{0}'.format(n), cpu_color(n, self.topology)),
                 self.colorize_net_rx(v[0]),
                 self.colorize_net_tx(v[1])
             ]

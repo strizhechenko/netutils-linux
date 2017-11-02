@@ -24,13 +24,13 @@ class Reader(object):
     def gather_info(self):
 
         self.info = {
-            "cpu": {
-                "info": YAMLLike().parse_file_safe(self.path('lscpu_info')),
-                "layout": CPULayout().parse_file_safe(self.path('lscpu_layout')),
+            'cpu': {
+                'info': YAMLLike().parse_file_safe(self.path('lscpu_info')),
+                'layout': CPULayout().parse_file_safe(self.path('lscpu_layout')),
             },
-            "net": ReaderNet(self.datadir, self.path).netdevs,
-            "disk": DiskInfo().parse(self.path('disks_types'), self.path('lsblk_sizes'), self.path('lsblk_models')),
-            "memory": MemInfo().parse_file_safe(self.path('meminfo')),
+            'net': ReaderNet(self.datadir, self.path).netdevs,
+            'disk': DiskInfo().parse(self.path('disks_types'), self.path('lsblk_sizes'), self.path('lsblk_models')),
+            'memory': MemInfo().parse_file_safe(self.path('meminfo')),
         }
         for key in ('CPU MHz', 'BogoMIPS'):
             if self.info.get('cpu', {}).get('info', {}).get(key):

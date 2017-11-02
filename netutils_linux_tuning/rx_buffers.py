@@ -61,7 +61,7 @@ class RxBuffersTune(BaseTune):
         :return: parsed options for RxBuffersTune
         """
         parser = BaseTune.make_parser()
-        parser.add_argument('-u', '--upper-bound', help="Work even in case of multi-queue CPU", type=int, default=2048)
+        parser.add_argument('-u', '--upper-bound', help='Work even in case of multi-queue CPU', type=int, default=2048)
         parser.add_argument('dev', type=str)
         return parser.parse_args()
 

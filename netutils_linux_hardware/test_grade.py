@@ -24,14 +24,14 @@ class GradeTest(TestCase):
         self.assertEqual(Grade.int(4000, 2000, 4000, 15), 15)
 
     def test_grade_str(self):
-        bad = ["Realtek", "Dlink"]
-        good = ["Intel", "Melanox"]
+        bad = ['Realtek', 'Dlink']
+        good = ['Intel', 'Melanox']
         expected = {
-            "Melanox": 10,
-            "Intel": 10,
-            "Broadcom": 2,
-            "Dlink": 1,
-            "Realtek": 1,
+            'Melanox': 10,
+            'Intel': 10,
+            'Broadcom': 2,
+            'Dlink': 1,
+            'Realtek': 1,
         }
         for k, value in iteritems(expected):
             self.assertEqual(Grade.str(k, good, bad), value)
@@ -39,8 +39,8 @@ class GradeTest(TestCase):
     def test_grade_fact(self):
         self.assertEqual(Grade.fact(None, True), 1)
         self.assertEqual(Grade.fact(None), 10)
-        self.assertEqual(Grade.fact("Anything", True), 10)
-        self.assertEqual(Grade.fact("Anything"), 1)
+        self.assertEqual(Grade.fact('Anything', True), 10)
+        self.assertEqual(Grade.fact('Anything'), 1)
         self.assertEqual(Grade.fact(15, True), 10)
         self.assertEqual(Grade.fact(15), 1)
         self.assertEqual(Grade.fact({'x': 'y'}, True), 10)
@@ -50,10 +50,10 @@ class GradeTest(TestCase):
         self.assertEqual(any2int(None), 0)
         self.assertEqual(any2int(23), 23)
         self.assertEqual(any2int(23.1), 23)
-        self.assertEqual(any2int("23"), 23)
-        self.assertEqual(any2int("23K"), 23)
-        self.assertEqual(any2int("23 K"), 23)
-        self.assertEqual(any2int(" "), 0)
+        self.assertEqual(any2int('23'), 23)
+        self.assertEqual(any2int('23K'), 23)
+        self.assertEqual(any2int('23 K'), 23)
+        self.assertEqual(any2int(' '), 0)
 
 
 if __name__ == '__main__':

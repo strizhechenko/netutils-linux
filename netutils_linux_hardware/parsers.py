@@ -68,9 +68,9 @@ class DiskInfo(object):
         if not types_data:
             return
         disk_data = {
-            "type": types_data,
-            "size": self.DiskSizeInfo(types_data).parse_file_safe(sizes),
-            "model": self.DiskModelsInfo(types_data).parse_file_safe(models),
+            'type': types_data,
+            'size': self.DiskSizeInfo(types_data).parse_file_safe(sizes),
+            'model': self.DiskModelsInfo(types_data).parse_file_safe(models),
         }
         return self.invert_dict_nesting(disk_data)
 
@@ -81,7 +81,7 @@ class DiskInfo(object):
             types = ['SSD', 'HDD']
             if not text:
                 return dict()
-            data = yaml.load(text.replace(":", ": ").replace("/sys/block/", "").replace("/queue/rotational", ""))
+            data = yaml.load(text.replace(':', ': ').replace('/sys/block/', '').replace('/queue/rotational', ''))
             return dict((k, types[v]) for k, v in iteritems(data))
 
     class DiskSizeInfo(Parser):
