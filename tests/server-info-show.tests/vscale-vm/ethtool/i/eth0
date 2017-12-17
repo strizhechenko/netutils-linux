@@ -1,0 +1,10 @@
+driver: virtio_net
+version: 1.0.0
+firmware-version: 
+expansion-rom-version: 
+bus-info: 0000:00:03.0
+supports-statistics: no
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: no

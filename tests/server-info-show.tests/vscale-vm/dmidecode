@@ -1,0 +1,27 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x1000, DMI type 16, 15 bytes
+Physical Memory Array
+	Location: Other
+	Use: System Memory
+	Error Correction Type: Multi-bit ECC
+	Maximum Capacity: 512 MB
+	Error Information Handle: Not Provided
+	Number Of Devices: 1
+
+Handle 0x1100, DMI type 17, 21 bytes
+Memory Device
+	Array Handle: 0x1000
+	Error Information Handle: 0x0000
+	Total Width: 64 bits
+	Data Width: 64 bits
+	Size: 512 MB
+	Form Factor: DIMM
+	Set: None
+	Locator: DIMM 0
+	Bank Locator: Not Specified
+	Type: RAM
+	Type Detail: None
+
