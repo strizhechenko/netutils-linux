@@ -18,3 +18,6 @@ class Grade(object):
     @staticmethod
     def fact(value, mode=False):
         return 10 if (value is None) != mode else 1
+
+    def dict(value, _dict):
+        return _dict.get(value, 1)

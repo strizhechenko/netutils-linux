@@ -39,12 +39,33 @@ class Assessor(object):
                 'Vendor ID': Grade.str(cpuinfo.get('Vendor ID'), good=['GenuineIntel']),
             }
 
+    def assess_memory_device(self, device):
+        return {
+            'size': Grade.int(device.get('size', 0), 512, 8196),
+            'type': Grade.dict(device.get('type', 'RAM'), {
+                'DDR1': 2,
+                'DDR2': 3,
+                'DDR3': 6,
+                'DDR4': 10,
+            }),
+            'speed': Grade.int(device.get('speed', 0), 200, 4000),
+        }
+
+    def assess_memory_devices(self, devices):
+        return dict((handle, self.assess_memory_device(device)) for handle, device in devices.items())
+
+    def assess_memory_size(self, size):
+        return {
+            'MemTotal': Grade.int(size.get('MemTotal'), 2 * (1024 ** 2), 16 * (1024 ** 2)),
+            'SwapTotal': Grade.int(size.get('SwapTotal'), 512 * 1024, 4 * (1024 ** 2)),
+        }
+
     def assess_memory(self):
         meminfo = self.data.get('memory')
         if meminfo:
             return {
-                'MemTotal': Grade.int(meminfo.get('MemTotal'), 2 * (1024 ** 2), 16 * (1024 ** 2)),
-                'SwapTotal': Grade.int(meminfo.get('SwapTotal'), 512 * 1024, 4 * (1024 ** 2)),
+                'devices': self.assess_memory_devices(meminfo.get('devices')),
+                'size': self.assess_memory_size(meminfo.get('size')),
             }
 
     def assess_system(self):
