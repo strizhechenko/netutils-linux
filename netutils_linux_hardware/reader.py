@@ -3,7 +3,7 @@
 
 import os
 import yaml
-from netutils_linux_hardware.parsers import YAMLLike, CPULayout, DiskInfo, MemInfo
+from netutils_linux_hardware.parsers import YAMLLike, CPULayout, DiskInfo, MemInfo, MemInfoDMI
 from netutils_linux_hardware.netdev import ReaderNet
 
 
@@ -30,7 +30,10 @@ class Reader(object):
             },
             'net': ReaderNet(self.datadir, self.path).netdevs,
             'disk': DiskInfo().parse(self.path('disks_types'), self.path('lsblk_sizes'), self.path('lsblk_models')),
-            'memory': MemInfo().parse_file_safe(self.path('meminfo')),
+            'memory': {
+                'size': MemInfo().parse_file_safe(self.path('meminfo')),
+                'devices': MemInfoDMI().parse_file_safe(self.path('dmidecode')),
+            },
         }
         for key in ('CPU MHz', 'BogoMIPS'):
             if self.info.get('cpu', {}).get('info', {}).get(key):

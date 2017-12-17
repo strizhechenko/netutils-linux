@@ -121,6 +121,42 @@ class MemInfo(YAMLLike):
     def parse(self, text):
         return dict((k, int(v.replace(' kB', ''))) for k, v in iteritems(yaml.load(text)) if k in self.keys_required)
 
+class MemInfoDMIDevice(object):
+    def __init__(self, text):
+        self.speed = 0
+        self.type = 'RAM'
+        self.handle = None
+        self.size = 0
+        for line in map(str.strip, text.split('\n')):
+            if line.startswith('Speed:'):
+                self.speed = line.split()[1]
+            elif line.startswith('Type:'):
+                self.type = line.split()[1]
+            elif line.startswith('Size:'):
+                self.size = line.split()[1]
+            elif line.startswith('Handle'):
+                self.handle = line.split(' ')[1].strip(',')
+
+
+class MemInfoDMI(Parser):
+    @staticmethod
+    def parse(text):
+        if not text:
+            return None
+        output = dict()
+        for device in text.split('\n\n'):
+            if not 'Memory Device' in device:
+                continue
+            mem_dev = MemInfoDMIDevice(device)
+            if not mem_dev.handle:
+                continue
+            output[mem_dev.handle] = {
+                'type': mem_dev.type,
+                'speed': mem_dev.speed,
+                'size': mem_dev.size,
+            }
+        return output
+
 
 class CPULayout(Parser):
     @staticmethod
