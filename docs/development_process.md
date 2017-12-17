@@ -22,3 +22,21 @@ python setup.py install
 ```
 
 And check if your code really works.
+
+## Local development
+
+### Server-info
+
+You can pull collected archive such a /root/server.tar.gz to your local PC, untar it, for example:
+
+```
+. env3/bin/activate
+mkdir tests/server-info-show.tests/vscale-vm
+cd tests/server-info-show.tests/vscale-vm
+scp root@test-server:server.tar.gz ./
+tar xfz server.tar.gz
+mv server/* ./
+rm -rf server server.tar.gz
+server-info-show
+server-info-rate
+```
