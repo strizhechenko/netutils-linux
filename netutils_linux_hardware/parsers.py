@@ -152,13 +152,16 @@ class MemInfoDMI(Parser):
     @staticmethod
     def parse(text):
         """ Разбор всего вывода dmidecode --type memory """
-        if text:
-            output = dict()
-            for device in text.split('\n\n'):
-                if 'Memory Device' in device:
-                    mem_dev = MemInfoDMIDevice(device)
-                    output[mem_dev.handle] = mem_dev
-            return output
+        return MemInfoDMI.__parse(text) if text else None
+
+    @staticmethod
+    def __parse(text):
+        output = dict()
+        for device in text.split('\n\n'):
+            if 'Memory Device' in device:
+                mem_dev = MemInfoDMIDevice(device)
+                output[mem_dev.handle] = mem_dev
+        return output
 
 
 class CPULayout(Parser):
