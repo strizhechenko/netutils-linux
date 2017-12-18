@@ -9,12 +9,21 @@ from six import print_
 from netutils_linux_hardware.assessor import Assessor
 from netutils_linux_hardware.reader import Reader
 
+
 def get_datadir():
     default_data_directory = 'tests/autotune_network.tests/2xE5-2640.i350_and_82599ES.l2_mixed.masterconf'
     if os.path.isfile(os.path.join(os.getcwd(), 'lspci')):
         return os.getcwd()
     return os.environ.get('DATADIR', default_data_directory)
-    
+
 
 if __name__ == '__main__':
-    print_(Assessor(Reader(get_datadir()).info))
+    print('kek')
+    directory = get_datadir()
+    print('kek2')
+    reader = Reader(directory)
+    print('kek4')
+    assessor = Assessor(reader.info)
+    print('kek5')
+    print_(assessor)
+    print('kek3')
