@@ -36,7 +36,9 @@ cpu:
     '8': '0'
     '9': '1'
 disk: null
-memory: null
+memory:
+  devices: null
+  size: null
 net:
   eth1:
     buffers:
