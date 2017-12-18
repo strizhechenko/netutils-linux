@@ -124,7 +124,11 @@ class MemInfo(YAMLLike):
 
 class MemInfoDMIDevice(object):
     def __init__(self, text):
-        self.speed = 0
+        self.data = {
+            'speed': 0,
+            'type': 'RAM',
+            'size': 0,
+        }
         self.type = 'RAM'
         self.handle = None
         self.size = 0
@@ -136,18 +140,12 @@ class MemInfoDMIDevice(object):
             self.parse_line(line)
 
     def parse_line(self, line):
-        if line.startswith('Speed:'):
-            self.speed = MemInfoDMIDevice.get_value(line)
-        elif line.startswith('Type:'):
-            self.type = MemInfoDMIDevice.get_value(line)
-        elif line.startswith('Size:'):
-            self.size = MemInfoDMIDevice.get_value(line)
-        elif line.startswith('Handle'):
+        for key in ('Speed', 'Type', 'Size'):
+            if line.startswith(key + ':'):
+                self.data[key.lower()] = line.split()[1]
+                break
+        if line.startswith('Handle'):
             self.handle = line.split(' ')[1].strip(',')
-
-    @staticmethod
-    def get_value(line):
-        return line.split()[1]
 
 
 class MemInfoDMI(Parser):
