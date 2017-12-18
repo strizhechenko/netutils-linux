@@ -133,14 +133,17 @@ class MemInfoDMIDevice(object):
     def parse_text(self, text):
         """ Разбор описания плашки памяти от dmidecode """
         for line in map(str.strip, text.split('\n')):
-            if line.startswith('Speed:'):
-                self.speed = line.split()[1]
-            elif line.startswith('Type:'):
-                self.type = line.split()[1]
-            elif line.startswith('Size:'):
-                self.size = line.split()[1]
-            elif line.startswith('Handle'):
-                self.handle = line.split(' ')[1].strip(',')
+            self.parse_line(line)
+
+    def parse_line(self, line):
+        if line.startswith('Speed:'):
+            self.speed = line.split()[1]
+        elif line.startswith('Type:'):
+            self.type = line.split()[1]
+        elif line.startswith('Size:'):
+            self.size = line.split()[1]
+        elif line.startswith('Handle'):
+            self.handle = line.split(' ')[1].strip(',')
 
 
 class MemInfoDMI(Parser):
