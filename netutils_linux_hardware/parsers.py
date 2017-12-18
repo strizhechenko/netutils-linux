@@ -121,6 +121,7 @@ class MemInfo(YAMLLike):
     def parse(self, text):
         return dict((k, int(v.replace(' kB', ''))) for k, v in iteritems(yaml.load(text)) if k in self.keys_required)
 
+
 class MemInfoDMIDevice(object):
     def __init__(self, text):
         self.speed = 0
