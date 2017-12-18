@@ -42,7 +42,7 @@ class Assessor(object):
     def assess_memory_device(self, device):
         return {
             'size': Grade.int(device.get('size', 0), 512, 8196),
-            'type': Grade.dict(device.get('type', 'RAM'), {
+            'type': Grade.known_values(device.get('type', 'RAM'), {
                 'DDR1': 2,
                 'DDR2': 3,
                 'DDR3': 6,
