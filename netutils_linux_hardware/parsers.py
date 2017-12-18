@@ -128,6 +128,10 @@ class MemInfoDMIDevice(object):
         self.type = 'RAM'
         self.handle = None
         self.size = 0
+        self.parse_text(text)
+
+    def parse_text(self, text):
+        """ Разбор описания плашки памяти от dmidecode """
         for line in map(str.strip, text.split('\n')):
             if line.startswith('Speed:'):
                 self.speed = line.split()[1]
