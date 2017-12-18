@@ -146,7 +146,7 @@ class MemInfoDMI(Parser):
             return None
         output = dict()
         for device in text.split('\n\n'):
-            if not 'Memory Device' in device:
+            if 'Memory Device' not in device:
                 continue
             mem_dev = MemInfoDMIDevice(device)
             if not mem_dev.handle:
