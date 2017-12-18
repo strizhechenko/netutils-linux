@@ -137,13 +137,17 @@ class MemInfoDMIDevice(object):
 
     def parse_line(self, line):
         if line.startswith('Speed:'):
-            self.speed = line.split()[1]
+            self.speed = MemInfoDMIDevice.get_value(line)
         elif line.startswith('Type:'):
-            self.type = line.split()[1]
+            self.type = MemInfoDMIDevice.get_value(line)
         elif line.startswith('Size:'):
-            self.size = line.split()[1]
+            self.size = MemInfoDMIDevice.get_value(line)
         elif line.startswith('Handle'):
             self.handle = line.split(' ')[1].strip(',')
+
+    @staticmethod
+    def get_value(line):
+        return line.split()[1]
 
 
 class MemInfoDMI(Parser):
