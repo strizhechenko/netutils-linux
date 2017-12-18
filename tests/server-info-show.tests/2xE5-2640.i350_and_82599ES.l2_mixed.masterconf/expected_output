@@ -65,10 +65,12 @@ disk:
     size: 1000204886016
     type: HDD
 memory:
-  MemFree: 432940
-  MemTotal: 32843852
-  SwapFree: 16490492
-  SwapTotal: 16490492
+  devices: null
+  size:
+    MemFree: 432940
+    MemTotal: 32843852
+    SwapFree: 16490492
+    SwapTotal: 16490492
 net:
   eth1:
     buffers:

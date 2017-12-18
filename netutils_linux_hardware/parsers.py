@@ -8,7 +8,9 @@ from six import print_, iteritems
 
 
 class Parser(object):
-    @staticmethod
+    def __init__(self, filepath=None):
+        self.result = self.parse_file_safe(filepath) if filepath else None
+
     def parse(text, **kwargs):
         raise NotImplementedError
 
@@ -120,6 +122,48 @@ class MemInfo(YAMLLike):
 
     def parse(self, text):
         return dict((k, int(v.replace(' kB', ''))) for k, v in iteritems(yaml.load(text)) if k in self.keys_required)
+
+
+class MemInfoDMIDevice(object):
+    def __init__(self, text):
+        self.data = {
+            'speed': 0,
+            'type': 'RAM',
+            'size': 0,
+        }
+        self.type = 'RAM'
+        self.handle = None
+        self.size = 0
+        self.parse_text(text)
+
+    def parse_text(self, text):
+        """ Разбор описания плашки памяти от dmidecode """
+        for line in map(str.strip, text.split('\n')):
+            self.parse_line(line)
+
+    def parse_line(self, line):
+        for key in ('Speed', 'Type', 'Size'):
+            if line.startswith(key + ':'):
+                self.data[key.lower()] = line.split()[1]
+                break
+        if line.startswith('Handle'):
+            self.handle = line.split(' ')[1].strip(',')
+
+
+class MemInfoDMI(Parser):
+    @staticmethod
+    def parse(text):
+        """ Разбор всего вывода dmidecode --type memory """
+        return MemInfoDMI.__parse(text.split('\n\n')) if text else None
+
+    @staticmethod
+    def __parse(devices):
+        output = dict()
+        for device in devices:
+            if 'Memory Device' in device:
+                mem_dev = MemInfoDMIDevice(device)
+                output[mem_dev.handle] = mem_dev
+        return output
 
 
 class CPULayout(Parser):

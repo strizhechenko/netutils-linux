@@ -2,13 +2,14 @@
 # pylint: disable=C0111, C0103
 
 import os
+
 import yaml
-from netutils_linux_hardware.parsers import YAMLLike, CPULayout, DiskInfo, MemInfo
+
 from netutils_linux_hardware.netdev import ReaderNet
+from netutils_linux_hardware.parsers import YAMLLike, CPULayout, DiskInfo, MemInfo, MemInfoDMI
 
 
 class Reader(object):
-
     info = None
 
     def __init__(self, datadir):
@@ -25,12 +26,15 @@ class Reader(object):
 
         self.info = {
             'cpu': {
-                'info': YAMLLike().parse_file_safe(self.path('lscpu_info')),
-                'layout': CPULayout().parse_file_safe(self.path('lscpu_layout')),
+                'info': YAMLLike(self.path('lscpu_info')).result,
+                'layout': CPULayout(self.path('lscpu_layout')).result,
             },
             'net': ReaderNet(self.datadir, self.path).netdevs,
             'disk': DiskInfo().parse(self.path('disks_types'), self.path('lsblk_sizes'), self.path('lsblk_models')),
-            'memory': MemInfo().parse_file_safe(self.path('meminfo')),
+            'memory': {
+                'size': MemInfo(self.path('meminfo')).result,
+                'devices': MemInfoDMI(self.path('dmidecode')).result,
+            },
         }
         for key in ('CPU MHz', 'BogoMIPS'):
             if self.info.get('cpu', {}).get('info', {}).get(key):
