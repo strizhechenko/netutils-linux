@@ -8,7 +8,9 @@ from six import print_, iteritems
 
 
 class Parser(object):
-    @staticmethod
+    def __init__(self, filepath=None):
+        self.result = self.parse_file_safe(filepath) if filepath else None
+
     def parse(text, **kwargs):
         raise NotImplementedError
 
