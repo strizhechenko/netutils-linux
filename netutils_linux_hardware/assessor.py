@@ -60,14 +60,14 @@ class Assessor(object):
 
     def assess_memory_device(self, device):
         return self.fold({
-            'size': Grade.int(device.data.get('size', 0), 512, 8196),
-            'type': Grade.known_values(device.data.get('type', 'RAM'), {
+            'size': Grade.int(device.get('size', 0), 512, 8196),
+            'type': Grade.known_values(device.get('type', 'RAM'), {
                 'DDR1': 2,
                 'DDR2': 3,
                 'DDR3': 6,
                 'DDR4': 10,
             }),
-            'speed': Grade.int(device.data.get('speed', 0), 200, 4000),
+            'speed': Grade.int(device.get('speed', 0), 200, 4000),
         }, FOLDING_DEVICE)
 
     def assess_memory_devices(self, devices):
@@ -138,5 +138,6 @@ class Assessor(object):
 
     def parse_args(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('-f', '--folding', action='count', help='-f - device, -ff - subsystem, -fff - server')
+        parser.add_argument('-f', '--folding', action='count', help='-f - device, -ff - subsystem, -fff - server',
+                            default=FOLDING_NO)
         return parser.parse_args()
