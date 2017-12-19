@@ -24,20 +24,13 @@ class Assessor(object):
             self.assess()
 
     def fold(self, data, level):
+        """ Схлапывает значения в дикте до среднего арифметического """
         if not data:
             return 1
         if self.args.folding < level:
             return data
-        if self.args.folding >= FOLDING_SERVER:
-            print(data)
-        s = sum(data.values())
-        print('1231312443')
-        k = len(data.keys())
-        print('1231312666')
-        r = s / k
-        result = r
-        print('1231312', r)
-        return result
+        result = sum(data.values()) / len(data.keys())
+        return result if level < FOLDING_SERVER else {'server': result}
 
     def __str__(self):
         return yaml.dump(self.info, default_flow_style=False).strip()
