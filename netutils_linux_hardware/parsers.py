@@ -162,7 +162,7 @@ class MemInfoDMI(Parser):
         for device in devices:
             if 'Memory Device' in device:
                 mem_dev = MemInfoDMIDevice(device)
-                output[mem_dev.handle] = mem_dev
+                output[mem_dev.handle] = mem_dev.data
         return output
 
 
