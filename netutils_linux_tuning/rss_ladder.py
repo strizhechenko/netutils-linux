@@ -68,7 +68,7 @@ class RSSLadder(CPUBasedTune):
                 print_(warning)
         for irq, queue_name, socket_cpu in affinity:
             print_("  - {0}: queue {1} (irq {2}) bound to CPU{3}".format(
-                self.dev_colorize(), irq, queue_name, self.cpu_colorize(socket_cpu)))
+                self.dev_colorize(), queue_name, irq, self.cpu_colorize(socket_cpu)))
             if self.options.dry_run:
                 continue
             filename = '/proc/irq/{0}/smp_affinity_list'.format(irq)
