@@ -18,7 +18,7 @@ netutils-linux
 
 |travis| |landscape| |pypi| |license| |pyversions| |codeclimate| |issues|
 
-It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging. Inspired by `packagecloud's blog post`_.
+It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection with multiple network devices). These utils may be useful for datacenters and internet service providers with heavy network workload (you probably wouldn't see an effect at your desktop computer). It's now in production usage with 300+ deployment and save us a lot of time with hardware and software settings debugging. Inspired by `packagecloud's blog post`_.
 
 .. _packagecloud's blog post: https://blog.packagecloud.io/eng/2016/06/22/monitoring-tuning-linux-networking-stack-receiving-data/
 .. _Carbon Reductor: http://www.carbonsoft.ru/products/carbon-reductor-5/
@@ -50,43 +50,22 @@ Brief explanation about highlighting colors for CPU and device groups: green and
 
 network-top
 ~~~~~~~~~~~
-Most useful util in this repo that includes all top-like utils and allow to monitor interrupts, soft interrupts, network processing statistic for devices and CPUs.
+Most useful util in this repo that includes almost all linux network stack performance metrics and allow to monitor interrupts, soft interrupts, network processing statistic for devices and CPUs. Based on following files:
+
+- `/proc/interrupts` (vectors with small amount of irqs/second are hidden by default)
+- `/proc/net/softnet_stat` - packet distribution and errors/squeeze rate between CPUs.
+- `/proc/softirqs` (only NET_RX and NET_TX values).
+- `/sys/class/net/<NET_DEVICE>/statistic/<METRIC>` files (you can specify units, mbits are default)
 
 .. image:: https://cloud.githubusercontent.com/assets/3813830/26570951/acacf18c-452c-11e7-8fe7-5d0952f39d8b.gif
+
+There are also separate utils if you want to look at only specific metrics: irqtop, softirq-top, softnet-stat-top, link-rate.
 
 snmptop
 ~~~~~~~
 Basic /proc/net/smmp file watcher.
 
 .. image:: https://user-images.githubusercontent.com/3813830/28242466-b51f27dc-69c5-11e7-8076-52819b9b7450.gif
-
-irqtop
-~~~~~~
-- Show you a rate of interrupts
-- based on /proc/interrupts file
-- Hides the interrupts with small rate to show a better picture.
-
-.. image:: https://user-images.githubusercontent.com/3813830/26898412-470d2ddc-4be5-11e7-9b57-8bb3248db896.gif
-
-softirq-top
-~~~~~~~~~~~
-- Show you a rate of receiving/transmitting packets
-- Based on /proc/softirqs
-
-.. image:: https://user-images.githubusercontent.com/3813830/26898413-470e6b98-4be5-11e7-8e11-c0caabfb8f5f.gif
-
-link-rate
-~~~~~~~~~
-- Shows how many packets/bytes network interface receives/transmite and how many errors happened
-- Based on /sys/class/net/XXX/statistic/YYY files
-
-.. image:: https://user-images.githubusercontent.com/3813830/26898411-4707ebec-4be5-11e7-8013-aff315bc07d0.gif
-
-softnet-stat-top
-~~~~~~~~~~~~~~~~
-Shows various statistic of packets processing per CPU.
-
-.. image:: https://user-images.githubusercontent.com/3813830/26898415-4726de3a-4be5-11e7-8003-7b4bb358111c.gif
 
 Tuning
 ------
@@ -138,14 +117,9 @@ Example output:
   Ring parameters for eth1:
   Pre-set maximums:
   RX:		4096
-  RX Mini:	0
-  RX Jumbo:	0
-  TX:		4096
+  ...
   Current hardware settings:
   RX:		256
-  RX Mini:	0
-  RX Jumbo:	0
-  TX:		256
 
   # rx-buffers-increase eth1
 
@@ -160,14 +134,9 @@ Example output:
   Ring parameters for eth1:
   Pre-set maximums:
   RX:		4096
-  RX Mini:	0
-  RX Jumbo:	0
-  TX:		4096
+  ...
   Current hardware settings:
   RX:		2048
-  RX Mini:	0
-  RX Jumbo:	0
-  TX:		256
 
 Hardware and its configuration rating
 -------------------------------------
@@ -176,7 +145,7 @@ server-info
 ~~~~~~~~~~~
 Much alike lshw but designed for network processing role of server.
 
-.. code::
+.. code:: yaml
 
   # server-info show
   cpu:
@@ -240,7 +209,7 @@ Much alike lshw but designed for network processing role of server.
 
 It also can rate hardware and its features in range of 1..10.
 
-.. code::
+.. code:: yaml
 
   # server-info rate
   cpu:

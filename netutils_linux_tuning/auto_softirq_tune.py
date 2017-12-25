@@ -23,7 +23,7 @@ class AutoSoftirqTune(CPUBasedTune):
 
     def parse(self):
         """ :return: queue list to write cpu mask """
-        return ["{0}-0".format(self.queue_prefix)] if self.options.test_dir else self.detect_queues_real()
+        return ['{0}-0'.format(self.queue_prefix)] if self.options.test_dir else self.detect_queues_real()
 
     def eval(self):
         """ Evaluates CPU mask used as decision for the apply() """
@@ -37,8 +37,8 @@ class AutoSoftirqTune(CPUBasedTune):
         :param decision: queue list to write cpu mask
         """
         if len(decision) > 1 and not self.options.force:
-            raise OSError("Refuse to use RPS on multiqueue NIC. You may use --force flag to apply RPS for all queues")
-        queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
+            raise OSError('Refuse to use RPS on multiqueue NIC. You may use --force flag to apply RPS for all queues')
+        queue_dir = '/sys/class/net/{0}/queues/'.format(self.options.dev)
         for queue in decision:
             print_("Using mask '{0}' for {1}-{2}".format(self.options.cpu_mask, self.options.dev, queue))
             if self.options.dry_run:
@@ -51,7 +51,7 @@ class AutoSoftirqTune(CPUBasedTune):
         :return: options for AutoRPS
         """
         parser = CPUBasedTune.make_parser()
-        parser.add_argument('-f', '--force', help="Work even in case of multiqueue CPU", action='store_true',
+        parser.add_argument('-f', '--force', help='Work even in case of multiqueue CPU', action='store_true',
                             default=False)
         parser.add_argument('-m', '--cpu-mask', help='Explicitly define mask to write in {0}'.format(self.target),
                             type=str)
@@ -68,7 +68,7 @@ class AutoSoftirqTune(CPUBasedTune):
         bitmap = [0] * cpus_count
         for cpu in cpus:
             bitmap[cpu] = 1
-        return hex(int("".join([str(cpu) for cpu in bitmap]), 2))[2:]  # no need to write 0x
+        return hex(int(''.join([str(cpu) for cpu in bitmap]), 2))[2:]  # no need to write 0x
 
     def mask_detect(self):
         """
@@ -87,7 +87,7 @@ class AutoSoftirqTune(CPUBasedTune):
         """
         :return: queue list to write cpu mask found by really reading /sys/
         """
-        queue_dir = "/sys/class/net/{0}/queues/".format(self.options.dev)
+        queue_dir = '/sys/class/net/{0}/queues/'.format(self.options.dev)
         return [queue for queue in os.listdir(queue_dir) if queue.startswith(self.queue_prefix)]
 
     def lscpu(self):

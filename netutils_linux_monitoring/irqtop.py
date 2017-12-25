@@ -50,7 +50,7 @@ class IrqTop(BaseTop):
         cpu_count = 0
         output_lines = list()
         if not self.diff_total:
-            return ""
+            return ''
         for line in self.repr_source():
             if line[0] == 'CPU0':
                 cpu_count = len(line)

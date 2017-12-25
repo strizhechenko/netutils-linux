@@ -24,7 +24,9 @@ cpu:
     '0': '0'
     '1': '0'
 disk: null
-memory: null
+memory:
+  devices: null
+  size: null
 net:
   eth1:
     buffers:

@@ -2,8 +2,10 @@ from colorama import Fore, Style
 
 try:
     YELLOW = Fore.LIGHTYELLOW_EX
+    GREY = Fore.LIGHTBLACK_EX
 except AttributeError:
     YELLOW = Fore.YELLOW
+    GREY = Fore.CYAN
 
 COLORS_NODE = {
     0: Fore.GREEN,
@@ -36,7 +38,7 @@ def colorize(value, warning, error):
 
 def wrap(word, color):
     """ wrap string in given color """
-    return "{0}{1}{2}".format(color, word, Style.RESET_ALL)
+    return '{0}{1}{2}'.format(color, word, Style.RESET_ALL)
 
 
 def __choose_color_scheme(topology):

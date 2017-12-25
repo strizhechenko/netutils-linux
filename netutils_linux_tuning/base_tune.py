@@ -19,7 +19,7 @@ class BaseTune(object):
         """ Make parser with options common for all tune utils """
         parser = ArgumentParser()
         parser.add_argument('-t', '--test-dir', type=str,
-                            help="Use prepared test dataset in TEST_DIR directory instead of running lscpu.")
+                            help='Use prepared test dataset in TEST_DIR directory instead of running lscpu.')
         parser.add_argument('-d', '--dry-run', help="Don't apply any settings.", action='store_true', default=False)
         return parser
 
@@ -67,4 +67,4 @@ class CPUBasedTune(BaseTune):
 
     def cpus_detect_real(self):
         """ :return: list of cpu ids in given socket """
-        return [k for k, v in iteritems(self.topology.socket_layout) if v == self.options.socket]
+        return [k for k, v in iteritems(self.topology.layout) if v == self.options.socket]

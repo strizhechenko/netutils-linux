@@ -3,6 +3,7 @@
 # coding: utf-8
 
 from subprocess import Popen, PIPE
+from sys import version_info
 
 from six import print_
 
@@ -22,7 +23,7 @@ class Topology(object):
     socket_layout = None
 
     def __init__(self, fake=False, lscpu_output=None):
-        if fake:
+        if fake and not lscpu_output:
             self.numa_layout = self.socket_layout = self.__FAKE_LAYOUT
         else:
             self.detect_layouts(lscpu_output=lscpu_output)
@@ -35,7 +36,7 @@ class Topology(object):
         stdout = self.detect_layout_lscpu(lscpu_output)
         rows = [row for row in stdout.strip().split('\n') if not row.startswith('#')]
         layouts = [[any2int(value) for value in row.split(',')][2:4] for row in rows]
-        numa_layout, socket_layout = zip(*layouts)
+        socket_layout, numa_layout = zip(*layouts)
         self.numa_layout = dict(enumerate(numa_layout))
         self.socket_layout = dict(enumerate(socket_layout))
 
@@ -51,7 +52,10 @@ class Topology(object):
             self.detect_layouts_fallback()
             return
         if isinstance(stdout, bytes):
-            stdout = str(stdout)
+            if version_info[0] == 3:
+                stdout = stdout.decode()
+            else:
+                stdout = str(stdout)
         return stdout
 
     def detect_layouts_fallback(self):
