@@ -1,10 +1,10 @@
 - distribute interrupts of eth1 (-TxRx-) on socket 1
 WARNING: some CPUs process multiple queues, consider reduce queue count for this network device
-  - eth1: irq 75 eth1-TxRx-0 -> 6
-  - eth1: irq 76 eth1-TxRx-1 -> 7
-  - eth1: irq 77 eth1-TxRx-2 -> 8
-  - eth1: irq 78 eth1-TxRx-3 -> 9
-  - eth1: irq 79 eth1-TxRx-4 -> 10
-  - eth1: irq 80 eth1-TxRx-5 -> 11
-  - eth1: irq 81 eth1-TxRx-6 -> 6
-  - eth1: irq 82 eth1-TxRx-7 -> 7
+  - eth1: queue eth1-TxRx-0 (irq 75) bound to CPU6
+  - eth1: queue eth1-TxRx-1 (irq 76) bound to CPU7
+  - eth1: queue eth1-TxRx-2 (irq 77) bound to CPU8
+  - eth1: queue eth1-TxRx-3 (irq 78) bound to CPU9
+  - eth1: queue eth1-TxRx-4 (irq 79) bound to CPU10
+  - eth1: queue eth1-TxRx-5 (irq 80) bound to CPU11
+  - eth1: queue eth1-TxRx-6 (irq 81) bound to CPU6
+  - eth1: queue eth1-TxRx-7 (irq 82) bound to CPU7
