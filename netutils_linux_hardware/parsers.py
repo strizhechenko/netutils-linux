@@ -131,9 +131,7 @@ class MemInfoDMIDevice(object):
             'type': 'RAM',
             'size': 0,
         }
-        self.type = 'RAM'
         self.handle = None
-        self.size = 0
         self.parse_text(text)
 
     def parse_text(self, text):
@@ -162,6 +160,8 @@ class MemInfoDMI(Parser):
         for device in devices:
             if 'Memory Device' in device:
                 mem_dev = MemInfoDMIDevice(device)
+                if mem_dev.data.get('size') == 'No':
+                    continue
                 output[mem_dev.handle] = mem_dev.data
         return output
 
