@@ -13,7 +13,7 @@ server_info() {
 	cat /proc/interrupts > $TMPDIR/interrupts
 	cat /proc/meminfo > $TMPDIR/meminfo
 	cat /proc/cpuinfo > $TMPDIR/cpuinfo
-	cat /proc/scsi/scsi > $TMPDIR/scsi
+	cat /proc/scsi/scsi > $TMPDIR/scsi 2>/dev/null || true
 	LANG= lsblk -d --output=NAME,MODEL > $TMPDIR/lsblk_models
 	LANG= lsblk -nlb --output SIZE,MOUNTPOINT,NAME > $TMPDIR/lsblk_sizes
 	if ! LANG= lspci 2>/dev/null > $TMPDIR/lspci; then
