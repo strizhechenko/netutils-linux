@@ -1,0 +1,1 @@
+ETHTOOL_OPTS="-s eth1 speed 1000 duplex full; -G eth1 rx 4096 tx 256; -A eth1 autoneg off; -K eth1 gso off gro off tso off"

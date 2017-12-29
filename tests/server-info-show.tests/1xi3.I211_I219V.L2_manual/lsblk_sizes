@@ -1,0 +1,6 @@
+250059350016            sda
+   524288000 /boot      sda1
+249533825024            sda2
+173023428608 /          vg_centos6-lv_root (dm-0)
+  4043309056 [SWAP]     vg_centos6-lv_swap (dm-1)
+ 59668168704 /home      vg_centos6-lv_home (dm-2)

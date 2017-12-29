@@ -1,0 +1,9 @@
+driver: iwlwifi
+version: 2.6.32-642.el6.x86_64
+firmware-version: 16.242414.0
+bus-info: 0000:04:00.0
+supports-statistics: yes
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: no

@@ -1,0 +1,108 @@
+# dmidecode 2.12
+SMBIOS 2.8 present.
+
+Handle 0x0042, DMI type 16, 23 bytes
+Physical Memory Array
+	Location: System Board Or Motherboard
+	Use: System Memory
+	Error Correction Type: None
+	Maximum Capacity: 64 GB
+	Error Information Handle: Not Provided
+	Number Of Devices: 4
+
+Handle 0x0043, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0042
+	Error Information Handle: Not Provided
+	Total Width: 64 bits
+	Data Width: 64 bits
+	Size: 4096 MB
+	Form Factor: DIMM
+	Set: None
+	Locator: ChannelA-DIMM0
+	Bank Locator: BANK 0
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: 2133 MHz
+	Manufacturer: Kingston
+	Serial Number: 34081720
+	Asset Tag: 9876543210
+	Part Number: 9905622-057.A00G    
+	Rank: 1
+	Configured Clock Speed: 2133 MHz
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  1.2 V
+
+Handle 0x0044, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0042
+	Error Information Handle: Not Provided
+	Total Width: Unknown
+	Data Width: Unknown
+	Size: No Module Installed
+	Form Factor: Unknown
+	Set: None
+	Locator: ChannelA-DIMM1
+	Bank Locator: BANK 1
+	Type: Unknown
+	Type Detail: None
+	Speed: Unknown
+	Manufacturer: Not Specified
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: Not Specified
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0045, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0042
+	Error Information Handle: Not Provided
+	Total Width: Unknown
+	Data Width: Unknown
+	Size: No Module Installed
+	Form Factor: Unknown
+	Set: None
+	Locator: ChannelB-DIMM0
+	Bank Locator: BANK 2
+	Type: Unknown
+	Type Detail: None
+	Speed: Unknown
+	Manufacturer: Not Specified
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: Not Specified
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0046, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x0042
+	Error Information Handle: Not Provided
+	Total Width: Unknown
+	Data Width: Unknown
+	Size: No Module Installed
+	Form Factor: Unknown
+	Set: None
+	Locator: ChannelB-DIMM1
+	Bank Locator: BANK 3
+	Type: Unknown
+	Type Detail: None
+	Speed: Unknown
+	Manufacturer: Not Specified
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: Not Specified
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
