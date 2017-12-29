@@ -1,0 +1,9 @@
+driver: tg3
+version: 3.137
+firmware-version: 5719-v1.46 NCSI v1.3.16.0
+bus-info: 0000:03:00.0
+supports-statistics: yes
+supports-test: yes
+supports-eeprom-access: yes
+supports-register-dump: yes
+supports-priv-flags: no

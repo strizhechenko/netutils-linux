@@ -1,0 +1,27 @@
+Coalesce parameters for eth0:
+Adaptive RX: off  TX: off
+stats-block-usecs: 0
+sample-interval: 0
+pkt-rate-low: 0
+pkt-rate-high: 0
+
+rx-usecs: 20
+rx-frames: 5
+rx-usecs-irq: 0
+rx-frames-irq: 5
+
+tx-usecs: 72
+tx-frames: 53
+tx-usecs-irq: 0
+tx-frames-irq: 5
+
+rx-usecs-low: 0
+rx-frame-low: 0
+tx-usecs-low: 0
+tx-frame-low: 0
+
+rx-usecs-high: 0
+rx-frame-high: 0
+tx-usecs-high: 0
+tx-frame-high: 0
+

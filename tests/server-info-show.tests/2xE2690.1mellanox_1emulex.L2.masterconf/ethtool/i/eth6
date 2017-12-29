@@ -1,0 +1,9 @@
+driver: mlx4_en
+version: 2.2-1 (Feb 2014)
+firmware-version: 2.36.5000
+bus-info: 0000:04:00.0
+supports-statistics: yes
+supports-test: yes
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: no

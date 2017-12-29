@@ -1,0 +1,1 @@
+ETHTOOL_OPTS="-G eth7 rx 8192 tx 8192"

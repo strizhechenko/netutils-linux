@@ -1,0 +1,10 @@
+Attached devices:
+Host: scsi0 Channel: 00 Id: 00 Lun: 00
+  Vendor: hp       Model: DVD RAM UJ8C2    Rev: SC02
+  Type:   CD-ROM                           ANSI  SCSI revision: 05
+Host: scsi2 Channel: 03 Id: 00 Lun: 00
+  Vendor: HP       Model: P420i            Rev: 8.00
+  Type:   RAID                             ANSI  SCSI revision: 05
+Host: scsi2 Channel: 00 Id: 00 Lun: 00
+  Vendor: HP       Model: LOGICAL VOLUME   Rev: 8.00
+  Type:   Direct-Access                    ANSI  SCSI revision: 05

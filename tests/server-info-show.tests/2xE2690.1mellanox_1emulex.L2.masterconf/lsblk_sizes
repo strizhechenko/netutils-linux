@@ -1,0 +1,11 @@
+  1073741312             sr0
+293564211200             sda
+ 10485760000 /           sda1
+107857575936 /mnt/var    sda2
+ 86286270464 /mnt/db     sda3
+        1024             sda4
+ 15728640000 /app        sda5
+ 53928263680 /mnt/log    sda6
+  4294967296 [SWAP]      sda7
+  4194304000 /mnt/etc    sda8
+ 10781458432 /mnt/backup sda9

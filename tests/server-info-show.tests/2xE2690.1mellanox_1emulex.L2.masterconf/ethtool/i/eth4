@@ -1,0 +1,9 @@
+driver: be2net
+version: 10.6.0.3r
+firmware-version: 11.1.183.62
+bus-info: 0000:07:00.0
+supports-statistics: yes
+supports-test: yes
+supports-eeprom-access: yes
+supports-register-dump: no
+supports-priv-flags: no

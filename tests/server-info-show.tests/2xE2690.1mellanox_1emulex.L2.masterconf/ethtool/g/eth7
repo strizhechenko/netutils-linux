@@ -1,0 +1,12 @@
+Ring parameters for eth7:
+Pre-set maximums:
+RX:		8192
+RX Mini:	0
+RX Jumbo:	0
+TX:		8192
+Current hardware settings:
+RX:		8192
+RX Mini:	0
+RX Jumbo:	0
+TX:		8192
+

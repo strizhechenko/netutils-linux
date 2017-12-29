@@ -1,0 +1,161 @@
+cpu:
+  info:
+    Architecture: x86_64
+    BogoMIPS: 5787
+    Byte Order: Little Endian
+    CPU MHz: 2893
+    CPU family: 6
+    CPU op-mode(s): 32-bit, 64-bit
+    CPU(s): 16
+    Core(s) per socket: 8
+    L1d cache: 32K
+    L1i cache: 32K
+    L2 cache: 256K
+    L3 cache: 20480K
+    Model: 45
+    Model name: Intel(R) Xeon(R) CPU E5-2690 0 @ 2.90GHz
+    NUMA node(s): 2
+    NUMA node0 CPU(s): 0-7
+    NUMA node1 CPU(s): 8-15
+    On-line CPU(s) list: 0-15
+    Socket(s): 2
+    Stepping: 7
+    Thread(s) per core: 1
+    Vendor ID: GenuineIntel
+    Virtualization: VT-x
+  layout:
+    '0': '0'
+    '1': '0'
+    '10': '1'
+    '11': '1'
+    '12': '1'
+    '13': '1'
+    '14': '1'
+    '15': '1'
+    '2': '0'
+    '3': '0'
+    '4': '0'
+    '5': '0'
+    '6': '0'
+    '7': '0'
+    '8': '1'
+    '9': '1'
+disk:
+  sda:
+    model: LOGICAL VOLUME
+    size: 293564211200
+    type: HDD
+  sr0:
+    model: 'DVD RAM UJ8C2   '
+memory:
+  devices:
+    '0x1100':
+      size: '16384'
+      speed: '1600'
+      type: DDR3
+    '0x1103':
+      size: '16384'
+      speed: '1600'
+      type: DDR3
+    '0x1108':
+      size: '16384'
+      speed: '1600'
+      type: DDR3
+    '0x110B':
+      size: '16384'
+      speed: '1600'
+      type: DDR3
+    '0x110C':
+      size: '16384'
+      speed: '1600'
+      type: DDR3
+    '0x110F':
+      size: '16384'
+      speed: '1600'
+      type: DDR3
+    '0x1114':
+      size: '16384'
+      speed: '1600'
+      type: DDR3
+    '0x1117':
+      size: '16384'
+      speed: '1600'
+      type: DDR3
+  size:
+    MemFree: 120201024
+    MemTotal: 132118812
+    SwapFree: 4194300
+    SwapTotal: 4194300
+net:
+  eth1:
+    buffers:
+      cur: 2047
+      max: 2047
+    conf:
+      ip: ''
+      vlan: false
+    driver:
+      driver: tg3
+      version: 3.137
+    queues:
+      own: []
+      rx:
+      - eth1-rx-1
+      - eth1-rx-2
+      - eth1-rx-3
+      - eth1-rx-4
+      rxtx: []
+      shared: []
+      tx:
+      - eth1-tx-0
+      unknown: []
+  eth6:
+    buffers:
+      cur: 8192
+      max: 8192
+    conf:
+      ip: ''
+      vlan: false
+    driver:
+      driver: mlx4_en
+      version: 2.2-1 (Feb 2014)
+    queues:
+      own: []
+      rx: []
+      rxtx:
+      - eth6-0
+      - eth6-1
+      - eth6-2
+      - eth6-3
+      - eth6-4
+      - eth6-5
+      - eth6-6
+      - eth6-7
+      shared: []
+      tx: []
+      unknown: []
+  eth7:
+    buffers:
+      cur: 8192
+      max: 8192
+    conf:
+      ip: ''
+      vlan: false
+    driver:
+      driver: mlx4_en
+      version: 2.2-1 (Feb 2014)
+    queues:
+      own: []
+      rx: []
+      rxtx:
+      - eth7-0
+      - eth7-1
+      - eth7-2
+      - eth7-3
+      - eth7-4
+      - eth7-5
+      - eth7-6
+      - eth7-7
+      shared: []
+      tx: []
+      unknown: []
