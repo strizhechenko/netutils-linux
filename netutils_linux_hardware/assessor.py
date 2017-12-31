@@ -19,7 +19,7 @@ class Assessor(object):
 
     def __init__(self, data):
         self.data = data
-        self.args = self.parse_args()
+        # self.args = self.parse_args()
         if self.data:
             self.assess()
 
