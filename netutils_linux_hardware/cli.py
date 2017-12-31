@@ -71,4 +71,4 @@ class ServerInfo(object):
         if not self.args.rate and not self.args.show:
             return
         reader = Reader(self.args.input)
-        print_(Assessor(reader.info) if self.args.rate else reader)
+        print_(Assessor(reader.info, self.args) if self.args.rate else reader)

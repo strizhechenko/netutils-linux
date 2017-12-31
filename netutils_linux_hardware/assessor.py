@@ -17,9 +17,9 @@ class Assessor(object):
     info = None
     avg = None
 
-    def __init__(self, data):
+    def __init__(self, data, args):
         self.data = data
-        # self.args = self.parse_args()
+        self.args = args
         if self.data:
             self.assess()
 
