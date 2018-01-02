@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SYSCONFIG=/etc/sysconfig/network-scripts/
-TMPDIR="/tmp/$1"
+TMPDIR="$1"
 
 prepare() {
 	mkdir -p $TMPDIR/ethtool/{g,i,c} $TMPDIR/network-scripts/
@@ -62,18 +62,10 @@ network_info() {
 	done
 }
 
-make_archive() {
-	local output="/root/$1.tar.gz"
-	cd /tmp/
-	tar cfz "$output" "$1"
-	rm -rf $TMPDIR
-}
-
 main() {
 	prepare
 	server_info
 	network_info
-	make_archive "$@"
 }
 
-main "$@"
+main
