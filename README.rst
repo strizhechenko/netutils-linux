@@ -239,7 +239,7 @@ Subsystems rating
   net: 1.3333333333333333
   system: 1.0
 
-devices rating
+Devices rating
 ~~~~~~~~~~~~~~
 
 .. code:: yaml
@@ -266,7 +266,7 @@ devices rating
     Hypervisor vendor: 1
     Virtualization type: 1
 
-device's detailed rating
+Device's detailed rating
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: yaml
