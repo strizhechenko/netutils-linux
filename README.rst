@@ -138,106 +138,169 @@ Example output:
   Current hardware settings:
   RX:		2048
 
-Hardware and its configuration rating
--------------------------------------
+Hardware and its configuration rating. server-info
+--------------------------------------------------
 
-server-info
-~~~~~~~~~~~
 Much alike lshw but designed for network processing role of server.
+
+information about server
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: yaml
 
-  # server-info --show
+  ➜  vscale-vm git:(folding) ✗ server-info --show
   cpu:
     info:
       Architecture: x86_64
-      BogoMIPS: 6799.9899999999998
+      BogoMIPS: 4399
       Byte Order: Little Endian
-      CPU MHz: 3399.998
+      CPU MHz: 2199
       CPU family: 6
       CPU op-mode(s): 32-bit, 64-bit
-      CPU(s): 2
+      CPU(s): 1
       Core(s) per socket: 1
+      Flags: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36
+        clflush mmx fxsr sse sse2 ss syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon
+        rep_good nopl eagerfpu pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic
+        movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm
+        abm 3dnowprefetch tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust
+        bmi1 hle avx2 smep bmi2 erms invpcid rtm rdseed adx smap xsaveopt arat
       Hypervisor vendor: KVM
       L1d cache: 32K
       L1i cache: 32K
-      L2 cache: 4096K
-      Model: 13
-      Model name: QEMU Virtual CPU version (cpu64-rhel6)
+      L2 cache: 256K
+      L3 cache: 25600K
+      Model: 79
+      Model name: Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz
       NUMA node(s): 1
-      NUMA node0 CPU(s): 0,1
-      On-line CPU(s) list: 0,1
-      Socket(s): 2
-      Stepping: 3
+      NUMA node0 CPU(s): 0
+      On-line CPU(s) list: 0
+      Socket(s): 1
+      Stepping: 1
       Thread(s) per core: 1
       Vendor ID: GenuineIntel
+      Virtualization: VT-x
       Virtualization type: full
     layout:
       '0': '0'
-      '1': '1'
   disk:
-    sr0:
-      model: QEMU DVD-ROM
     vda:
       model: null
-      size: 64424509440
+      size: 21474836480
       type: HDD
   memory:
-    MemFree: 158932
-    MemTotal: 1922096
-    SwapFree: 4128764
-    SwapTotal: 4128764
+    devices:
+      '0x1100':
+        size: '512'
+        speed: 0
+        type: RAM
+    size:
+      MemFree: 78272
+      MemTotal: 500196
+      SwapFree: 0
+      SwapTotal: 0
   net:
-    eth1:
+    eth0:
       buffers:
-        cur: 2048
-        max: 4096
+        cur: 256
+        max: 256
       conf:
-        ip: 10.144.63.1/24
-        vlan: true
+        ip: ''
+        vlan: false
       driver:
-        driver: e1000
-        version: 7.3.21-k8-NAPI
+        driver: virtio_net
+        version: 1.0.0
       queues:
         own: []
         rx: []
         rxtx: []
-        shared:
-        - virtio1, eth0, eth1
+        shared: []
         tx: []
         unknown: []
 
-It also can rate hardware and its features in range of 1..10.
+Overall server rating
+~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: yaml
 
-  # server-info --rate
+  ➜  vscale-vm git:(folding) ✗ server-info --rate --server
+  server: 1.7666666666666664
+
+
+Subsystems rating
+~~~~~~~~~~~~~~~~~
+
+.. code:: yaml
+
+  ➜  vscale-vm git:(folding) ✗ server-info --rate --subsystem
+  cpu: 4.5
+  disk: 1.0
+  memory: 1.0
+  net: 1.3333333333333333
+  system: 1.0
+
+devices rating
+~~~~~~~~~~~~~~
+
+.. code:: yaml
+
+  ➜  vscale-vm git:(folding) ✗ server-info --rate --device
   cpu:
-    BogoMIPS: 7
-    CPU MHz: 7
+    BogoMIPS: 2
+    CPU MHz: 2
     CPU(s): 1
     Core(s) per socket: 1
-    L3 cache: 1
-    Socket(s): 10
+    L3 cache: 9
+    Socket(s): 1
     Thread(s) per core: 10
     Vendor ID: 10
-   disk:
-     sr0:
-       size: 1
-       type: 2
-     vda:
-       size: 1
-       type: 1
-   memory:
-     MemTotal: 1
-     SwapTotal: 10
-   net:
-     eth1:
-       buffers:
-         cur: 5
-         max: 10
-       driver: 1
-       queues: 1
-   system:
-     Hypervisor vendor: 1
-     Virtualization type: 1
+  disk:
+    vda: 1.0
+  memory:
+    devices:
+      '0x1100': 1.0
+    size: 1.0
+  net:
+    eth0: 1.3333333333333333
+  system:
+    Hypervisor vendor: 1
+    Virtualization type: 1
+
+device's detailed rating
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: yaml
+
+  ➜  vscale-vm git:(folding) ✗ server-info --rate
+  cpu:
+    BogoMIPS: 2
+    CPU MHz: 2
+    CPU(s): 1
+    Core(s) per socket: 1
+    L3 cache: 9
+    Socket(s): 1
+    Thread(s) per core: 10
+    Vendor ID: 10
+  disk:
+    vda:
+      size: 1
+      type: 1
+  memory:
+    devices:
+      '0x1100':
+        size: 1
+        speed: 1
+        type: 1
+    size:
+      MemTotal: 1
+      SwapTotal: 1
+  net:
+    eth0:
+      buffers:
+        cur: 1
+        max: 1
+      driver: 2
+      queues: 1
+  system:
+    Hypervisor vendor: 1
+    Virtualization type: 1
