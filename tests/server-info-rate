@@ -6,17 +6,25 @@ testdata=./tests/server-info-show.tests/
 TMPDIR=/tmp/server-info-show/
 mkdir -p $TMPDIR
 
+COLOR_SUCCESS="\\033[1;32m"
+COLOR_FAILURE="\\033[1;31m"
+COLOR_WARNING="\\033[1;33m"
+COLOR_NORMAL="\\033[0;39m"
+
 run_test() {
 	local name="${1##*/}"
+	local directory="$1"
+	shift
 	local rc=0
-	echo -n "# $name "
-	server-info --rate --directory="$1" &>"$TMPDIR/output" || rc=$?
+	echo "server-info --rate --directory='$directory' $*" > "$TMPDIR/output"
+	server-info --rate --directory="$directory" "$@" &>> "$TMPDIR/output" || rc=$?
 	if [ "$rc" = '0' ]; then
-		echo OK
+		echo -e "$COLOR_SUCCESS# $name $*"
 	else
+		echo -e "$COLOR_FAILURE# $name $*:$COLOR_NORMAL"
 		cat "$TMPDIR/output"
-		echo FAIL
 	fi
+	echo -ne "$COLOR_NORMAL"
 	return "$rc"
 }
 
@@ -29,6 +37,12 @@ for test in $(find "$testdata" -mindepth 1 -maxdepth 1 -type d); do
 			retval=1
 			break
 		fi
+		for param in --device --subsystem --server -f -ff -fff; do
+			if ! run_test "$test" "$param"; then
+				retval=1
+				break 2
+			fi
+		done
 	fi
 done
 rm -rf $TMPDIR

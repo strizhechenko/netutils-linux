@@ -81,7 +81,7 @@ class Assessor(object):
         return self.fold({
             'MemTotal': Grade.int(size.get('MemTotal'), 2 * (1024 ** 2), 16 * (1024 ** 2)),
             'SwapTotal': Grade.int(size.get('SwapTotal'), 512 * 1024, 4 * (1024 ** 2)),
-        }, FOLDING_DEVICE)
+        }, FOLDING_DEVICE) if size else 1
 
     def assess_memory(self):
         meminfo = self.data.get('memory')
@@ -133,8 +133,7 @@ class Assessor(object):
 
     def __assess(self, func, key):
         items = self.data.get(key)
-        if items:
-            return self.fold(dict((item, func(item)) for item in items), FOLDING_SUBSYSTEM)
+        return self.fold(dict((item, func(item)) for item in items), FOLDING_SUBSYSTEM) if items else 1
 
     def parse_args(self):
         parser = argparse.ArgumentParser()
