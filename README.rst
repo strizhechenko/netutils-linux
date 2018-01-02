@@ -143,7 +143,7 @@ Hardware and its configuration rating. server-info
 
 Much alike lshw but designed for network processing role of server.
 
-information about server
+Information about server
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: yaml
