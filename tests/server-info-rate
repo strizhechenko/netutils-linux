@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+testdata=./tests/server-info-show.tests/
+TMPDIR=/tmp/server-info-show/
+mkdir -p $TMPDIR
+
+COLOR_SUCCESS="\\033[1;32m"
+COLOR_FAILURE="\\033[1;31m"
+COLOR_WARNING="\\033[1;33m"
+COLOR_NORMAL="\\033[0;39m"
+
+run_test() {
+	local name="${1##*/}"
+	local directory="$1"
+	shift
+	local rc=0
+	echo "server-info --rate --directory='$directory' $*" > "$TMPDIR/output"
+	server-info --rate --directory="$directory" "$@" &>> "$TMPDIR/output" || rc=$?
+	if [ "$rc" = '0' ]; then
+		echo -e "$COLOR_SUCCESS# $name $*"
+	else
+		echo -e "$COLOR_FAILURE# $name $*:$COLOR_NORMAL"
+		cat "$TMPDIR/output"
+	fi
+	echo -ne "$COLOR_NORMAL"
+	return "$rc"
+}
+
+
+retval=0
+# shellcheck disable=SC2044
+for test in $(find "$testdata" -mindepth 1 -maxdepth 1 -type d); do
+	if [ -f "$test/expected_output" ]; then
+		if ! run_test "$test"; then
+			retval=1
+			break
+		fi
+		for param in --device --subsystem --server -f -ff -fff; do
+			if ! run_test "$test" "$param"; then
+				retval=1
+				break 2
+			fi
+		done
+	fi
+done
+rm -rf $TMPDIR
+exit "$retval"

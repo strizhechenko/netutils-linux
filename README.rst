@@ -147,7 +147,7 @@ Much alike lshw but designed for network processing role of server.
 
 .. code:: yaml
 
-  # server-info show
+  # server-info --show
   cpu:
     info:
       Architecture: x86_64
@@ -211,7 +211,7 @@ It also can rate hardware and its features in range of 1..10.
 
 .. code:: yaml
 
-  # server-info rate
+  # server-info --rate
   cpu:
     BogoMIPS: 7
     CPU MHz: 7

@@ -1,13 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env python
+# coding=utf-8
 
-set -euo pipefail
 
-if [ "$1" != 'show' ] && [ "$1" != 'rate' ]; then
-	echo "Usage $0 [show|rate]"
-	exit 1
-fi
-server-info-collect server
-cd /root/
-tar xfz server.tar.gz
-cd /root/server/
-server-info-"$1"
+from netutils_linux_hardware.cli import ServerInfo
+
+if __name__ == '__main__':
+    ServerInfo()
