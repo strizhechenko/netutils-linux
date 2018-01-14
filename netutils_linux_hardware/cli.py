@@ -13,6 +13,7 @@ class ServerInfo(object):
     """ Single entry point for --collect, --rate, --show """
     args = None
     commands = ['--collect', '--rate', '--show', '--help']
+    subsystems = ('cpu', 'memory', 'net', 'disk', 'system')
 
     def __init__(self):
         self.__parse_args()
@@ -36,11 +37,21 @@ class ServerInfo(object):
                             help='Folds rates details to entire subsystems')
         parser.add_argument('--server', action='store_const', const=FOLDING_SERVER, dest='folding',
                             help='Folds rates details to entire server')
+        parser.add_argument('--cpu', action='store_true', help='Show information about CPU', default=False)
+        parser.add_argument('--memory', action='store_true', help='Show information about RAM', default=False)
+        parser.add_argument('--net', action='store_true', help='Show information about network devices', default=False)
+        parser.add_argument('--disk', action='store_true', help='Show information about disks', default=False)
+        parser.add_argument('--system', action='store_true', help='Show information about system overall (rate only)',
+                            default=False)
         self.args = parser.parse_args()
 
     def __check_args(self):
         """ Maybe they should be positional arguments, not options. But subparsers/groups are stupid """
         assert any([self.args.collect, self.args.rate, self.args.show]), "Specify command: {0}".format(self.commands)
+
+        if not any(getattr(self.args, subsystem) for subsystem in self.subsystems):
+            for subsystem in self.subsystems:
+                setattr(self.args, subsystem, True)
 
     def tarball_directory(self):
         """ Decision about and smart 'corrections' """
@@ -54,5 +65,5 @@ class ServerInfo(object):
         tarball, directory = self.tarball_directory()
         ServerInfoCollect(directory, tarball, self.args.collect)
         if self.args.rate or self.args.show:
-            reader = Reader(directory)
+            reader = Reader(directory, self.args)
             print_(Assessor(reader.info, self.args) if self.args.rate else reader)

@@ -16,6 +16,7 @@ class Assessor(object):
     """ Calculates rates for important system components """
     info = None
     avg = None
+    keys = ('net', 'cpu', 'memory', 'system', 'disk')
 
     def __init__(self, data, args):
         self.data = data
@@ -36,13 +37,21 @@ class Assessor(object):
         return yaml.dump(self.info, default_flow_style=False).strip()
 
     def assess(self):
-        self.info = self.fold({
-            'net': self.__assess(self.assess_netdev, 'net'),
-            'cpu': self.assess_cpu(),
-            'memory': self.assess_memory(),
-            'system': self.assess_system(),
-            'disk': self.__assess(self.assess_disk, 'disk'),
-        }, FOLDING_SERVER)
+        data = dict()
+        for key in self.keys:
+            if not getattr(self.args, key):
+                continue
+            elif key == 'net':
+                data[key] = self.__assess(self.assess_netdev, 'net')
+            elif key == 'cpu':
+                data[key] = self.assess_cpu()
+            elif key == 'memory':
+                data[key] = self.assess_memory()
+            elif key == 'disk':
+                data[key] = self.__assess(self.assess_disk, 'disk')
+            elif key == 'system':
+                data[key] = self.assess_system()
+        self.info = self.fold(data, FOLDING_SERVER)
 
     def assess_cpu(self):
         cpuinfo = extract(self.data, ['cpu', 'info'])
