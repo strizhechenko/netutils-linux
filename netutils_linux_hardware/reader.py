@@ -24,13 +24,19 @@ class Reader(object):
     def path(self, filename):
         return os.path.join(self.datadir, filename)
 
+    def read(self, func, filename):
+        return func(self.path(filename)).result
+
     def gather_info(self):
         self.info = dict()
         if self.args.cpu or self.args.system:
             self.info['cpu'] = {
-                'info': YAMLLike(self.path('lscpu_info')).result,
-                'layout': CPULayout(self.path('lscpu_layout')).result,
+                'info': self.read(YAMLLike, 'lscpu_info'),
+                'layout': self.read(CPULayout, 'lscpu_layout'),
             }
+            for key in ('CPU MHz', 'BogoMIPS'):
+                if self.info['cpu'].get('info', {}).get(key):
+                    self.info['cpu']['info'][key] = int(self.info['cpu']['info'][key])
         if self.args.net:
             self.info['net'] = ReaderNet(self.datadir, self.path).netdevs
         if self.args.disk:
@@ -41,10 +47,6 @@ class Reader(object):
             )
         if self.args.memory:
             self.info['memory'] = {
-                'size': MemInfo(self.path('meminfo')).result,
-                'devices': MemInfoDMI(self.path('dmidecode')).result,
+                'size': self.read(MemInfo, 'meminfo'),
+                'devices': self.read(MemInfoDMI, 'dmidecode'),
             }
-        if self.info.get('cpu'):
-            for key in ('CPU MHz', 'BogoMIPS'):
-                if self.info.get('cpu', {}).get('info', {}).get(key):
-                    self.info['cpu']['info'][key] = int(self.info['cpu']['info'][key])
