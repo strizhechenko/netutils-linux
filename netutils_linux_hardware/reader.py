@@ -27,16 +27,28 @@ class Reader(object):
     def read(self, func, filename):
         return func(self.path(filename)).result
 
+    def __cpu(self):
+        output = {
+            'info': self.read(YAMLLike, 'lscpu_info'),
+            'layout': self.read(CPULayout, 'lscpu_layout'),
+        }
+        for key in ('CPU MHz', 'BogoMIPS'):
+            if output.get('info', {}).get(key):
+                output['info'][key] = int(output['info'][key])
+        return output
+
+    def __memory(self):
+        return {
+            'size': self.read(MemInfo, 'meminfo'),
+            'devices': self.read(MemInfoDMI, 'dmidecode'),
+        }
+
     def gather_info(self):
         self.info = dict()
         if self.args.cpu or self.args.system:
-            self.info['cpu'] = {
-                'info': self.read(YAMLLike, 'lscpu_info'),
-                'layout': self.read(CPULayout, 'lscpu_layout'),
-            }
-            for key in ('CPU MHz', 'BogoMIPS'):
-                if self.info['cpu'].get('info', {}).get(key):
-                    self.info['cpu']['info'][key] = int(self.info['cpu']['info'][key])
+            self.info['cpu'] = self.__cpu()
+        if self.args.memory:
+            self.info['memory'] = self.__memory()
         if self.args.net:
             self.info['net'] = ReaderNet(self.datadir, self.path).netdevs
         if self.args.disk:
@@ -45,8 +57,3 @@ class Reader(object):
                 self.path('lsblk_sizes'),
                 self.path('lsblk_models')
             )
-        if self.args.memory:
-            self.info['memory'] = {
-                'size': self.read(MemInfo, 'meminfo'),
-                'devices': self.read(MemInfoDMI, 'dmidecode'),
-            }
