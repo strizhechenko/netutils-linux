@@ -16,6 +16,7 @@ class Assessor(object):
     """ Calculates rates for important system components """
     info = None
     avg = None
+    keys = ('net', 'cpu', 'memory', 'system', 'disk')
 
     def __init__(self, data, args):
         self.data = data
@@ -37,22 +38,19 @@ class Assessor(object):
 
     def assess(self):
         data = dict()
-        keys = ('net', 'cpu', 'memory', 'system', 'disk')
-        for key in keys:
+        for key in self.keys:
             if not getattr(self.args, key):
                 continue
             elif key == 'net':
-                data['net'] = self.__assess(self.assess_netdev, 'net')
+                data[key] = self.__assess(self.assess_netdev, 'net')
             elif key == 'cpu':
-                data['cpu'] = self.assess_cpu()
+                data[key] = self.assess_cpu()
             elif key == 'memory':
-                data['memory'] = self.assess_memory()
+                data[key] = self.assess_memory()
             elif key == 'disk':
-                data['disk'] = self.__assess(self.assess_disk, 'disk')
+                data[key] = self.__assess(self.assess_disk, 'disk')
             elif key == 'system':
-                data['system'] = self.assess_system()
-            else:
-                assert 'Unknown key:', key
+                data[key] = self.assess_system()
         self.info = self.fold(data, FOLDING_SERVER)
 
     def assess_cpu(self):
