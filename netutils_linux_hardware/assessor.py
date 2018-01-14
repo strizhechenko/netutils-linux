@@ -36,17 +36,23 @@ class Assessor(object):
         return yaml.dump(self.info, default_flow_style=False).strip()
 
     def assess(self):
-        data = {
-            'net': self.__assess(self.assess_netdev, 'net'),
-            'cpu': self.assess_cpu(),
-            'memory': self.assess_memory(),
-            'system': self.assess_system(),
-            'disk': self.__assess(self.assess_disk, 'disk'),
-        }
-        keys = list(data.keys())
+        data = dict()
+        keys = ('net', 'cpu', 'memory', 'system', 'disk')
         for key in keys:
             if not getattr(self.args, key):
-                del data[key]
+                continue
+            elif key == 'net':
+                data['net'] = self.__assess(self.assess_netdev, 'net')
+            elif key == 'cpu':
+                data['cpu'] = self.assess_cpu()
+            elif key == 'memory':
+                data['memory'] = self.assess_memory()
+            elif key == 'disk':
+                data['disk'] = self.__assess(self.assess_disk, 'disk')
+            elif key == 'system':
+                data['system'] = self.assess_system()
+            else:
+                assert 'Unknown key:', key
         self.info = self.fold(data, FOLDING_SERVER)
 
     def assess_cpu(self):

@@ -26,7 +26,7 @@ class Reader(object):
 
     def gather_info(self):
         self.info = dict()
-        if self.args.cpu:
+        if self.args.cpu or self.args.system:
             self.info['cpu'] = {
                 'info': YAMLLike(self.path('lscpu_info')).result,
                 'layout': CPULayout(self.path('lscpu_layout')).result,
@@ -38,7 +38,7 @@ class Reader(object):
                 self.path('disks_types'),
                 self.path('lsblk_sizes'),
                 self.path('lsblk_models')
-            ),
+            )
         if self.args.memory:
             self.info['memory'] = {
                 'size': MemInfo(self.path('meminfo')).result,
