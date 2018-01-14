@@ -45,8 +45,7 @@ class ServerInfo(object):
                                  default=False)
         self.parser.add_argument('--disk', action='store_true', help='Show information about disks', default=False)
         self.parser.add_argument('--system', action='store_true',
-                                 help='Show information about system overall (rate only)',
-                                 default=False)
+                                 help='Show information about system overall (rate only)', default=False)
         self.args = self.parser.parse_args()
 
     def __check_args(self):
