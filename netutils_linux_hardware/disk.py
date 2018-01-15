@@ -7,7 +7,7 @@ from netutils_linux_hardware.subsystem import Subsystem
 
 class Disk(Subsystem):
     def rate(self):
-        return self.__rate(self.rate_disk, 'disk')
+        return self.map(self.rate_disk, 'disk')
 
     def rate_disk(self, disk):
         diskinfo = extract(self.data, ['disk', disk])

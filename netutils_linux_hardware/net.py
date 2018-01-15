@@ -12,9 +12,9 @@ class Net(Subsystem):
         pass
 
     def rate(self):
-        return self.__rate(self.rate_netdev, 'net')
+        return self.map(self.__netdev, 'net')
 
-    def rate_netdev(self, netdev):
+    def __netdev(self, netdev):
         netdevinfo = extract(self.data, ['net', netdev])
         queues = sum(
             len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))

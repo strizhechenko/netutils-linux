@@ -27,6 +27,6 @@ class Subsystem(object):
         """ Rating every detail in that data """
         pass
 
-    def __rate(self, func, key):
+    def map(self, func, key):
         items = self.data.get(key)
         return self.folding.fold(dict((item, func(item)) for item in items), Folding.SUBSYSTEM) if items else 1
