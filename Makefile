@@ -3,6 +3,7 @@ test:
 	./tests/utils_runnable
 	./tests/rss-ladder-test
 	./tests/server-info-show
+	./tests/server-info-rate
 	./tests/link_rate_units.sh
 
 env:
