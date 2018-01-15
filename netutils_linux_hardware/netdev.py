@@ -4,7 +4,8 @@
 import os
 from six import iteritems
 from netutils_linux_hardware.interrupts import IRQQueueCounter
-from netutils_linux_hardware.parser import EthtoolBuffers, ReductorMirror, BridgeOutput, YAMLLike, EthtoolFiles
+from netutils_linux_hardware.parser import YAMLLike
+from netutils_linux_hardware.net import ReductorMirror, BridgeOutput, EthtoolFiles, EthtoolBuffers
 
 
 class ReaderNet(object):

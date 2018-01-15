@@ -18,13 +18,18 @@ class Subsystem(object):
         pass
 
     @abstractmethod
+    def read(self):
+        """ Read saved data from datadir """
+        pass
+
+    @abstractmethod
     def parse(self):
-        """ Reading collected data from datadir """
+        """ Parse that data to dict or something like this """
         pass
 
     @abstractmethod
     def rate(self):
-        """ Rating every detail in that data """
+        """ Rating every detail in the parsed data """
         pass
 
     def map(self, func, key):

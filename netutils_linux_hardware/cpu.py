@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from netutils_linux_hardware.grade import Grade
+from netutils_linux_hardware.parser import Parser
 from netutils_linux_hardware.rater_math import extract
 from netutils_linux_hardware.subsystem import Subsystem
 
@@ -24,3 +25,13 @@ class CPU(Subsystem):
                 'L3 cache': Grade.int(cpuinfo.get('L3 cache'), 1000, 30000),
                 'Vendor ID': Grade.str(cpuinfo.get('Vendor ID'), good=['GenuineIntel']),
             }, self.folding.SUBSYSTEM)
+
+
+class CPULayout(Parser):
+    @staticmethod
+    def parse(text):
+        output = dict((line.strip().split())
+                      for line in text.strip().split('\n'))
+        if output.get('CPU'):
+            del output['CPU']
+        return output
