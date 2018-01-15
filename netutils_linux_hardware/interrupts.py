@@ -2,7 +2,7 @@
 # pylint: disable=C0111, C0103
 
 from six import print_
-from netutils_linux_hardware.parsers import Parser
+from netutils_linux_hardware.parser import Parser
 
 
 class NICQueues(object):

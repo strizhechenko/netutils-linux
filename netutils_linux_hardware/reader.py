@@ -6,7 +6,7 @@ import os
 import yaml
 
 from netutils_linux_hardware.netdev import ReaderNet
-from netutils_linux_hardware.parsers import YAMLLike, CPULayout, DiskInfo, MemInfo, MemInfoDMI
+from netutils_linux_hardware.parser import YAMLLike, CPULayout, DiskInfo, MemInfo, MemInfoDMI
 
 
 class Reader(object):

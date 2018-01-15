@@ -7,7 +7,7 @@ from sys import version_info
 
 from six import print_
 
-from netutils_linux_hardware.assessor_math import any2int
+from netutils_linux_hardware.rater_math import any2int
 
 
 class Topology(object):

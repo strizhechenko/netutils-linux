@@ -4,7 +4,7 @@ import argparse
 
 from six import print_
 
-from netutils_linux_hardware.assessor import Assessor, FOLDING_NO, FOLDING_DEVICE, FOLDING_SUBSYSTEM, FOLDING_SERVER
+from netutils_linux_hardware.rater import Rater, FOLDING_NO, FOLDING_DEVICE, FOLDING_SUBSYSTEM, FOLDING_SERVER
 from netutils_linux_hardware.collect import ServerInfoCollect
 from netutils_linux_hardware.reader import Reader
 
@@ -71,4 +71,4 @@ class ServerInfo(object):
         ServerInfoCollect(directory, tarball, self.args.collect)
         if self.args.rate or self.args.show:
             reader = Reader(directory, self.args)
-            print_(Assessor(reader.info, self.args) if self.args.rate else reader)
+            print_(Rater(reader.info, self.args) if self.args.rate else reader)

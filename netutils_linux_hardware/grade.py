@@ -1,5 +1,5 @@
 # coding: utf-8
-from netutils_linux_hardware.assessor_math import any2int, round_
+from netutils_linux_hardware.rater_math import any2int, round_
 
 
 class Grade(object):

@@ -3,7 +3,7 @@ import argparse
 
 import yaml
 
-from netutils_linux_hardware.assessor_math import extract
+from netutils_linux_hardware.rater_math import extract
 from netutils_linux_hardware.grade import Grade
 
 FOLDING_NO = 0
@@ -12,7 +12,7 @@ FOLDING_SUBSYSTEM = 2
 FOLDING_SERVER = 3
 
 
-class Assessor(object):
+class Rater(object):
     """ Calculates rates for important system components """
     info = None
     avg = None
@@ -22,7 +22,7 @@ class Assessor(object):
         self.data = data
         self.args = args
         if self.data:
-            self.assess()
+            self.rate()
 
     def fold(self, data, level):
         """ Схлапывает значения в дикте до среднего арифметического """
@@ -36,24 +36,24 @@ class Assessor(object):
     def __str__(self):
         return yaml.dump(self.info, default_flow_style=False).strip()
 
-    def assess(self):
+    def rate(self):
         data = dict()
         for key in self.keys:
             if not getattr(self.args, key):
                 continue
             elif key == 'net':
-                data[key] = self.__assess(self.assess_netdev, 'net')
+                data[key] = self.__rate(self.rate_netdev, 'net')
             elif key == 'cpu':
-                data[key] = self.assess_cpu()
+                data[key] = self.rate_cpu()
             elif key == 'memory':
-                data[key] = self.assess_memory()
+                data[key] = self.rate_memory()
             elif key == 'disk':
-                data[key] = self.__assess(self.assess_disk, 'disk')
+                data[key] = self.__rate(self.rate_disk, 'disk')
             elif key == 'system':
-                data[key] = self.assess_system()
+                data[key] = self.rate_system()
         self.info = self.fold(data, FOLDING_SERVER)
 
-    def assess_cpu(self):
+    def rate_cpu(self):
         cpuinfo = extract(self.data, ['cpu', 'info'])
         if cpuinfo:
             return self.fold({
@@ -67,7 +67,7 @@ class Assessor(object):
                 'Vendor ID': Grade.str(cpuinfo.get('Vendor ID'), good=['GenuineIntel']),
             }, FOLDING_SUBSYSTEM)
 
-    def assess_memory_device(self, device):
+    def rate_memory_device(self, device):
         return self.fold({
             'size': Grade.int(device.get('size', 0), 512, 8196),
             'type': Grade.known_values(device.get('type', 'RAM'), {
@@ -79,28 +79,28 @@ class Assessor(object):
             'speed': Grade.int(device.get('speed', 0), 200, 4000),
         }, FOLDING_DEVICE)
 
-    def assess_memory_devices(self, devices):
+    def rate_memory_devices(self, devices):
         if not devices:
             return 1
-        return self.fold(dict((handle, self.assess_memory_device(device))
+        return self.fold(dict((handle, self.rate_memory_device(device))
                               for handle, device in devices.items()),
                          FOLDING_SUBSYSTEM)
 
-    def assess_memory_size(self, size):
+    def rate_memory_size(self, size):
         return self.fold({
             'MemTotal': Grade.int(size.get('MemTotal'), 2 * (1024 ** 2), 16 * (1024 ** 2)),
             'SwapTotal': Grade.int(size.get('SwapTotal'), 512 * 1024, 4 * (1024 ** 2)),
         }, FOLDING_DEVICE) if size else 1
 
-    def assess_memory(self):
+    def rate_memory(self):
         meminfo = self.data.get('memory')
         if meminfo:
             return self.fold({
-                'devices': self.assess_memory_devices(meminfo.get('devices')),
-                'size': self.assess_memory_size(meminfo.get('size')),
+                'devices': self.rate_memory_devices(meminfo.get('devices')),
+                'size': self.rate_memory_size(meminfo.get('size')),
             }, FOLDING_SUBSYSTEM)
 
-    def assess_system(self):
+    def rate_system(self):
         cpuinfo = extract(self.data, ['cpu', 'info'])
         if cpuinfo:
             return self.fold({
@@ -108,7 +108,7 @@ class Assessor(object):
                 'Virtualization type': Grade.fact(cpuinfo.get('Hypervisor vendor'), False),
             }, FOLDING_SUBSYSTEM)
 
-    def assess_netdev(self, netdev):
+    def rate_netdev(self, netdev):
         netdevinfo = extract(self.data, ['net', netdev])
         queues = sum(
             len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
@@ -132,7 +132,7 @@ class Assessor(object):
             }, FOLDING_DEVICE)
         }, FOLDING_DEVICE)
 
-    def assess_disk(self, disk):
+    def rate_disk(self, disk):
         diskinfo = extract(self.data, ['disk', disk])
         return self.fold({
             'type': Grade.str(diskinfo.get('type'), ['SDD'], ['HDD']),
@@ -140,12 +140,6 @@ class Assessor(object):
             'size': Grade.int(diskinfo.get('size'), 50 * (1000 ** 3), 1000 ** 4),
         }, FOLDING_DEVICE)
 
-    def __assess(self, func, key):
+    def __rate(self, func, key):
         items = self.data.get(key)
         return self.fold(dict((item, func(item)) for item in items), FOLDING_SUBSYSTEM) if items else 1
-
-    def parse_args(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument('-f', '--folding', action='count', help='-f - device, -ff - subsystem, -fff - server',
-                            default=FOLDING_NO)
-        return parser.parse_args()
