@@ -4,8 +4,9 @@ import argparse
 
 from six import print_
 
-from netutils_linux_hardware.rater import Rater, FOLDING_NO, FOLDING_DEVICE, FOLDING_SUBSYSTEM, FOLDING_SERVER
 from netutils_linux_hardware.collect import ServerInfoCollect
+from netutils_linux_hardware.folding import Folding
+from netutils_linux_hardware.rater import Rater
 from netutils_linux_hardware.reader import Reader
 
 
@@ -32,12 +33,12 @@ class ServerInfo(object):
                                  default=False)
         self.parser.add_argument('--rate', action='store_true', help='Rates data about the server', default=False)
         self.parser.add_argument('-f', '--folding', action='count', help='-f - device, -ff - subsystem, -fff - server',
-                                 default=FOLDING_NO)
-        self.parser.add_argument('--device', action='store_const', const=FOLDING_DEVICE, dest='folding',
+                                 default=Folding.NO)
+        self.parser.add_argument('--device', action='store_const', const=Folding.DEVICE, dest='folding',
                                  help='Folds rates details to entire devices')
-        self.parser.add_argument('--subsystem', action='store_const', const=FOLDING_SUBSYSTEM, dest='folding',
+        self.parser.add_argument('--subsystem', action='store_const', const=Folding.SUBSYSTEM, dest='folding',
                                  help='Folds rates details to entire subsystems')
-        self.parser.add_argument('--server', action='store_const', const=FOLDING_SERVER, dest='folding',
+        self.parser.add_argument('--server', action='store_const', const=Folding.SERVER, dest='folding',
                                  help='Folds rates details to entire server')
         self.parser.add_argument('--cpu', action='store_true', help='Show information about CPU', default=False)
         self.parser.add_argument('--memory', action='store_true', help='Show information about RAM', default=False)

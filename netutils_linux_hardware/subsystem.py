@@ -17,6 +17,6 @@ class Subsystem(object):
         pass
 
     @abstractmethod
-    def rate(self):
+    def rate(self, rater):
         """ Rating every detail in that data """
         pass
