@@ -3,8 +3,10 @@
 import yaml
 
 from netutils_linux_hardware.cpu import CPU
+from netutils_linux_hardware.disk import Disk
 from netutils_linux_hardware.folding import Folding
 from netutils_linux_hardware.grade import Grade
+from netutils_linux_hardware.net import Net
 from netutils_linux_hardware.rater_math import extract
 
 
@@ -30,13 +32,13 @@ class Rater(object):
             if not getattr(self.args, key):
                 continue
             elif key == 'net':
-                data[key] = self.__rate(self.rate_netdev, 'net')
+                data[key] = Net(self.data, self.folding).rate()
             elif key == 'cpu':
-                data[key] = CPU(self.data).rate(self)
+                data[key] = CPU(self.data, self.folding).rate()
             elif key == 'memory':
                 data[key] = self.rate_memory()
             elif key == 'disk':
-                data[key] = self.__rate(self.rate_disk, 'disk')
+                data[key] = Disk(self.data, self.folding).rate()
             elif key == 'system':
                 data[key] = self.rate_system()
         self.info = self.folding.fold(data, Folding.SERVER)
@@ -81,39 +83,3 @@ class Rater(object):
                 'Hypervisor vendor': Grade.fact(cpuinfo.get('Hypervisor vendor'), False),
                 'Virtualization type': Grade.fact(cpuinfo.get('Hypervisor vendor'), False),
             }, Folding.SUBSYSTEM)
-
-    def rate_netdev(self, netdev):
-        netdevinfo = extract(self.data, ['net', netdev])
-        queues = sum(
-            len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
-        buffers = netdevinfo.get('buffers') or {}
-        return self.folding.fold({
-            'queues': Grade.int(queues, 2, 8),
-            'driver': {
-                'mlx5_core': 10,  # 7500 mbit/s
-                'mlx4_en': 9,  # 6500 mbit/s
-                'i40e': 8,  # 6000 mbit/s
-                'ixgbe': 7,  # 4000 mbit/s
-                'igb': 6,  # 400 mbit/s
-                'bnx2x': 4,  # 100 mbit/s
-                'e1000e': 3,  # 80 mbit/s
-                'e1000': 3,  # 50 mbit/s
-                'r8169': 1, 'ATL1E': 1, '8139too': 1,  # real trash, you should never use it
-            }.get(netdevinfo.get('driver').get('driver'), 2),
-            'buffers': self.folding.fold({
-                'cur': Grade.int(buffers.get('cur'), 256, 4096),
-                'max': Grade.int(buffers.get('max'), 256, 4096),
-            }, Folding.DEVICE)
-        }, Folding.DEVICE)
-
-    def rate_disk(self, disk):
-        diskinfo = extract(self.data, ['disk', disk])
-        return self.folding.fold({
-            'type': Grade.str(diskinfo.get('type'), ['SDD'], ['HDD']),
-            # 50Gb - good, 1Tb - good enough
-            'size': Grade.int(diskinfo.get('size'), 50 * (1000 ** 3), 1000 ** 4),
-        }, Folding.DEVICE)
-
-    def __rate(self, func, key):
-        items = self.data.get(key)
-        return self.folding.fold(dict((item, func(item)) for item in items), Folding.SUBSYSTEM) if items else 1
