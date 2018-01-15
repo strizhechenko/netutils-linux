@@ -1,10 +1,9 @@
 # coding: utf-8
-import argparse
 
 import yaml
 
-from netutils_linux_hardware.rater_math import extract
 from netutils_linux_hardware.grade import Grade
+from netutils_linux_hardware.rater_math import extract
 
 FOLDING_NO = 0
 FOLDING_DEVICE = 1
