@@ -1,0 +1,12 @@
+Ring parameters for eth1:
+Pre-set maximums:
+RX:		8192
+RX Mini:	0
+RX Jumbo:	1024
+TX:		1024
+Current hardware settings:
+RX:		4096
+RX Mini:	0
+RX Jumbo:	1024
+TX:		1024
+

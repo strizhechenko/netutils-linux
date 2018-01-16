@@ -1,0 +1,12 @@
+Ring parameters for eth4:
+Pre-set maximums:
+RX:		2047
+RX Mini:	0
+RX Jumbo:	0
+TX:		511
+Current hardware settings:
+RX:		200
+RX Mini:	0
+RX Jumbo:	0
+TX:		511
+
