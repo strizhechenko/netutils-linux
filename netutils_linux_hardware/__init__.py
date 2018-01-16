@@ -1,7 +1,3 @@
-from netutils_linux_hardware import netdev
-from netutils_linux_hardware import parser
-from netutils_linux_hardware import interrupts
-from netutils_linux_hardware.reader import Reader
-from netutils_linux_hardware.rater import Rater
+from netutils_linux_hardware.cli import ServerInfo
 
-__all__ = ['parser', 'netdev', 'interrupts', 'Reader', 'Rater']
+__all__ = ['ServerInfo']

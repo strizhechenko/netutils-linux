@@ -11,7 +11,10 @@ class Memory(Subsystem):
     """ Everything about Memory: type, speed, size, swap """
 
     def parse(self):
-        pass
+        return {
+            'size': self.read(MemInfo, 'meminfo'),
+            'devices': self.read(MemInfoDMI, 'dmidecode'),
+        }
 
     def rate(self):
         meminfo = self.data.get('memory')

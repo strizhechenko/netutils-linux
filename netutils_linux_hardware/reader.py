@@ -1,62 +1,35 @@
 # coding: utf-8
 # pylint: disable=C0111, C0103
 
-import os
-
-import yaml
-
-from netutils_linux_hardware.netdev import ReaderNet
-from netutils_linux_hardware.parser import YAMLLike
-from netutils_linux_hardware.cpu import CPULayout
-from netutils_linux_hardware.memory import MemInfo, MemInfoDMI
-from netutils_linux_hardware.disk import DiskInfo
+from netutils_linux_hardware.cpu import CPU
+from netutils_linux_hardware.disk import Disk
+from netutils_linux_hardware.memory import Memory
+from netutils_linux_hardware.net import Net
+from netutils_linux_hardware.yaml import dict2yaml
 
 
 class Reader(object):
     """ Parser of raw saved data info dictionary """
     info = None
+    subsystems = {
+        'net': Net,
+        'cpu': CPU,
+        'memory': Memory,
+        'disk': Disk,
+    }
 
     def __init__(self, datadir, args):
         self.datadir = datadir
         self.args = args
-        self.gather_info()
+        self.read()
 
     def __str__(self):
-        return yaml.dump(self.info, default_flow_style=False).strip()
+        return dict2yaml(self.info)
 
-    def path(self, filename):
-        return os.path.join(self.datadir, filename)
-
-    def read(self, func, filename):
-        return func(self.path(filename)).result
-
-    def __cpu(self):
-        output = {
-            'info': self.read(YAMLLike, 'lscpu_info'),
-            'layout': self.read(CPULayout, 'lscpu_layout'),
-        }
-        for key in ('CPU MHz', 'BogoMIPS'):
-            if output.get('info', {}).get(key):
-                output['info'][key] = int(output['info'][key])
-        return output
-
-    def __memory(self):
-        return {
-            'size': self.read(MemInfo, 'meminfo'),
-            'devices': self.read(MemInfoDMI, 'dmidecode'),
-        }
-
-    def gather_info(self):
+    def read(self):
         self.info = dict()
-        if self.args.cpu or self.args.system:
-            self.info['cpu'] = self.__cpu()
-        if self.args.memory:
-            self.info['memory'] = self.__memory()
-        if self.args.net:
-            self.info['net'] = ReaderNet(self.datadir, self.path).netdevs
-        if self.args.disk:
-            self.info['disk'] = DiskInfo().parse(
-                self.path('disks_types'),
-                self.path('lsblk_sizes'),
-                self.path('lsblk_models')
-            )
+        for key, subsystem in self.subsystems.items():
+            if getattr(self.args, key):
+                self.info[key] = subsystem(datadir=self.datadir).parse()
+        if not self.args.cpu and self.args.system:
+            self.info['cpu'] = CPU(datadir=self.datadir).parse()

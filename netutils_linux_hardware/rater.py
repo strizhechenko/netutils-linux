@@ -1,13 +1,12 @@
 # coding: utf-8
 
-import yaml
-
 from netutils_linux_hardware.cpu import CPU
 from netutils_linux_hardware.disk import Disk
-from netutils_linux_hardware.memory import Memory
-from netutils_linux_hardware.system import System
-from netutils_linux_hardware.net import Net
 from netutils_linux_hardware.folding import Folding
+from netutils_linux_hardware.memory import Memory
+from netutils_linux_hardware.net import Net
+from netutils_linux_hardware.system import System
+from netutils_linux_hardware.yaml import dict2yaml
 
 
 class Rater(object):
@@ -37,4 +36,4 @@ class Rater(object):
         self.info = self.folding.fold(data, Folding.SERVER)
 
     def __str__(self):
-        return yaml.dump(self.info, default_flow_style=False).strip()
+        return dict2yaml(self.info)

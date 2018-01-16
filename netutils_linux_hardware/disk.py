@@ -9,6 +9,13 @@ from netutils_linux_hardware.subsystem import Subsystem
 
 
 class Disk(Subsystem):
+    def parse(self):
+        return DiskInfo().parse(
+            self.path('disks_types'),
+            self.path('lsblk_sizes'),
+            self.path('lsblk_models')
+        )
+
     def rate(self):
         return self.map(self.rate_disk, 'disk')
 
