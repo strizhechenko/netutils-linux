@@ -419,4 +419,4 @@ Load is distributed, but `time_squeeze`'s still grow sometimes. After this next 
 - Disable hyperthreading.
 - Reboot.
 - Re-setup all this.
-- If it will not help - replace network devices with 2x single-port 1Gbit/s Intel I210 in different NUMA nodes.
+- If it will not help - replace network devices with 2x single-port 1Gbit/s Intel I210 or 2x single-port Intel 82599EN in different NUMA nodes.
