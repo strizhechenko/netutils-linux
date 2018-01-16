@@ -1,4 +1,4 @@
-# lscpu
+# CPU (lscpu)
 
 ``` shell
 lscpu
@@ -8,7 +8,7 @@ lscpu
 lscpu -p
 ```
 
-# ethtool
+# Network devices (ethtool)
 
 ``` shell
 
@@ -21,15 +21,15 @@ for dev in "${devices[@]}"; do
 done
 ```
 
-# before and after
+# Before and after
 
-## before tuning:
+## Before tuning
 
 ```
 network-top --no-clear -n 1
 ```
 
-## commands
+## Commands
 
 Replace this example with command you've run on your server and delete this line.
 
@@ -46,7 +46,7 @@ for dev in eth1 eth2; do
 done
 ```
 
-## after tuning:
+## After tuning
 
 ```
 network-top --no-clear -n 1
