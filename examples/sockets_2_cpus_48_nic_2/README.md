@@ -1,4 +1,4 @@
-# lscpu
+# CPU (lscpu)
 
 ``` shell
 Architecture:          x86_64
@@ -81,7 +81,7 @@ NUMA node1 CPU(s):     12-23,36-47
 47,23,1,1,,23,23,23,1
 ```
 
-# ethtool
+# Network devices (ethtool)
 
 ## eth0
 
@@ -157,9 +157,9 @@ Other:		0
 Combined:	0
 ```
 
-# before and after
+# Before and after
 
-## before tuning:
+## Before tuning:
 
 ### /proc/interrupts
 
@@ -261,7 +261,7 @@ Combined:	0
   dummy0               0          0           0         0        0      0        0         0     0       0             0           0           0
 ```
 
-## commands
+## Commands
 
 
 - eth1 - default route
@@ -309,7 +309,7 @@ echo 31 > /proc/irq/96/smp_affinity_list
 
 why 28-29, if NUMA0 is NUMA node0 CPU(s):     0-11,24-35? Hyperthreading - 0-3 and 24-27 are the same 4 cores.
 
-## after tuning:
+## After tuning:
 
 
 ### /proc/interrupts
