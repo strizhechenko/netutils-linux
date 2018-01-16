@@ -416,6 +416,7 @@ why 28-29, if NUMA0 is NUMA node0 CPU(s):     0-11,24-35? Hyperthreading - 0-3 a
 
 Load is distributed, but `time_squeeze`'s still grow sometimes. After this next steps:
 
-- disable hyperthreading
-- reboot
-- re-setup all this
+- Disable hyperthreading.
+- Reboot.
+- Re-setup all this.
+- If it will not help - replace network devices with 2x single-port 1Gbit/s Intel I210 in different NUMA nodes.
