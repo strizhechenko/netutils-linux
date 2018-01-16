@@ -1,0 +1,597 @@
+# dmidecode 2.12
+SMBIOS 2.8 present.
+
+Handle 0x000A, DMI type 16, 23 bytes
+Physical Memory Array
+	Location: System Board Or Motherboard
+	Use: System Memory
+	Error Correction Type: Multi-bit ECC
+	Maximum Capacity: 1536 GB
+	Error Information Handle: Not Provided
+	Number Of Devices: 12
+
+Handle 0x000B, DMI type 16, 23 bytes
+Physical Memory Array
+	Location: System Board Or Motherboard
+	Use: System Memory
+	Error Correction Type: Multi-bit ECC
+	Maximum Capacity: 1536 GB
+	Error Information Handle: Not Provided
+	Number Of Devices: 12
+
+Handle 0x000C, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: None
+	Locator: PROC 1 DIMM 1
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x000D, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 1
+	Locator: PROC 1 DIMM 2
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x000E, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 2
+	Locator: PROC 1 DIMM 3
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x000F, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 3
+	Locator: PROC 1 DIMM 4
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0010, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 4
+	Locator: PROC 1 DIMM 5
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0011, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 5
+	Locator: PROC 1 DIMM 6
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0012, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 6
+	Locator: PROC 1 DIMM 7
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0013, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 7
+	Locator: PROC 1 DIMM 8
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0014, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 8
+	Locator: PROC 1 DIMM 9
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0015, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 9
+	Locator: PROC 1 DIMM 10
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0016, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 10
+	Locator: PROC 1 DIMM 11
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0017, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000A
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 16384 MB
+	Form Factor: DIMM
+	Set: 11
+	Locator: PROC 1 DIMM 12
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous Registered (Buffered)
+	Speed: 2400 MHz
+	Manufacturer: HP     
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: 809082-091
+	Rank: 1
+	Configured Clock Speed: 2400 MHz
+	Minimum Voltage:  1.2 V
+	Maximum Voltage:  1.2 V
+	Configured Voltage:  1.2 V
+
+Handle 0x0018, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 12
+	Locator: PROC 2 DIMM 1
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0019, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 13
+	Locator: PROC 2 DIMM 2
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x001A, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 14
+	Locator: PROC 2 DIMM 3
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x001B, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 15
+	Locator: PROC 2 DIMM 4
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x001C, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 16
+	Locator: PROC 2 DIMM 5
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x001D, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 17
+	Locator: PROC 2 DIMM 6
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x001E, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 18
+	Locator: PROC 2 DIMM 7
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x001F, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 19
+	Locator: PROC 2 DIMM 8
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0020, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 20
+	Locator: PROC 2 DIMM 9
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0021, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 21
+	Locator: PROC 2 DIMM 10
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0022, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: No Module Installed
+	Form Factor: DIMM
+	Set: 22
+	Locator: PROC 2 DIMM 11
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous
+	Speed: Unknown
+	Manufacturer: UNKNOWN
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: NOT AVAILABLE
+	Rank: Unknown
+	Configured Clock Speed: Unknown
+	Minimum Voltage:  Unknown
+	Maximum Voltage:  Unknown
+	Configured Voltage:  Unknown
+
+Handle 0x0023, DMI type 17, 40 bytes
+Memory Device
+	Array Handle: 0x000B
+	Error Information Handle: Not Provided
+	Total Width: 72 bits
+	Data Width: 64 bits
+	Size: 16384 MB
+	Form Factor: DIMM
+	Set: 23
+	Locator: PROC 2 DIMM 12
+	Bank Locator: Not Specified
+	Type: DDR4
+	Type Detail: Synchronous Registered (Buffered)
+	Speed: 2400 MHz
+	Manufacturer: HP     
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Part Number: 809082-091
+	Rank: 1
+	Configured Clock Speed: 2400 MHz
+	Minimum Voltage:  1.2 V
+	Maximum Voltage:  1.2 V
+	Configured Voltage:  1.2 V
+
