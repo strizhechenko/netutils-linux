@@ -161,9 +161,9 @@ Combined:	0
 
 ## before tuning:
 
-```
-# /proc/interrupts
+### /proc/interrupts
 
+```
    CPU0   CPU1   CPU2   CPU3   CPU4   CPU5   CPU6   CPU7   CPU8   CPU9   CPU10   CPU11   CPU12   CPU13   CPU14   CPU15   CPU16   CPU17   CPU18   CPU19   CPU20   CPU21   CPU22   CPU23   CPU24   CPU25   CPU26   CPU27   CPU28   CPU29   CPU30   CPU31   CPU32   CPU33   CPU34   CPU35   CPU36   CPU37   CPU38   CPU39   CPU40   CPU41   CPU42   CPU43   CPU44   CPU45   CPU46   CPU47
 
    6192      0      0      0      0      0      0      0      0      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0   eth0-rx-0
@@ -175,9 +175,11 @@ Combined:	0
    9688      0      0      0      0      0      0      0      0      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0   eth1-rx-2
   14055      0      0      0      0      0      0      0      0      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0   eth1-tx-0-rx-3
   27066    461    250     68     45     51      4     26     25     33      42      10     491     114      60      18      25      29       5      31      14      12       9       2     378     469     114      60      32      35      23      16       7      28      12      16      62     437     538     107      24      29       9       4      10      23      10      26   interrupts
+```
 
-# Load per cpu:
+### Load per cpu:
 
+```
   CPU     Interrupts   NET RX   NET TX   total   dropped   time_squeeze   cpu_collision   received_rps
 
   CPU0         98891    39209    55161   81064         0              1               0              0
@@ -228,9 +230,11 @@ Combined:	0
   CPU45           26        0        0       0         0              0               0              0
   CPU46           10        0        0       0         0              0               0              0
   CPU47           26        0        1       0         0              0               0              0
+```
 
-# Network devices
+### Network devices
 
+```
   Device      rx-packets   rx-mbits   rx-errors   dropped   missed   fifo   length   overrun   crc   frame    tx-packets    tx-mbits   tx-errors
 
   lo                1565         17           0         0        0      0        0         0     0       0          1565          17           0
@@ -307,9 +311,10 @@ why 28-29, if NUMA0 is NUMA node0 CPU(s):     0-11,24-35? Hyperthreading - 0-3 a
 
 ## after tuning:
 
-```
-# /proc/interrupts
 
+### /proc/interrupts
+
+```
   CPU0   CPU1   CPU2    CPU3   CPU4   CPU5   CPU6   CPU7   CPU8   CPU9   CPU10   CPU11   CPU12   CPU13   CPU14   CPU15   CPU16   CPU17   CPU18   CPU19   CPU20   CPU21   CPU22   CPU23   CPU24   CPU25   CPU26   CPU27   CPU28   CPU29   CPU30   CPU31   CPU32   CPU33   CPU34   CPU35   CPU36   CPU37   CPU38   CPU39   CPU40   CPU41   CPU42   CPU43   CPU44   CPU45   CPU46   CPU47
 
   6725      0      0       0      0      0      0      0      0      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0   eth0-rx-0
@@ -321,9 +326,11 @@ why 28-29, if NUMA0 is NUMA node0 CPU(s):     0-11,24-35? Hyperthreading - 0-3 a
      0      0      0       0      0      0      0      0      0      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0    8005       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0   eth1-rx-2
      0      0      0       0      0      0      0      0      0      0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0   16015       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0       0   eth1-tx-0-rx-3
   3206   2731   2120    2544    134     90     26     73     17      9      10      10     734     286      94      59      24       8      57      14      16      12       5      13     138     450     246     121    5524    6620    6039   17682      50      25      12      29     127     318     653     175      35      23      12       3      23      13      13      13   interrupts
+```
 
-# Load per cpu:
+### Load per cpu:
 
+```
   CPU     Interrupts   NET RX   NET TX   total   dropped   time_squeeze   cpu_collision   received_rps
 
   CPU0          9950     7198     8684    7931         0              0               0              0
@@ -374,9 +381,11 @@ why 28-29, if NUMA0 is NUMA node0 CPU(s):     0-11,24-35? Hyperthreading - 0-3 a
   CPU45           13        0        0       0         0              0               0              0
   CPU46           13        0        0       0         0              0               0              0
   CPU47           13        0        0       0         0              0               0              0
+```
 
-# Network devices
+### Network devices
 
+```
   Device      rx-packets   rx-mbits   rx-errors   dropped   missed   fifo   length   overrun   crc   frame    tx-packets    tx-mbits   tx-errors
 
   lo                1947         31           0         0        0      0        0         0     0       0          1947          31           0
