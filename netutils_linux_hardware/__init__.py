@@ -1,3 +1,3 @@
-from netutils_linux_hardware.cli import ServerInfo
+from netutils_linux_hardware.server import Server
 
-__all__ = ['ServerInfo']
+__all__ = ['Server']

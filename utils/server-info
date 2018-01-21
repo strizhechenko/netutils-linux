@@ -2,7 +2,7 @@
 # coding=utf-8
 
 
-from netutils_linux_hardware.cli import ServerInfo
+from netutils_linux_hardware.server import Server
 
 if __name__ == '__main__':
-    ServerInfo()
+    Server().main()
