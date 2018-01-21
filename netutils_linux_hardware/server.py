@@ -94,6 +94,8 @@ class Server(object):
             print('Error: please, specify --rate, --show or --collect command')
             self.parser.print_help()
             exit(1)
+        if self.args.folding is None:
+            self.args.folding = Folding.NO
         if not any(getattr(self.args, subsystem) for subsystem in self.subsystems):
             for subsystem in self.subsystems:
                 setattr(self.args, subsystem, True)
