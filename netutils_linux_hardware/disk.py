@@ -44,10 +44,10 @@ class DiskInfo(object):
         }
         """
         result = defaultdict()
-        for k, v in origin.items():
-            for k2, v2 in v.items():
-                result.setdefault(k2, dict())
-                result[k2][k] = v2
+        for out_key, out_value in origin.items():
+            for in_key, in_value in out_value.items():
+                result.setdefault(in_key, dict())
+                result[in_key][out_key] = in_value
         return dict(result)
 
     def parse(self, types, sizes, models):
