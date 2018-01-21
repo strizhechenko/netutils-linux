@@ -96,9 +96,10 @@ class MemInfoDMI(Parser):
     def __parse(devices):
         output = dict()
         for device in devices:
-            if 'Memory Device' in device:
-                mem_dev = MemInfoDMIDevice(device)
-                if mem_dev.data.get('size') == 'No':
-                    continue
-                output[mem_dev.handle] = mem_dev.data
+            if 'Memory Device' not in device:
+                continue
+            mem_dev = MemInfoDMIDevice(device)
+            if mem_dev.data.get('size') == 'No':
+                continue
+            output[mem_dev.handle] = mem_dev.data
         return output
