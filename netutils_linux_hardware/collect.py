@@ -4,7 +4,7 @@ import os
 import shutil
 
 
-class ServerInfoCollect(object):
+class Collector(object):
     """ Temporary wrapper, later collection will be fully rewritten in python """
 
     def __init__(self, directory, tarball, collect):

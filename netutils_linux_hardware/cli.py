@@ -4,10 +4,9 @@ import argparse
 
 from six import print_
 
-from netutils_linux_hardware.collect import ServerInfoCollect
+from netutils_linux_hardware.collect import Collector
 from netutils_linux_hardware.folding import Folding
-from netutils_linux_hardware.rater import Rater
-from netutils_linux_hardware.reader import Reader
+from netutils_linux_hardware.server import Server
 
 
 class ServerInfo(object):
@@ -59,17 +58,6 @@ class ServerInfo(object):
             for subsystem in self.subsystems:
                 setattr(self.args, subsystem, True)
 
-    def tarball_directory(self):
-        """ Decision about and smart 'corrections' """
-        suffix = '.tar.gz'
-        if self.args.directory.endswith(suffix):
-            return self.args.directory, self.args.directory[:-7]
-        return (self.args.directory.rstrip('/') + suffix) if self.args.gzip else None, self.args.directory
-
     def main(self):
         """ Main logic """
-        tarball, directory = self.tarball_directory()
-        ServerInfoCollect(directory, tarball, self.args.collect)
-        if self.args.rate or self.args.show:
-            reader = Reader(directory, self.args)
-            print_(Rater(reader.info, self.args) if self.args.rate else reader)
+        Server(self.args).main()
