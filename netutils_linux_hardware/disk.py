@@ -1,4 +1,7 @@
 # coding=utf-8
+
+from collections import defaultdict
+
 import yaml
 
 from netutils_linux_hardware.grade import Grade
@@ -31,22 +34,21 @@ class DiskInfo(object):
     @staticmethod
     def invert_dict_nesting(origin):
         """
-        input = {
+        origin = {
             'x': {'xx': 1, 'yy': 2},
             'y': {'xx': 3, 'yy': 4},
         }
-        output = {
+        result = {
             'xx': {'x': 1, 'y': 3},
             'yy': {'x': 2, 'y': 4},
         }
         """
-        result = dict()
+        result = defaultdict()
         for k, v in origin.items():
             for k2, v2 in v.items():
-                if not result.get(k2):
-                    result[k2] = dict()
+                result.setdefault(k2, dict())
                 result[k2][k] = v2
-        return result
+        return dict(result)
 
     def parse(self, types, sizes, models):
         types_data = self.DiskTypesInfo().parse_file_safe(types)
