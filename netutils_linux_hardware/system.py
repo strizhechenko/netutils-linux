@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from netutils_linux_hardware.grade import Grade
-from netutils_linux_hardware.rater_math import extract
+from netutils_linux_hardware.rate_math import extract
 from netutils_linux_hardware.subsystem import Subsystem
 
 

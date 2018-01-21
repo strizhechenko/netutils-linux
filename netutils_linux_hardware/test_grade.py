@@ -8,7 +8,7 @@ from unittest import TestCase, main
 from six import iteritems
 
 from netutils_linux_hardware.grade import Grade
-from netutils_linux_hardware.rater_math import any2int
+from netutils_linux_hardware.rate_math import any2int
 
 
 class GradeTest(TestCase):

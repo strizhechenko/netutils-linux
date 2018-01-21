@@ -26,7 +26,7 @@ def __str2int(value):
     result = re.sub(r'[^0-9.]+', '', value)
     try:
         return int(float(result)) if '.' in result else int(result)
-    except:
+    except ValueError:
         return 0
 
 
