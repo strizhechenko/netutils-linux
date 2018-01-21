@@ -41,7 +41,7 @@ class Server(object):
         """ Parser of raw saved data info dictionary """
         info = dict()
         for key, subsystem in self.subsystems.items():
-            if key != 'system' and if getattr(self.args, key):
+            if key != 'system' and getattr(self.args, key):
                 info[key] = subsystem(datadir=self.directory).parse()
         if not self.args.cpu and self.args.system:
             info['cpu'] = CPU(datadir=self.directory).parse()
