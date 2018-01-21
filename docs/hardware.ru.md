@@ -12,7 +12,7 @@
 yum -y install epel-release
 yum -y install python-pip
 pip install netutils-linux
-sudo server-info rate
+sudo server-info --rate
 ```
 
 Для более общей оценки можно:
@@ -20,11 +20,11 @@ sudo server-info rate
 ```
 cd /root/server/
 # оценка с точностью до девайса
-server-info-rate -f
+server-info --rate --device
 # оценка с точностью до подсистемы
-server-info-rate -ff
+server-info --rate -subsystem
 # оценка сервера целиком
-server-info-rate -fff
+server-info --rate --server
 ```
 
 Если что-то идёт не так или оценка крайне неправильна: не стесняйтесь создавать на гитхаб репорты о проблемах: https://github.com/strizhechenko/netutils-linux/issues

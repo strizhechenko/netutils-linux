@@ -9,7 +9,7 @@ from os.path import join, exists
 from six import print_
 from six.moves import xrange
 
-from netutils_linux_hardware.assessor_math import any2int
+from netutils_linux_hardware.rate_math import any2int
 from netutils_linux_monitoring.colors import wrap, YELLOW, cpu_color, COLORS_NODE
 from netutils_linux_monitoring.topology import Topology
 from netutils_linux_tuning.base_tune import CPUBasedTune

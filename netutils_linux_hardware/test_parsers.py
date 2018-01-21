@@ -3,7 +3,7 @@
 
 from unittest import TestCase
 
-from netutils_linux_hardware.parsers import DiskInfo
+from netutils_linux_hardware.disk import DiskInfo
 
 
 class DiskInfoTests(TestCase):
