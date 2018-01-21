@@ -25,14 +25,10 @@ def extract(dictionary, key_sequence):
 def any2int(value):
     if isinstance(value, bytes):
         value = str(value)
-    if isinstance(value, int):
-        return value
-    elif value is None:
-        return 0
-    elif isinstance(value, str):
-        value = re.sub(r'[^0-9]', '', value)
-        if value.isdigit():
-            return int(value)
-    elif isinstance(value, float):
-        return int(value)
-    return 0
+    if isinstance(value, str):
+        value = re.sub(r'[^0-9.]+', '', value)
+        try:
+            value = int(float(value)) if '.' in value else int(value)
+        except:
+            pass
+    return int(value) if isinstance(value, int) or isinstance(value, float) else 0
