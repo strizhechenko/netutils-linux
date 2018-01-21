@@ -67,7 +67,7 @@ class DiskInfo(object):
             if not text:
                 return dict()
             data = yaml.load(text.replace(':', ': ').replace('/sys/block/', '').replace('/queue/rotational', ''))
-            return dict((k, types[v]) for k, v in iteritems(data))
+            return dict((k, types[v]) for k, v in data.items())
 
     class DiskSizeInfo(Parser):
 
