@@ -73,8 +73,6 @@ class Server(object):
         self.parser.add_argument('--show', action='store_true', help='Shows data about the server in YAML',
                                  default=False)
         self.parser.add_argument('--rate', action='store_true', help='Rates data about the server', default=False)
-        self.parser.add_argument('-f', '--folding', action='count', help='-f - device, -ff - subsystem, -fff - server',
-                                 default=Folding.NO)
         self.parser.add_argument('--device', action='store_const', const=Folding.DEVICE, dest='folding',
                                  help='Folds rates details to entire devices')
         self.parser.add_argument('--subsystem', action='store_const', const=Folding.SUBSYSTEM, dest='folding',

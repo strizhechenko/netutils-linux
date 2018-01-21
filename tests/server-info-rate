@@ -37,7 +37,7 @@ for test in $(find "$testdata" -mindepth 1 -maxdepth 1 -type d); do
 			retval=1
 			break
 		fi
-		for param in --device --subsystem --server -f -ff -fff; do
+		for param in --device --subsystem --server; do
 			if ! run_test "$test" "$param"; then
 				retval=1
 				break 2
