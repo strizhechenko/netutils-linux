@@ -1,6 +1,5 @@
 # coding=utf-8
 import yaml
-from six import iteritems
 
 from netutils_linux_hardware.grade import Grade
 from netutils_linux_hardware.parser import Parser
@@ -30,7 +29,7 @@ class Disk(Subsystem):
 
 class DiskInfo(object):
     @staticmethod
-    def invert_dict_nesting(d):
+    def invert_dict_nesting(origin):
         """
         input = {
             'x': {'xx': 1, 'yy': 2},
@@ -41,13 +40,13 @@ class DiskInfo(object):
             'yy': {'x': 2, 'y': 4},
         }
         """
-        d2 = dict()
-        for k, v in iteritems(d):
-            for k2, v2 in iteritems(v):
-                if not d2.get(k2):
-                    d2[k2] = dict()
-                d2[k2][k] = v2
-        return d2
+        result = dict()
+        for k, v in origin.items():
+            for k2, v2 in v.items():
+                if not result.get(k2):
+                    result[k2] = dict()
+                result[k2][k] = v2
+        return result
 
     def parse(self, types, sizes, models):
         types_data = self.DiskTypesInfo().parse_file_safe(types)
