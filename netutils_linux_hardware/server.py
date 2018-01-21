@@ -8,7 +8,6 @@ from netutils_linux_hardware.disk import Disk
 from netutils_linux_hardware.folding import Folding
 from netutils_linux_hardware.memory import Memory
 from netutils_linux_hardware.net import Net
-from netutils_linux_hardware.reader import Reader
 from netutils_linux_hardware.system import System
 from netutils_linux_hardware.yaml_tools import dict2yaml
 
@@ -39,9 +38,17 @@ class Server(object):
         return Collector(self.directory, self.tarball, self.args.collect)
 
     def read(self):
-        return Reader(self.directory, self.args).info
+        """ Parser of raw saved data info dictionary """
+        info = dict()
+        for key, subsystem in self.subsystems.items():
+            if key != 'system' and if getattr(self.args, key):
+                info[key] = subsystem(datadir=self.directory).parse()
+        if not self.args.cpu and self.args.system:
+            info['cpu'] = CPU(datadir=self.directory).parse()
+        return info
 
     def rate(self):
+        """ Rater of parsed data """
         info = self.read()
         folding = Folding(self.args)
         rates = dict()
