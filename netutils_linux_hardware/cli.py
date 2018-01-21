@@ -2,9 +2,6 @@
 
 import argparse
 
-from six import print_
-
-from netutils_linux_hardware.collect import Collector
 from netutils_linux_hardware.folding import Folding
 from netutils_linux_hardware.server import Server
 

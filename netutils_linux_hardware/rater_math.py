@@ -1,8 +1,8 @@
 """ Help-functions for grade/assessor lib """
 # coding=utf-8
 
-import re
 import math
+import re
 
 
 def round_(value, precision=0):

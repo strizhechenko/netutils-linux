@@ -4,7 +4,9 @@
 """ Tests of grade in scale of 1..10 """
 
 from unittest import TestCase, main
+
 from six import iteritems
+
 from netutils_linux_hardware.grade import Grade
 from netutils_linux_hardware.rater_math import any2int
 

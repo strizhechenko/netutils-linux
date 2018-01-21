@@ -2,9 +2,9 @@
 
 from six import print_
 
-from netutils_linux_hardware.reader import Reader
-from netutils_linux_hardware.rater import Rater
 from netutils_linux_hardware.collect import Collector
+from netutils_linux_hardware.rater import Rater
+from netutils_linux_hardware.reader import Reader
 
 
 class Server(object):
