@@ -5,7 +5,7 @@ from netutils_linux_hardware.cpu import CPU
 from netutils_linux_hardware.disk import Disk
 from netutils_linux_hardware.memory import Memory
 from netutils_linux_hardware.net import Net
-from netutils_linux_hardware.yaml import dict2yaml
+from netutils_linux_hardware.yaml_tools import dict2yaml
 
 
 class Reader(object):
