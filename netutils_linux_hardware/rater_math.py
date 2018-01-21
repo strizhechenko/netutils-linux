@@ -22,13 +22,17 @@ def extract(dictionary, key_sequence):
     return dictionary
 
 
+def __str2int(value):
+    result = re.sub(r'[^0-9.]+', '', value)
+    try:
+        return int(float(result)) if '.' in result else int(result)
+    except:
+        return 0
+
+
 def any2int(value):
     if isinstance(value, bytes):
         value = str(value)
     if isinstance(value, str):
-        value = re.sub(r'[^0-9.]+', '', value)
-        try:
-            value = int(float(value)) if '.' in value else int(value)
-        except:
-            pass
+        value = __str2int(value)
     return int(value) if isinstance(value, int) or isinstance(value, float) else 0
