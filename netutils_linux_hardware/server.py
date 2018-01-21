@@ -3,12 +3,26 @@
 from six import print_
 
 from netutils_linux_hardware.collect import Collector
-from netutils_linux_hardware.rater import Rater
+from netutils_linux_hardware.cpu import CPU
+from netutils_linux_hardware.disk import Disk
+from netutils_linux_hardware.folding import Folding
+from netutils_linux_hardware.memory import Memory
+from netutils_linux_hardware.net import Net
 from netutils_linux_hardware.reader import Reader
+from netutils_linux_hardware.system import System
+from netutils_linux_hardware.yaml_tools import dict2yaml
 
 
 class Server(object):
     """ Knows about list of subsystems, folds data, etc """
+
+    subsystems = {
+        'net': Net,
+        'cpu': CPU,
+        'system': System,
+        'memory': Memory,
+        'disk': Disk,
+    }
 
     def __init__(self, args):
         self.args = args
@@ -25,15 +39,20 @@ class Server(object):
         return Collector(self.directory, self.tarball, self.args.collect)
 
     def read(self):
-        return Reader(self.directory, self.args)
+        return Reader(self.directory, self.args).info
 
     def rate(self):
-        reader = self.read()
-        return Rater(reader.info, self.args)
+        info = self.read()
+        folding = Folding(self.args)
+        rates = dict()
+        for key, subsystem in self.subsystems.items():
+            if getattr(self.args, key):
+                rates[key] = subsystem(info, folding).rate()
+        return folding.fold(rates, Folding.SERVER)
 
     def main(self):
         self.collect()
         if self.args.show:
-            print_(self.read())
+            print_(dict2yaml(self.read()))
         elif self.args.rate:
-            print_(self.rate())
+            print_(dict2yaml(self.rate()))
