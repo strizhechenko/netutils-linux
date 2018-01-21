@@ -1,10 +1,11 @@
 # coding=utf-8
 
 import argparse
+import os
+import shutil
 
 from six import print_
 
-from netutils_linux_hardware.collect import Collector
 from netutils_linux_hardware.cpu import CPU
 from netutils_linux_hardware.disk import Disk
 from netutils_linux_hardware.folding import Folding
@@ -41,7 +42,15 @@ class Server(object):
         return (self.args.directory.rstrip('/') + suffix) if self.args.gzip else None, self.args.directory
 
     def collect(self):
-        return Collector(self.directory, self.tarball, self.args.collect)
+        """ Save raw data to given directory """
+        already_exists = os.path.exists(self.directory)
+        if already_exists and not self.args.collect:
+            return
+        if already_exists:
+            shutil.rmtree(self.directory)
+        os.makedirs(self.directory)
+        os.system('server-info-collect {0}'.format(self.directory))
+        self.archive()
 
     def read(self):
         """ Parser of raw saved data info dictionary """
@@ -62,6 +71,13 @@ class Server(object):
             if getattr(self.args, key):
                 rates[key] = subsystem(info, folding).rate()
         return folding.fold(rates, Folding.SERVER)
+
+    def archive(self):
+        """ Create an archive of saved data if you need to fetch it from server """
+        if not self.tarball:
+            return
+        os.chdir(os.path.join(self.directory, '..'))
+        os.system('tar cfz {0} {1} 2>/dev/null'.format(self.tarball, self.directory))
 
     def __parse_args(self):
         default_directory = '/tmp/netutils_server_info/'
