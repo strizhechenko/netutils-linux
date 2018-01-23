@@ -10,7 +10,7 @@ from six import print_
 from six.moves import xrange
 
 from netutils_linux_hardware.rate_math import any2int
-from netutils_linux_monitoring.colors import wrap, YELLOW, cpu_color, COLORS_NODE
+from netutils_linux_monitoring.colors import Color
 from netutils_linux_monitoring.topology import Topology
 from netutils_linux_tuning.base_tune import CPUBasedTune
 
@@ -21,6 +21,7 @@ class RSSLadder(CPUBasedTune):
     """ Distributor of queues' interrupts by multiple CPUs """
 
     topology = None
+    color = None
     interrupts_file = None
 
     def __init__(self, argv=None):
@@ -63,7 +64,7 @@ class RSSLadder(CPUBasedTune):
         if len(set(cpus)) != len(cpus):
             warning = 'WARNING: some CPUs process multiple queues, consider reduce queue count for this network device'
             if self.options.color:
-                print_(wrap(warning, YELLOW))
+                print_(self.color.wrap(warning, Color.YELLOW))
             else:
                 print_(warning)
         for irq, queue_name, socket_cpu in affinity:
@@ -98,6 +99,7 @@ class RSSLadder(CPUBasedTune):
         if self.options.cpus:  # no need to detect topology if user gave us cpu list
             return
         self.topology = Topology(lscpu_output=lscpu_output)
+        self.color = Color(self.topology)
         if not any([self.options.socket is not None, self.options.cpus]):
             self.socket_detect()
         self.pci.devices = self.pci.node_dev_dict([self.options.dev], False)
@@ -134,8 +136,8 @@ class RSSLadder(CPUBasedTune):
         if not self.pci or not self.options.color or not self.pci.devices:
             return self.options.dev
         dev_color = self.pci.devices.get(self.options.dev)
-        color = COLORS_NODE.get(dev_color)
-        return wrap(self.options.dev, color)
+        color = self.color.COLORS_NODE.get(dev_color)
+        return self.color.wrap(self.options.dev, color)
 
     def cpu_colorize(self, cpu):
         """
@@ -144,7 +146,7 @@ class RSSLadder(CPUBasedTune):
         """
         if not self.topology or not self.options.color:
             return cpu
-        return wrap(cpu, cpu_color(cpu, topology=self.topology))
+        return self.color.wrap(cpu, self.color.colorize_cpu(cpu))
 
     def parse_options(self):
         """

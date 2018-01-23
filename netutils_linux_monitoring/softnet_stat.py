@@ -2,7 +2,7 @@
 from random import randint
 
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import cpu_color, wrap, colorize
+from netutils_linux_monitoring.colors import Color
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.topology import Topology
 
@@ -63,10 +63,12 @@ class SoftnetStatTop(BaseTop):
     def __init__(self, topology=None):
         BaseTop.__init__(self)
         self.topology = topology
+        self.color = Color(self.topology)
 
     def post_optparse(self):
         if not self.topology:
             self.topology = Topology(fake=self.options.random)
+            self.color = Color(self.topology)
 
     def parse(self):
         with open(self.options.softnet_stat_file) as softnet_stat:
@@ -86,7 +88,7 @@ class SoftnetStatTop(BaseTop):
 
     def make_rows(self):
         return [[
-            wrap('CPU{0}'.format(stat.cpu), cpu_color(stat.cpu, self.topology)),
+            self.color.wrap('CPU{0}'.format(stat.cpu), self.color.colorize_cpu(stat.cpu)),
             self.colorize_total(stat.total),
             self.colorize_dropped(stat.dropped),
             self.colorize_time_squeeze(stat.time_squeeze),
@@ -97,19 +99,19 @@ class SoftnetStatTop(BaseTop):
     @staticmethod
     def colorize_total(total):
         """ :returns: highlighted by warning/error total string """
-        return colorize(total, 300000, 900000)
+        return Color.colorize(total, 300000, 900000)
 
     @staticmethod
     def colorize_dropped(dropped):
         """ :returns: highlighted by warning/error dropped string """
-        return colorize(dropped, 1, 1)
+        return Color.colorize(dropped, 1, 1)
 
     @staticmethod
     def colorize_time_squeeze(time_squeeze):
         """ :returns: highlighted by warning/error time_squeeze string """
-        return colorize(time_squeeze, 1, 300)
+        return Color.colorize(time_squeeze, 1, 300)
 
     @staticmethod
     def colorize_cpu_collision(cpu_collision):
         """ :returns: highlighted by warning/error cpu_collision string """
-        return colorize(cpu_collision, 1, 1000)
+        return Color.colorize(cpu_collision, 1, 1000)

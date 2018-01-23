@@ -5,7 +5,7 @@ from six import iteritems, itervalues
 
 from netutils_linux_monitoring import IrqTop, Softirqs, SoftnetStatTop, LinkRateTop
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import cpu_color, wrap, wrap_header, bright
+from netutils_linux_monitoring.colors import Color
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.topology import Topology
 
@@ -23,8 +23,10 @@ class NetworkTop(BaseTop):
         }
         self.parse_options()
         self.topology = Topology(fake=self.options.random, lscpu_output=self.options.lscpu_output)
+        self.color = Color(self.topology)
         for top in self.tops.values():
             top.topology = self.topology
+            top.color = self.color
 
     def parse(self):
         """
@@ -73,14 +75,14 @@ class NetworkTop(BaseTop):
     def __repr_dev(self):
         top = self.tops.get('link-rate')
         table = make_table(top.make_header(), top.align_map, top.make_rows())
-        return wrap_header('Network devices') + str(table)
+        return self.color.wrap_header('Network devices') + str(table)
 
     def __repr_irq(self):
         top = self.tops.get('irqtop')
         output_lines, cpu_count = top.make_rows()
         align_map = top.make_align_map(cpu_count)
         table = make_table(output_lines[0], align_map, output_lines[1:])
-        return wrap_header('/proc/interrupts') + str(table)
+        return self.color.wrap_header('/proc/interrupts') + str(table)
 
     def __repr_cpu(self):
         irqtop = self.tops.get('irqtop')
@@ -98,15 +100,15 @@ class NetworkTop(BaseTop):
             'CPU', 'Interrupts', 'NET RX', 'NET TX',
             'total', 'dropped', 'time_squeeze', 'cpu_collision', 'received_rps',
         ]
-        fields = [bright(word) for word in fields]
+        fields = [self.color.bright(word) for word in fields]
         rows = self.__repr_cpu_make_rows(irqtop, network_output, softirq_top, softnet_stat_top)
         table = make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows)
-        return wrap_header('Load per cpu:') + str(table)
+        return self.color.wrap_header('Load per cpu:') + str(table)
 
     def __repr_cpu_make_rows(self, irqtop, network_output, softirq_top, softnet_stat_top):
         return [
             [
-                wrap('CPU{0}'.format(stat.cpu), cpu_color(stat.cpu, self.topology)),
+                self.color.wrap('CPU{0}'.format(stat.cpu), self.color.colorize_cpu(stat.cpu)),
                 irqtop.colorize_irq_per_cpu(irq),
                 softirq_top.colorize_net_rx(net_rx),
                 softirq_top.colorize_net_tx(net_tx),
