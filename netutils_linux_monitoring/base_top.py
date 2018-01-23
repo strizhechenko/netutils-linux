@@ -7,7 +7,7 @@ from time import sleep
 
 from six import print_
 
-from netutils_linux_monitoring.colors import wrap, GREY
+from netutils_linux_monitoring.colors import Color
 
 
 class BaseTop(object):
@@ -15,7 +15,7 @@ class BaseTop(object):
     current = None
     previous = None
     diff = None
-    header = wrap('Press CTRL-C to exit...\n', GREY)
+    header = Color.wrap('Press CTRL-C to exit...\n', Color.GREY)
     options = None
     file_arg = None
     file_value = None
