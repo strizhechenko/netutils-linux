@@ -19,8 +19,15 @@ class Color(object):
         3: Fore.BLUE,
         -1: Style.RESET_ALL,
     }
-    COLORS_SOCKET = dict((key, COLORS_NODE[3 - key]) for key in range(0, 4))
-    COLORS_SOCKET[-1] = COLORS_NODE[-1]
+
+    COLORS_SOCKET = {
+        0: Fore.BLUE,
+        1: YELLOW,
+        2: Fore.RED,
+        3: Fore.GREEN,
+        -1: Style.RESET_ALL,
+    }
+
     COLOR_NONE = dict((key, "") for key in range(-1, 4))
 
     def __init__(self, topology):
