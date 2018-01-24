@@ -116,6 +116,11 @@ class BaseTop(object):
             return BaseTop.header + str(table)
         return str(table)
 
+    def default_init(self, topology=None):
+        BaseTop.__init__(self)
+        self.topology = topology
+        self.color = Color(self.topology)
+
     def default_post_optparse(self):
         if not self.topology:
             self.topology = Topology(fake=self.options.random)

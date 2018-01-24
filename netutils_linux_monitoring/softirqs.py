@@ -12,9 +12,7 @@ class Softirqs(BaseTop):
     file_arg, file_value = '--softirqs-file', '/proc/softirqs'
 
     def __init__(self, topology=None):
-        BaseTop.__init__(self)
-        self.topology = topology
-        self.color = Color(self.topology)
+        BaseTop.default_init(self, topology)
 
     def post_optparse(self):
         BaseTop.default_post_optparse(self)
