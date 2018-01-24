@@ -21,19 +21,19 @@ class Color(object):
     }
 
     COLORS_SOCKET = {
-        0: Fore.BLUE,
-        1: YELLOW,
-        2: Fore.RED,
-        3: Fore.GREEN,
+        0: COLORS_NODE[3 - 0],
+        1: COLORS_NODE[3 - 1],
+        2: COLORS_NODE[3 - 2],
+        3: COLORS_NODE[3 - 3],
         -1: Style.RESET_ALL,
     }
 
     def __init__(self, topology):
         self.topology = topology
         if topology is not None:
-            self.color_scheme = self.choose_color_scheme()
+            self.color_scheme = self.__choose_color_scheme()
 
-    def choose_color_scheme(self):
+    def __choose_color_scheme(self):
         return self.COLORS_NODE if self.topology.layout_kind == 'NUMA' else self.COLORS_SOCKET
 
     @staticmethod
@@ -55,7 +55,7 @@ class Color(object):
 
     def colorize_cpu(self, cpu):
         if not self.color_scheme:
-            self.color_scheme = self.choose_color_scheme()
+            self.color_scheme = self.__choose_color_scheme()
         if isinstance(cpu, str):
             cpu = int(cpu[3:])
         return self.color_scheme.get(self.topology.layout.get(cpu))

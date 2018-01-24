@@ -22,9 +22,7 @@ class IrqTop(BaseTop):
         self.color = Color(self.topology)
 
     def post_optparse(self):
-        if not self.topology:
-            self.topology = Topology(fake=self.options.random)
-            self.color = Color(self.topology)
+        BaseTop.default_post_optparse(self)
 
     def __int(self, line):
         return [self.int(item) for item in line.strip().split()]

@@ -66,9 +66,7 @@ class SoftnetStatTop(BaseTop):
         self.color = Color(self.topology)
 
     def post_optparse(self):
-        if not self.topology:
-            self.topology = Topology(fake=self.options.random)
-            self.color = Color(self.topology)
+        BaseTop.default_post_optparse(self)
 
     def parse(self):
         with open(self.options.softnet_stat_file) as softnet_stat:

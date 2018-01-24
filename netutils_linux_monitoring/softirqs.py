@@ -17,9 +17,7 @@ class Softirqs(BaseTop):
         self.color = Color(self.topology)
 
     def post_optparse(self):
-        if not self.topology:
-            self.topology = Topology(fake=self.options.random)
-            self.color = Color(self.topology)
+        BaseTop.default_post_optparse(self)
 
     def parse(self):
         with open(self.options.softirqs_file) as softirq_file:
