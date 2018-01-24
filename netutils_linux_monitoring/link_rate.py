@@ -38,9 +38,6 @@ class LinkRateTop(BaseTop):
         BaseTop.__init__(self)
         self.pci = pci
 
-    def post_optparse(self):
-        self.color = Color(topology=None, disable=self.options.no_color)
-
     def make_parser(self, parser=None):
         if not parser:
             parser = BaseTop.make_base_parser()
@@ -158,6 +155,7 @@ class LinkRateTop(BaseTop):
         if not self.pci:
             self.pci = PCI()
             self.pci.devices = self.pci.node_dev_dict(self.options.devices, self.options.random)
+        self.color = Color(topology=None, enabled=self.options.color)
 
     def unit_change(self):
         if not any([self.options.bits, self.options.kbits, self.options.mbits]):
