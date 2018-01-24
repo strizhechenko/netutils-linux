@@ -124,7 +124,7 @@ class BaseTop(object):
     def default_post_optparse(self):
         if not self.topology:
             self.topology = Topology(fake=self.options.random)
-            self.color = Color(self.topology, self.options.no_color)
+            self.color = Color(self.topology, self.options.color)
 
     @abstractmethod
     def parse(self):

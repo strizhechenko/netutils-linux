@@ -99,7 +99,7 @@ class RSSLadder(CPUBasedTune):
         if self.options.cpus:  # no need to detect topology if user gave us cpu list
             return
         self.topology = Topology(lscpu_output=lscpu_output)
-        self.color = Color(self.topology, not self.options.color)
+        self.color = Color(self.topology, self.options.color)
         if not any([self.options.socket is not None, self.options.cpus]):
             self.socket_detect()
         self.pci.devices = self.pci.node_dev_dict([self.options.dev], False)
@@ -144,7 +144,7 @@ class RSSLadder(CPUBasedTune):
         :param cpu: cpu number (0)
         :return: highlighted by NUMA-node cpu number.
         """
-        if not self.topology or not self.options.color:
+        if not self.topology:
             return cpu
         return self.color.wrap(cpu, self.color.colorize_cpu(cpu))
 

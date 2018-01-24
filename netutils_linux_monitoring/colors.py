@@ -30,14 +30,19 @@ class Color(object):
 
     COLOR_NONE = dict((key, "") for key in range(-1, 4))
 
-    def __init__(self, topology, disable=False):
-        self.disable = disable
+    def __init__(self, topology, enabled=True):
+        self.enabled = enabled
         self.topology = topology
         if topology is not None:
             self.color_scheme = self.__choose_color_scheme()
 
     def __choose_color_scheme(self):
-        if self.disable:
+        if not self.enabled:
+            Style.BRIGHT = ""
+            Fore.RED = ""
+            Fore.RESET = ""
+            self.GREY = ""
+            self.YELLOW = ""
             return self.COLOR_NONE
         if self.topology.layout_kind == 'NUMA':
             return self.COLORS_NODE
