@@ -38,11 +38,7 @@ class Color(object):
 
     def __choose_color_scheme(self):
         if not self.enabled:
-            Style.BRIGHT = ""
-            Fore.RED = ""
-            Fore.RESET = ""
-            self.GREY = ""
-            self.YELLOW = ""
+            Style.BRIGHT = Style.RESET_ALL = Fore.RED = Fore.RESET = self.GREY = self.YELLOW = ""
             return self.COLOR_NONE
         if self.topology.layout_kind == 'NUMA':
             return self.COLORS_NODE
