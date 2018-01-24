@@ -37,7 +37,9 @@ class LinkRateTop(BaseTop):
     def __init__(self, pci=None):
         BaseTop.__init__(self)
         self.pci = pci
-        self.color = Color(topology=None)
+
+    def post_optparse(self):
+        self.color = Color(topology=None, disable=self.options.no_color)
 
     def make_parser(self, parser=None):
         if not parser:
