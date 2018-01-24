@@ -51,7 +51,7 @@ network_info() {
 
 	for netdev in $(grep : /proc/net/dev | awk '{print $1}' | tr -d :); do
 		ethtool -i "$netdev" &>/dev/null || continue
-		for action in i g c; do
+		for action in i g c l; do
 			if ! ethtool -"$action" "$netdev" &>"$TMPDIR/ethtool/$action/$netdev"; then
 				rm -f "$TMPDIR/ethtool/$action/$netdev"
 			fi
