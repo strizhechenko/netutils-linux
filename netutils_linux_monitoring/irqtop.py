@@ -6,9 +6,8 @@ from random import randint
 from six.moves import xrange
 
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import colorize_cpu_list, colorize
+from netutils_linux_monitoring.colors import Color
 from netutils_linux_monitoring.layout import make_table
-from netutils_linux_monitoring.topology import Topology
 
 
 class IrqTop(BaseTop):
@@ -17,12 +16,10 @@ class IrqTop(BaseTop):
     file_arg, file_value = '--interrupts-file', '/proc/interrupts'
 
     def __init__(self, topology=None):
-        BaseTop.__init__(self)
-        self.topology = topology
+        BaseTop.default_init(self, topology)
 
     def post_optparse(self):
-        if not self.topology:
-            self.topology = Topology(fake=self.options.random)
+        BaseTop.default_post_optparse(self)
 
     def __int(self, line):
         return [self.int(item) for item in line.strip().split()]
@@ -54,7 +51,7 @@ class IrqTop(BaseTop):
         for line in self.repr_source():
             if line[0] == 'CPU0':
                 cpu_count = len(line)
-                line = colorize_cpu_list(line, self.topology) + ['']
+                line = self.color.colorize_cpu_list(line) + ['']
             elif self.skip_zero_line(line):  # hiding useless data such a kind of interrupt etc
                 continue
             else:  # make line with irq counters as compact as we can, it can be very long!
@@ -65,7 +62,7 @@ class IrqTop(BaseTop):
     @staticmethod
     def colorize_irq_per_cpu(irq_per_cpu):
         """ :returns: highlighted by warning/error irq string """
-        return colorize(irq_per_cpu, 40000, 80000)
+        return Color.colorize(irq_per_cpu, 40000, 80000)
 
     def __repr__(self):
         output_lines, cpu_count = self.make_rows()

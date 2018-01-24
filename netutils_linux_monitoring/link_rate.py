@@ -8,7 +8,7 @@ from re import match
 from six import iteritems
 
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import wrap, COLORS_NODE, colorize
+from netutils_linux_monitoring.colors import Color
 from netutils_linux_monitoring.layout import make_table
 from netutils_linux_monitoring.pci import PCI
 
@@ -75,7 +75,7 @@ class LinkRateTop(BaseTop):
 
     @staticmethod
     def colorize_stat(stat, value):
-        return colorize(value, 1, 1) if 'errors' in stat.filename or 'dropped' in stat.filename else value
+        return Color.colorize(value, 1, 1) if 'errors' in stat.filename or 'dropped' in stat.filename else value
 
     def colorize_stats(self, dev, repr_source):
         return [self.colorize_stat(stat, repr_source[dev][stat]) for stat in self.stats]
@@ -86,8 +86,8 @@ class LinkRateTop(BaseTop):
         repr_source = self.repr_source()
         for dev in self.options.devices:
             dev_node = self.pci.devices.get(dev)
-            dev_color = COLORS_NODE.get(dev_node)
-            _dev = wrap(dev, dev_color)
+            dev_color = self.color.COLORS_NODE.get(dev_node)
+            _dev = self.color.wrap(dev, dev_color)
             yield [_dev] + self.colorize_stats(dev, repr_source)
 
     def __repr__(self):
@@ -155,6 +155,7 @@ class LinkRateTop(BaseTop):
         if not self.pci:
             self.pci = PCI()
             self.pci.devices = self.pci.node_dev_dict(self.options.devices, self.options.random)
+        self.color = Color(topology=None, enabled=self.options.color)
 
     def unit_change(self):
         if not any([self.options.bits, self.options.kbits, self.options.mbits]):

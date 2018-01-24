@@ -18,6 +18,11 @@ run_test() {
 		echo OK
 	else
 		diff -U 0 $testdata/$name/expected output
+		if [ $(uname) == 'Darwin' ]; then
+			md5 $testdata/$name/expected output
+		else
+			md5sum $testdata/$name/expected output
+		fi
 		echo FAIL
 	fi
 	return "$rc"
