@@ -6,7 +6,7 @@ SYSCONFIG=/etc/sysconfig/network-scripts/
 TMPDIR="$1"
 
 prepare() {
-	mkdir -p $TMPDIR/ethtool/{g,i,c} $TMPDIR/network-scripts/
+	mkdir -p $TMPDIR/ethtool/{g,i,c,l} $TMPDIR/network-scripts/
 }
 
 server_info() {
