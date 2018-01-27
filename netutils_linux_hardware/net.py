@@ -26,6 +26,7 @@ class Net(Subsystem):
         buffers = netdevinfo.get('buffers') or {}
         return self.folding.fold({
             'queues': Grade.int(queues, 2, 8),
+            'queues_ethtool': Grade.int(queues_ethtool, 2, 8),
             'driver': {
                 'mlx5_core': 10,  # 7500 mbit/s
                 'mlx4_en': 9,  # 6500 mbit/s
@@ -44,6 +45,8 @@ class Net(Subsystem):
         }, self.folding.DEVICE)
 
     def rate_queue_ethtool(self):
+        return 1
+        # print(self.data)
 
 
 class ReductorMirror(Parser):

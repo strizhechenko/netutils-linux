@@ -60,7 +60,7 @@ class Server(object):
                 info[key] = subsystem(datadir=self.directory).parse()
         # system requires cpu because virtualization data is in lscpu output
         # net requires cpu because queue count rate depends on NUMA's core count
-        if not self.args.cpu and (self.args.system or self.args.net):
+        if self.args.rate and not self.args.cpu and (self.args.system or self.args.net):
             info['cpu'] = CPU(datadir=self.directory).parse()
         return info
 
