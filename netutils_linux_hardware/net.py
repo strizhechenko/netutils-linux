@@ -21,8 +21,7 @@ class Net(Subsystem):
 
     def __netdev(self, netdev):
         netdevinfo = extract(self.data, ['net', netdev])
-        queues = sum(
-            len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
+        queues = sum(len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
         buffers = netdevinfo.get('buffers') or {}
         return self.folding.fold({
             'queues': Grade.int(queues, 2, 8),
@@ -113,6 +112,26 @@ class EthtoolBuffers(Parser):
             }
 
 
+class EthtoolQueues(Parser):
+    @staticmethod
+    def parse(text):
+        __queues = [int(line.split()[1]) for line in text.split('\n') if line.split()[1].isdigit()]
+        if len(__queues) == 8:
+            queues = {
+                'rx': {
+                    'max': __queues[0],
+                    'cur': __queues[4],
+                },
+                'combined': {
+                    'max': __queues[3],
+                    'cur': __queues[7],
+                },
+            }
+            if queues['rx']['max'] == 0 and queues['combined']['max'] != 0:
+                del queues['rx']
+            return queues
+
+
 class ReaderNet(object):
     netdevs = None
 
@@ -130,6 +149,11 @@ class ReaderNet(object):
     def net_dev_list_ethtool(self):
         return EthtoolFiles().parse_file(self.path('ethtool/i'))
 
+    def net_dev_list_queues(self):
+        for netdev in self.netdevs:
+            buffers_path = os.path.join(self.datadir, 'ethtool/l', netdev)
+            self.netdevs[netdev]['queues_ethtool'] = EthtoolQueues().parse_file_safe(buffers_path)
+
     def net_dev_list_buffers(self):
         for netdev in self.netdevs:
             buffers_path = os.path.join(self.datadir, 'ethtool/g', netdev)
@@ -141,13 +165,13 @@ class ReaderNet(object):
             'version',
         )
         for netdev in self.netdevs:
-            driverfile = os.path.join(self.datadir, 'ethtool/i', netdev)
-            driverdata = YAMLLike().parse_file_safe(driverfile)
-            if driverdata:
-                driverdata = dict((key, v) for key, v in iteritems(driverdata) if key in keys_required)
+            driver_file = os.path.join(self.datadir, 'ethtool/i', netdev)
+            driver_data = YAMLLike().parse_file_safe(driver_file)
+            if driver_data:
+                driver_data = dict((key, v) for key, v in iteritems(driver_data) if key in keys_required)
             else:
-                driverdata = dict()
-            self.netdevs[netdev]['driver'] = driverdata
+                driver_data = dict()
+            self.netdevs[netdev]['driver'] = driver_data
 
     def net_dev_list(self):
         """
@@ -161,5 +185,6 @@ class ReaderNet(object):
             return
         self.net_dev_list_buffers()
         self.net_dev_list_drivers()
+        self.net_dev_list_queues()
         interrupts = self.path('interrupts')
         IRQQueueCounter().parse_file_safe(interrupts, netdevs=self.netdevs)
