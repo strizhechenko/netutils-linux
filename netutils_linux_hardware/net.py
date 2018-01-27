@@ -22,6 +22,7 @@ class Net(Subsystem):
     def __netdev(self, netdev):
         netdevinfo = extract(self.data, ['net', netdev])
         queues = sum(len(extract(netdevinfo, ['queues', x])) for x in ('rx', 'rxtx'))
+        queues_ethtool = self.rate_queue_ethtool()
         buffers = netdevinfo.get('buffers') or {}
         return self.folding.fold({
             'queues': Grade.int(queues, 2, 8),
@@ -41,6 +42,8 @@ class Net(Subsystem):
                 'max': Grade.int(buffers.get('max'), 256, 4096),
             }, self.folding.DEVICE)
         }, self.folding.DEVICE)
+
+    def rate_queue_ethtool(self):
 
 
 class ReductorMirror(Parser):
@@ -116,20 +119,24 @@ class EthtoolQueues(Parser):
     @staticmethod
     def parse(text):
         __queues = [int(line.split()[1]) for line in text.split('\n') if line.split()[1].isdigit()]
-        if len(__queues) == 8:
-            queues = {
-                'rx': {
-                    'max': __queues[0],
-                    'cur': __queues[4],
-                },
-                'combined': {
-                    'max': __queues[3],
-                    'cur': __queues[7],
-                },
-            }
-            if queues['rx']['max'] == 0 and queues['combined']['max'] != 0:
-                del queues['rx']
-            return queues
+        if len(__queues) != 8:
+            return
+        queues = {
+            'rx': {
+                'max': __queues[0],
+                'cur': __queues[4],
+            },
+            'combined': {
+                'max': __queues[3],
+                'cur': __queues[7],
+            },
+        }
+        if queues['rx']['max'] == 0 and queues['combined']['max'] != 0:
+            del queues['rx']
+        return queues
+
+    def rate(self):
+        pass
 
 
 class ReaderNet(object):
