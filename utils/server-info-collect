@@ -59,6 +59,11 @@ network_info() {
 		[ -f "$SYSCONFIG/ifcfg-$netdev" ] || continue
 		# avoiding collection of identification/privacy info
 		grep ETHTOOL "$SYSCONFIG/ifcfg-$netdev" > "$TMPDIR/network-scripts/ifcfg-$netdev" || true
+		numa_node="/sys/class/net/$netdev/device/numa_node"
+		if [ -f "$numa_node" ]; then
+			mkdir -p "$TMPDIR${numa_node%/*}"
+			cat "$numa_node" > "${TMPDIR}${numa_node}"
+		fi
 	done
 }
 
