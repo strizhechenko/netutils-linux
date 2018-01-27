@@ -150,15 +150,16 @@ class ReaderNet(object):
     def net_dev_list_ethtool(self):
         return EthtoolFiles().parse_file(self.path('ethtool/i'))
 
-    def net_dev_list_queues(self):
+    def max_cur_parse(self, ethtool_key, parser, output_key):
         for netdev in self.netdevs:
-            buffers_path = os.path.join(self.datadir, 'ethtool/l', netdev)
-            self.netdevs[netdev]['queues_ethtool'] = EthtoolQueues().parse_file_safe(buffers_path)
+            file_path = os.path.join(self.datadir, 'ethtool/{0}'.format(ethtool_key), netdev)
+            self.netdevs[netdev][output_key] = parser().parse_file_safe(file_path)
+
+    def net_dev_list_queues(self):
+        self.max_cur_parse('l', EthtoolQueues, 'queues_ethtool')
 
     def net_dev_list_buffers(self):
-        for netdev in self.netdevs:
-            buffers_path = os.path.join(self.datadir, 'ethtool/g', netdev)
-            self.netdevs[netdev]['buffers'] = EthtoolBuffers().parse_file_safe(buffers_path)
+        self.max_cur_parse('g', EthtoolBuffers, 'buffers')
 
     def net_dev_list_drivers(self):
         keys_required = (
