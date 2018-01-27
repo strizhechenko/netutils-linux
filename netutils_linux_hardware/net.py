@@ -135,9 +135,6 @@ class EthtoolQueues(Parser):
             del queues['rx']
         return queues
 
-    def rate(self):
-        pass
-
 
 class ReaderNet(object):
     """ Reading data about network from multiple sources and merging them for every network device """

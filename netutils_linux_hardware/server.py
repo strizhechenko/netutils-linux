@@ -58,7 +58,9 @@ class Server(object):
         for key, subsystem in self.subsystems.items():
             if key != 'system' and getattr(self.args, key):
                 info[key] = subsystem(datadir=self.directory).parse()
-        if not self.args.cpu and self.args.system:
+        # system requires cpu because virtualization data is in lscpu output
+        # net requires cpu because queue count rate depends on NUMA's core count
+        if not self.args.cpu and (self.args.system or self.args.net):
             info['cpu'] = CPU(datadir=self.directory).parse()
         return info
 
