@@ -46,6 +46,7 @@ net:
       shared: []
       tx: []
       unknown: []
+    queues_ethtool: null
   eth2:
     buffers: null
     conf:
@@ -62,3 +63,4 @@ net:
       shared: []
       tx: []
       unknown: []
+    queues_ethtool: null

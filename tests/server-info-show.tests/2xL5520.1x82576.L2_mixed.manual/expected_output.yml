@@ -70,3 +70,4 @@ net:
       shared: []
       tx: []
       unknown: []
+    queues_ethtool: null

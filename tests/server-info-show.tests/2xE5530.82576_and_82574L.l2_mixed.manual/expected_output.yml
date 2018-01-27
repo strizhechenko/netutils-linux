@@ -1,0 +1,93 @@
+cpu:
+  info:
+    Architecture: x86_64
+    BogoMIPS: 4847
+    Byte Order: Little Endian
+    CPU MHz: 2399
+    CPU family: 6
+    CPU op-mode(s): 32-bit, 64-bit
+    CPU(s): 16
+    Core(s) per socket: 4
+    L1d cache: 32K
+    L1i cache: 32K
+    L2 cache: 256K
+    L3 cache: 8192K
+    Model: 26
+    NUMA node(s): 1
+    NUMA node0 CPU(s): 0-15
+    On-line CPU(s) list: 0-15
+    Socket(s): 2
+    Stepping: 5
+    Thread(s) per core: 2
+    Vendor ID: GenuineIntel
+    Virtualization: VT-x
+  layout:
+    '0': '0'
+    '1': '1'
+    '10': '0'
+    '11': '1'
+    '12': '0'
+    '13': '1'
+    '14': '0'
+    '15': '1'
+    '2': '0'
+    '3': '1'
+    '4': '0'
+    '5': '1'
+    '6': '0'
+    '7': '1'
+    '8': '0'
+    '9': '1'
+disk: null
+memory:
+  devices: null
+  size: null
+net:
+  eth1:
+    buffers:
+      cur: 256
+      max: 4096
+    conf:
+      ip: ''
+      vlan: false
+    driver:
+      driver: e1000e
+      version: 3.2.5-k
+    queues:
+      own:
+      - eth1
+      rx:
+      - eth1-rx-0
+      rxtx: []
+      shared: []
+      tx:
+      - eth1-tx-0
+      unknown: []
+    queues_ethtool: null
+  eth3:
+    buffers:
+      cur: 2048
+      max: 4096
+    conf:
+      ip: ''
+      vlan: true
+    driver:
+      driver: igb
+      version: 5.2.15-k
+    queues:
+      own:
+      - eth3
+      rx: []
+      rxtx:
+      - eth3-TxRx-0
+      - eth3-TxRx-1
+      - eth3-TxRx-2
+      - eth3-TxRx-3
+      - eth3-TxRx-4
+      - eth3-TxRx-5
+      - eth3-TxRx-6
+      - eth3-TxRx-7
+      shared: []
+      tx: []
+      unknown: []
+    queues_ethtool: null

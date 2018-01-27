@@ -61,3 +61,4 @@ net:
       - i40e-eth0-TxRx-1
       - i40e-eth0-TxRx-2
       - i40e-eth0-TxRx-3
+    queues_ethtool: null

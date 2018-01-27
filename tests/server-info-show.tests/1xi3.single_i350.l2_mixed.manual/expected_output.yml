@@ -1,22 +1,22 @@
 cpu:
   info:
     Architecture: x86_64
-    BogoMIPS: 6984
+    BogoMIPS: 6983
     Byte Order: Little Endian
-    CPU MHz: 3492
+    CPU MHz: 3491
     CPU family: 6
     CPU op-mode(s): 32-bit, 64-bit
-    CPU(s): 8
-    Core(s) per socket: 4
+    CPU(s): 4
+    Core(s) per socket: 2
     L1d cache: 32K
     L1i cache: 32K
     L2 cache: 256K
-    L3 cache: 8192K
+    L3 cache: 4096K
     Model: 60
-    Model name: Intel(R) Core(TM) i7-4770K CPU @ 3.50GHz
+    Model name: Intel(R) Core(TM) i3-4330 CPU @ 3.50GHz
     NUMA node(s): 1
-    NUMA node0 CPU(s): 0-7
-    On-line CPU(s) list: 0-7
+    NUMA node0 CPU(s): 0-3
+    On-line CPU(s) list: 0-3
     Socket(s): 1
     Stepping: 3
     Thread(s) per core: 2
@@ -27,30 +27,31 @@ cpu:
     '1': '0'
     '2': '0'
     '3': '0'
-    '4': '0'
-    '5': '0'
-    '6': '0'
-    '7': '0'
 disk: null
 memory:
   devices: null
   size: null
 net:
-  eth0:
+  eth6:
     buffers:
-      cur: 256
+      cur: 4096
       max: 4096
     conf:
       ip: ''
-      vlan: false
+      vlan: true
     driver:
-      driver: e1000e
-      version: 3.2.6-k
+      driver: igb
+      version: 5.3.5.4
     queues:
       own:
-      - eth0
+      - eth6
       rx: []
-      rxtx: []
+      rxtx:
+      - eth6-TxRx-0
+      - eth6-TxRx-1
+      - eth6-TxRx-2
+      - eth6-TxRx-3
       shared: []
       tx: []
       unknown: []
+    queues_ethtool: null

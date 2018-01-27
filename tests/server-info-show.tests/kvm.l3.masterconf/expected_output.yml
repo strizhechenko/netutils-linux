@@ -48,3 +48,4 @@ net:
       - uhci_hcd:usb1, eth0, eth1
       tx: []
       unknown: []
+    queues_ethtool: null

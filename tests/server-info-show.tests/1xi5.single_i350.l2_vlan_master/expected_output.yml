@@ -1,0 +1,76 @@
+cpu:
+  info:
+    Architecture: x86_64
+    BogoMIPS: 6185
+    Byte Order: Little Endian
+    CPU MHz: 3092
+    CPU family: 6
+    CPU op-mode(s): 32-bit, 64-bit
+    CPU(s): 4
+    Core(s) per socket: 4
+    L1d cache: 32K
+    L1i cache: 32K
+    L2 cache: 256K
+    L3 cache: 6144K
+    Model: 60
+    Model name: Intel(R) Core(TM) i5-4440 CPU @ 3.10GHz
+    NUMA node(s): 1
+    NUMA node0 CPU(s): 0-3
+    On-line CPU(s) list: 0-3
+    Socket(s): 1
+    Stepping: 3
+    Thread(s) per core: 1
+    Vendor ID: GenuineIntel
+    Virtualization: VT-x
+  layout:
+    '0': '0'
+    '1': '0'
+    '2': '0'
+    '3': '0'
+disk:
+  sda:
+    model: ST1000DM003-1ER1
+    size: 1000204886016
+    type: HDD
+  sdb:
+    model: Transcend 8GB
+    size: 7813988352
+    type: HDD
+memory:
+  devices: null
+  size:
+    MemFree: 19920140
+    MemTotal: 24475424
+    SwapFree: 12304380
+    SwapTotal: 12304380
+net:
+  eth1:
+    buffers:
+      cur: 2048
+      max: 4096
+    conf:
+      ip: ''
+      vlan: true
+    driver:
+      driver: igb
+      version: 5.3.0-k
+    queues:
+      own:
+      - eth1
+      rx:
+      - eth1-rx-0
+      - eth1-rx-1
+      - eth1-rx-2
+      - eth1-rx-3
+      rxtx: []
+      shared: []
+      tx:
+      - eth1-tx-0
+      - eth1-tx-1
+      - eth1-tx-2
+      - eth1-tx-3
+      unknown: []
+    queues_ethtool:
+      combined:
+        cur: 4
+        max: 8

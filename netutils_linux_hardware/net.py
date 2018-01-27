@@ -133,6 +133,7 @@ class EthtoolQueues(Parser):
 
 
 class ReaderNet(object):
+    """ Reading data about network from multiple sources and merging them for every network device """
     netdevs = None
 
     def __init__(self, datadir, path):

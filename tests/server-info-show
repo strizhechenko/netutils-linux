@@ -12,9 +12,9 @@ run_test() {
 	echo -n "# $name "
 	server-info --show --directory="$1" > $TMPDIR/output
 	if [ "${REWRITE:-0}" = '1' ]; then
-		server-info --show --directory="$1" > "$testdata/$name/expected_output"
+		server-info --show --directory="$1" > "$testdata/$name/expected_output.yml"
 	fi
-	cmp -s $1/expected_output $TMPDIR/output || rc=$?
+	cmp -s $1/expected_output.yml $TMPDIR/output || rc=$?
 	if [ "$rc" = '0' ]; then
 		echo OK
 	else
@@ -28,12 +28,11 @@ run_test() {
 retval=0
 # shellcheck disable=SC2044
 for test in $(find "$testdata" -mindepth 1 -maxdepth 1 -type d); do
-	if [ -f "$test/expected_output" ]; then
-		if ! run_test "$test"; then
-			retval=1
-			break
-		fi
-	fi
+	[ -f "$test/expected_output.yml" ] || continue
+	run_test "$test" && continue
+	[ "${REWRITE:-0}" = '1' ] && continue
+	retval=1
+	break
 done
 rm -rf $TMPDIR
 exit "$retval"
