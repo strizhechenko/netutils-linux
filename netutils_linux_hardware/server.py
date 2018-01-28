@@ -54,10 +54,7 @@ class Server(object):
 
     def read(self):
         """ Parser of raw saved data info dictionary """
-        info = dict()
-        for key, subsystem in self.subsystems.items():
-            if key != 'system' and getattr(self.args, key):
-                info[key] = subsystem(datadir=self.directory).parse()
+        info = self.__read()
         # system requires cpu because virtualization data is in lscpu output
         # net requires cpu because queue count rate depends on NUMA's core count
         if self.args.rate and not self.args.cpu and (self.args.system or self.args.net):
@@ -80,6 +77,13 @@ class Server(object):
             return
         os.chdir(os.path.join(self.directory, '..'))
         os.system('tar cfz {0} {1} 2>/dev/null'.format(self.tarball, self.directory))
+
+    def __read(self):
+        return dict(
+            (key, subsystem(datadir=self.directory).parse())
+            for key, subsystem in self.subsystems.items()
+            if key != 'system' and getattr(self.args, key)
+        )
 
     def __parse_args(self):
         default_directory = '/tmp/netutils_server_info/'
