@@ -40,6 +40,11 @@ class ReaderNet(object):
                 driver_data = dict((key, v) for key, v in iteritems(driver_data) if key in keys_required)
             self.netdevs[netdev]['driver'] = driver_data
 
+    def net_dev_list_numa(self):
+        for netdev in self.netdevs:
+            numa_file = os.path.join(self.datadir, 'sys/class/net/', netdev, 'device/numa_node')
+            self.netdevs[netdev]['numa_node'] = int(open(numa_file).read()) if os.path.exists(numa_file) else -1
+
     def net_dev_list(self):
         """
         Priority:
@@ -56,6 +61,7 @@ class ReaderNet(object):
             self.net_dev_list_buffers()
             self.net_dev_list_drivers()
             self.net_dev_list_queues()
+            self.net_dev_list_numa()
 
 
 class NetdevClassificator(Parser):
