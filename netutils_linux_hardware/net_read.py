@@ -1,7 +1,7 @@
 # coding=utf-8
 import os
 
-from six import iteritems
+from six import iteritems, print_
 
 from netutils_linux_hardware.interrupts import IRQQueueCounter
 from netutils_linux_hardware.parser import Parser, YAMLLike
