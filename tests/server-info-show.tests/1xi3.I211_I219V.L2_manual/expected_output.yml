@@ -52,6 +52,7 @@ net:
     driver:
       driver: bridge
       version: 2.3
+    numa_node: -1
     queues:
       own: []
       rx: []
@@ -70,6 +71,7 @@ net:
     driver:
       driver: igb
       version: 5.3.0-k
+    numa_node: -1
     queues:
       own:
       - eth0
@@ -93,6 +95,7 @@ net:
     driver:
       driver: e1000e
       version: 3.2.6-k
+    numa_node: -1
     queues:
       own:
       - eth1
@@ -112,6 +115,7 @@ net:
     driver:
       driver: iwlwifi
       version: 2.6.32-642.el6.x86_64
+    numa_node: -1
     queues:
       own: []
       rx: []

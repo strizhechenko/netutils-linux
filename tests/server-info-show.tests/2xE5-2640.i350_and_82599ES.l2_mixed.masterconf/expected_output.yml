@@ -82,6 +82,7 @@ net:
     driver:
       driver: igb
       version: 5.2.15-k
+    numa_node: -1
     queues:
       own:
       - eth1
@@ -109,6 +110,7 @@ net:
     driver:
       driver: ixgbe
       version: 4.0.1-k
+    numa_node: -1
     queues:
       own:
       - eth2
@@ -160,6 +162,7 @@ net:
     driver:
       driver: ixgbe
       version: 4.0.1-k
+    numa_node: -1
     queues:
       own:
       - eth3
@@ -211,6 +214,7 @@ net:
     driver:
       driver: ixgbe
       version: 4.0.1-k
+    numa_node: -1
     queues:
       own:
       - eth4
@@ -262,6 +266,7 @@ net:
     driver:
       driver: ixgbe
       version: 4.0.1-k
+    numa_node: -1
     queues:
       own:
       - eth5

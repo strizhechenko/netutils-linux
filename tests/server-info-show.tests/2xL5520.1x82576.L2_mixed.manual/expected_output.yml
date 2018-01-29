@@ -54,6 +54,7 @@ net:
     driver:
       driver: igb
       version: 5.3.0-k
+    numa_node: -1
     queues:
       own:
       - em2

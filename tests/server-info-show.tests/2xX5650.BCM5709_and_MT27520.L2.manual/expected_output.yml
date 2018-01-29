@@ -50,6 +50,7 @@ net:
     driver:
       driver: bnx2
       version: 2.2.5
+    numa_node: -1
     queues:
       own: []
       rx: []
@@ -76,6 +77,7 @@ net:
     driver:
       driver: mlx4_en
       version: 2.2-1 (Feb 2014)
+    numa_node: -1
     queues:
       own: []
       rx: []

@@ -45,6 +45,7 @@ net:
     driver:
       driver: igb
       version: 5.3.0-k
+    numa_node: -1
     queues:
       own:
       - eth0
@@ -72,6 +73,7 @@ net:
     driver:
       driver: igb
       version: 5.3.0-k
+    numa_node: -1
     queues:
       own:
       - eth1

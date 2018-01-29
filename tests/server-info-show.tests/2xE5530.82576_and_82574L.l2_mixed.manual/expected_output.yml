@@ -53,6 +53,7 @@ net:
     driver:
       driver: e1000e
       version: 3.2.5-k
+    numa_node: -1
     queues:
       own:
       - eth1
@@ -74,6 +75,7 @@ net:
     driver:
       driver: igb
       version: 5.2.15-k
+    numa_node: -1
     queues:
       own:
       - eth3

@@ -38,6 +38,7 @@ net:
     driver:
       driver: e1000e
       version: 3.2.6-k
+    numa_node: -1
     queues:
       own:
       - eth1
@@ -55,6 +56,7 @@ net:
     driver:
       driver: ATL1E
       version: 1.0.0.7-NAPI
+    numa_node: -1
     queues:
       own:
       - eth2

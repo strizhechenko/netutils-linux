@@ -50,6 +50,7 @@ net:
     driver:
       driver: i40e
       version: 1.5.10-k
+    numa_node: -1
     queues:
       own: []
       rx: []
