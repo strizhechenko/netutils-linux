@@ -304,3 +304,16 @@ Device's detailed rating
   system:
     Hypervisor vendor: 1
     Virtualization type: 1
+
+How to contribute?
+==================
+
+Close issues
+------------
+Any help is welcome. Just comment an issue with "I want to help, how can I solve this issue?" to start.
+
+or donate
+---------
+- https://patreon.com/strizhechenko
+- https://rocketbank.ru/oleg.strizhechenko
+- https://paypal.me/weirded
