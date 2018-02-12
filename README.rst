@@ -34,6 +34,13 @@ You'll need `pip`_.
 
 .. _pip: https://pip.pypa.io/en/stable/installing/
 
+Usage
+=====
+
+Check this `guide`_ about usage.
+
+.. _guide: https://github.com/strizhechenko/netutils-linux/blob/master/examples/common_usecase.md
+
 Utils
 =====
 
