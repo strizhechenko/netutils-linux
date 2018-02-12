@@ -48,6 +48,8 @@ class Net(Subsystem):
         # exit(0)
         queues_ethtool = netdevinfo['queues_ethtool']
         queues_type = 'rx'
+        if not queues_ethtool:
+            return 1
         if len(queues_ethtool.keys()) == 1:
             queues_type = list(queues_ethtool.keys())[0]
         cpu_count = len(self.data.get('cpu').get('layout'))
