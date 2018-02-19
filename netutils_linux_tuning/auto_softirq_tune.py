@@ -37,7 +37,9 @@ class AutoSoftirqTune(CPUBasedTune):
         :param decision: queue list to write cpu mask
         """
         if len(decision) > 1 and not self.options.force:
-            raise OSError('Refuse to use RPS on multiqueue NIC. You may use --force flag to apply RPS for all queues')
+            print('Skipped modifying {0} on {1} because it is multi-queue device (use --force flag to skip this check)'
+                  .format(self.target, self.options.dev))
+            exit(0)
         queue_dir = '/sys/class/net/{0}/queues/'.format(self.options.dev)
         for queue in decision:
             print_("Using mask '{0}' for {1}-{2}".format(self.options.cpu_mask, self.options.dev, queue))
