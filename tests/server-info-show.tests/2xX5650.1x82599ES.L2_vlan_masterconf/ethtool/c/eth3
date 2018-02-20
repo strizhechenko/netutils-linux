@@ -1,0 +1,27 @@
+Coalesce parameters for eth3:
+Adaptive RX: off  TX: off
+stats-block-usecs: 999936
+sample-interval: 0
+pkt-rate-low: 0
+pkt-rate-high: 0
+
+rx-usecs: 18
+rx-frames: 12
+rx-usecs-irq: 18
+rx-frames-irq: 2
+
+tx-usecs: 80
+tx-frames: 20
+tx-usecs-irq: 18
+tx-frames-irq: 2
+
+rx-usecs-low: 0
+rx-frame-low: 0
+tx-usecs-low: 0
+tx-frame-low: 0
+
+rx-usecs-high: 0
+rx-frame-high: 0
+tx-usecs-high: 0
+tx-frame-high: 0
+

@@ -1,0 +1,10 @@
+146778685440             sda
+ 10485760000 /           sda1
+ 16229859328 [SWAP]      sda2
+ 41723887616 /mnt/var    sda3
+        1024             sda4
+ 33379319808 /mnt/db     sda5
+ 15728640000 /app        sda6
+ 20861419520 /mnt/log    sda7
+  4194304000 /mnt/etc    sda8
+  4169138176 /mnt/backup sda9

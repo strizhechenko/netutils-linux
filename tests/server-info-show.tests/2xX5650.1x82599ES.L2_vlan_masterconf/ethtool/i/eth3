@@ -1,0 +1,9 @@
+driver: bnx2
+version: 2.2.6
+firmware-version: bc 5.2.3 NCSI 2.0.12
+bus-info: 0000:02:00.1
+supports-statistics: yes
+supports-test: yes
+supports-eeprom-access: yes
+supports-register-dump: yes
+supports-priv-flags: no
