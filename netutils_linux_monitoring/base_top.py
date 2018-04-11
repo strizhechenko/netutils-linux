@@ -59,7 +59,8 @@ class BaseTop(object):
             raise TypeError('make_parser should not be called directly by BaseTop')
         if not parser:
             parser = BaseTop.make_base_parser()
-        parser.add_argument(self.file_arg, default=self.file_value, help='Option for testing on MacOS purpose.')
+        if hasattr(self, 'file_arg') and self.file_arg is not None:
+            parser.add_argument(self.file_arg, default=self.file_value, help='Option for testing on MacOS purpose.')
         return parser
 
     def tick(self):
