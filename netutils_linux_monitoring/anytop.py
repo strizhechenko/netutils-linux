@@ -52,23 +52,18 @@ class AnyTop(BaseTop):
         self.diff_total = self.eval_diff_total()
 
     def make_rows(self):
-        cpu_count = 0
         output_lines = list()
         if not self.diff_total:
             return ''
         for line in self.repr_source():
-            if self.skip_zero_line(line):  # hiding useless data such a kind of interrupt etc
-                continue
-            else:  # make line with irq counters as compact as we can, it can be very long!
-                line = line[1: cpu_count + 1] + [line[-1]]
-            output_lines.append(line)
-        return output_lines, cpu_count
+            if not self.skip_zero_line(line):  # hiding useless data such a kind of interrupt etc
+                output_lines.append(line)
+        return output_lines
 
     def __repr__(self):
-        output_lines, cpu_count = self.make_rows()
-        output_lines.insert(1, self.diff_total)
-        output_lines.insert(2, [''] * (cpu_count + 1))
-        table = make_table(output_lines[0], None, output_lines[1:])
+        output_lines = self.make_rows()
+        print(output_lines)
+        table = make_table(output_lines[0], rows=output_lines[1:])
         return self.__repr_table__(table)
 
     def eval_diff_total_column(self, column, cpucount):
