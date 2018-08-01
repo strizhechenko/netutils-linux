@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -euE
+
+stdout="$(lscpu)"
+CPUMHz="$(echo "$stdout" | grep "CPU MHz:" | cut -d ':' -f 2 | awk '{print $1}' | cut -d "." -f1)"
+BogoMIPS="$(echo "$stdout" | grep "BogoMIPS:" | awk '{print $2}' | cut -d "." -f1)"
+Sockets="$(echo "$stdout" | grep "Socket(s):" | awk '{print $2}')"
+Cores="$(echo "$stdout" | grep "Core(s) per socket:" | cut -d ':' -f 2 | awk '{print $1}')"
+echo $((CPUMHz * Sockets * Cores)) $((BogoMIPS * Sockets * Cores))
+
+exit 0
