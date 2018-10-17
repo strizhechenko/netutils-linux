@@ -16,29 +16,29 @@ fi
 read _ _ VERSION X <<< "$PCI_TYPE"
 
 if [ "$VERSION" = '1' ]; then
-	[ "$X" = 'x1' ] && slot_speed=250
-	[ "$X" = 'x2' ] && slot_speed=500
-	[ "$X" = 'x4' ] && slot_speed=1000
-	[ "$X" = 'x8' ] && slot_speed=2000
-	[ "$X" = 'x16' ] && slot_speed=4000
+	[ "$X" = 'x1' ] && SLOT_SPEED=250
+	[ "$X" = 'x2' ] && SLOT_SPEED=500
+	[ "$X" = 'x4' ] && SLOT_SPEED=1000
+	[ "$X" = 'x8' ] && SLOT_SPEED=2000
+	[ "$X" = 'x16' ] && SLOT_SPEED=4000
 elif [ "$VERSION" = '2' ]; then
-	[ "$X" = 'x1' ] && slot_speed=500
-	[ "$X" = 'x2' ] && slot_speed=1000
-	[ "$X" = 'x4' ] && slot_speed=2000
-	[ "$X" = 'x8' ] && slot_speed=4000
-	[ "$X" = 'x16' ] && slot_speed=8000
+	[ "$X" = 'x1' ] && SLOT_SPEED=500
+	[ "$X" = 'x2' ] && SLOT_SPEED=1000
+	[ "$X" = 'x4' ] && SLOT_SPEED=2000
+	[ "$X" = 'x8' ] && SLOT_SPEED=4000
+	[ "$X" = 'x16' ] && SLOT_SPEED=8000
 elif [ "$VERSION" = '3' ]; then
-	[ "$X" = 'x1' ] && slot_speed=984
-	[ "$X" = 'x2' ] && slot_speed=1970
-	[ "$X" = 'x4' ] && slot_speed=3940
-	[ "$X" = 'x8' ] && slot_speed=7880
-	[ "$X" = 'x16' ] && slot_speed=15800
+	[ "$X" = 'x1' ] && SLOT_SPEED=984
+	[ "$X" = 'x2' ] && SLOT_SPEED=1970
+	[ "$X" = 'x4' ] && SLOT_SPEED=3940
+	[ "$X" = 'x8' ] && SLOT_SPEED=7880
+	[ "$X" = 'x16' ] && SLOT_SPEED=15800
 elif [ "$VERSION" = '4' ]; then
-	[ "$X" = 'x1' ] && slot_speed=1969
-	[ "$X" = 'x2' ] && slot_speed=3940
-	[ "$X" = 'x4' ] && slot_speed=7880
-	[ "$X" = 'x8' ] && slot_speed=15750
-	[ "$X" = 'x16' ] && slot_speed=31500
+	[ "$X" = 'x1' ] && SLOT_SPEED=1969
+	[ "$X" = 'x2' ] && SLOT_SPEED=3940
+	[ "$X" = 'x4' ] && SLOT_SPEED=7880
+	[ "$X" = 'x8' ] && SLOT_SPEED=15750
+	[ "$X" = 'x16' ] && SLOT_SPEED=31500
 fi
-echo "$DEVICE $DEV_SPEED/$((slot_speed*8))"
+echo "$DEVICE $DEV_SPEED/$((SLOT_SPEED*8))"
 exit 0
