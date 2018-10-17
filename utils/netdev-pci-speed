@@ -1,33 +1,44 @@
 #!/bin/bash
 
-device=$1
-bus_addr="$(ethtool -i $device | grep bus | awk '{print $2}')"
-dev_speed="$(ethtool eth1 | grep Speed | egrep -o [0-9]+)"
-pci_type="$(dmidecode --type slot | grep -B6 0000:af:00.0 | egrep -m1 -o 'PCI Express [0-9] x[0-9]+')"
-read _ _ version x <<< "$pci_type"
-if [ "$version" = '1' ]; then
-	[ "$x" = 'x1' ] && slot_speed=250
-	[ "$x" = 'x2' ] && slot_speed=500
-	[ "$x" = 'x4' ] && slot_speed=1000
-	[ "$x" = 'x8' ] && slot_speed=2000
-	[ "$x" = 'x16' ] && slot_speed=4000
-elif [ "$version" = '2' ]; then
-	[ "$x" = 'x1' ] && slot_speed=500
-	[ "$x" = 'x2' ] && slot_speed=1000
-	[ "$x" = 'x4' ] && slot_speed=2000
-	[ "$x" = 'x8' ] && slot_speed=4000
-	[ "$x" = 'x16' ] && slot_speed=8000
-elif [ "$version" = '3' ]; then
-	[ "$x" = 'x1' ] && slot_speed=984
-	[ "$x" = 'x2' ] && slot_speed=1970
-	[ "$x" = 'x4' ] && slot_speed=3940
-	[ "$x" = 'x8' ] && slot_speed=7880
-	[ "$x" = 'x16' ] && slot_speed=15800
-elif [ "$version" = '4' ]; then
-	[ "$x" = 'x1' ] && slot_speed=1969
-	[ "$x" = 'x2' ] && slot_speed=3940
-	[ "$x" = 'x4' ] && slot_speed=7880
-	[ "$x" = 'x8' ] && slot_speed=15750
-	[ "$x" = 'x16' ] && slot_speed=31500
+set -eu
+
+DEVICE="$1"
+if [ ! -d /sys/class/net/$DEVICE ]; then
+	echo "No such device $DEVICE"
+	exit 2
 fi
-echo $device $dev_speed/$((slot_speed*8))
+BUS_ADDR="$(ethtool -i "$DEVICE" | grep bus | awk '{print $2}')"
+DEV_SPEED="$(ethtool "$DEVICE" | grep Speed | egrep -o [0-9]+)"
+if ! PCI_TYPE="$(dmidecode --type slot | grep -B6 "${BUS_ADDR%.*}" | egrep -m1 -o 'PCI Express [0-9] x[0-9]+')"; then
+	echo "$DEVICE is probably built-in"
+	exit 1
+fi
+read _ _ VERSION X <<< "$PCI_TYPE"
+
+if [ "$VERSION" = '1' ]; then
+	[ "$X" = 'x1' ] && slot_speed=250
+	[ "$X" = 'x2' ] && slot_speed=500
+	[ "$X" = 'x4' ] && slot_speed=1000
+	[ "$X" = 'x8' ] && slot_speed=2000
+	[ "$X" = 'x16' ] && slot_speed=4000
+elif [ "$VERSION" = '2' ]; then
+	[ "$X" = 'x1' ] && slot_speed=500
+	[ "$X" = 'x2' ] && slot_speed=1000
+	[ "$X" = 'x4' ] && slot_speed=2000
+	[ "$X" = 'x8' ] && slot_speed=4000
+	[ "$X" = 'x16' ] && slot_speed=8000
+elif [ "$VERSION" = '3' ]; then
+	[ "$X" = 'x1' ] && slot_speed=984
+	[ "$X" = 'x2' ] && slot_speed=1970
+	[ "$X" = 'x4' ] && slot_speed=3940
+	[ "$X" = 'x8' ] && slot_speed=7880
+	[ "$X" = 'x16' ] && slot_speed=15800
+elif [ "$VERSION" = '4' ]; then
+	[ "$X" = 'x1' ] && slot_speed=1969
+	[ "$X" = 'x2' ] && slot_speed=3940
+	[ "$X" = 'x4' ] && slot_speed=7880
+	[ "$X" = 'x8' ] && slot_speed=15750
+	[ "$X" = 'x16' ] && slot_speed=31500
+fi
+echo "$DEVICE $DEV_SPEED/$((slot_speed*8))"
+exit 0
