@@ -24,7 +24,7 @@ help:
 # only for localhost MacOS testing.
 test2:
 	. env2/bin/activate && \
-		./tests/rss-ladder && \
+		./tests/rss-ladder-test && \
 		./tests/server-info-show && \
 		./tests/link_rate_units.sh
 	pytest netutils_linux_*/
@@ -39,7 +39,7 @@ env2:
 # only for localhost MacOS testing.
 test3:
 	. env3/bin/activate && \
-		./tests/rss-ladder && \
+		./tests/rss-ladder-test && \
 		./tests/server-info-show && \
 		./tests/link_rate_units.sh
 	pytest netutils_linux_*/
@@ -62,7 +62,7 @@ clean:
 
 lint:
 	./flake8.sh netutils_linux_monitoring netutils_linux_tuning netutils_linux_hardware
-	python setup.py checkdocs
+	twine check dist/*
 
 coverage:
 	nosetests --with-coverage --cover-package=twitter
@@ -71,7 +71,7 @@ build: clean
 	python setup.py sdist
 	python setup.py bdist_wheel
 
-upload: test lint clean
+upload: test3 lint clean
 	python setup.py sdist upload
 	# python setup.py bdist_wheel upload
 

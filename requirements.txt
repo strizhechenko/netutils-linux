@@ -11,3 +11,4 @@ Pygments
 argparse
 coverage
 pytest-cov
+twine
