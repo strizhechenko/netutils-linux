@@ -72,6 +72,13 @@ class AutoSoftirqTune(CPUBasedTune):
             bitmap[cpu] = 1
         return hex(int(''.join([str(cpu) for cpu in bitmap]), 2))[2:]  # no need to write 0x
 
+    def cpus_sys_local(self):
+        cpus_local_file = '/sys/class/net/{0}/device/local_cpus'.format(self.options.dev)
+        if not os.path.isfile(cpus_local_file):
+            return
+        with open(cpus_local_file, 'r') as fd:
+            return fd.read().strip()
+
     def mask_detect(self):
         """
         Finds a way to calculate CPU mask to apply:
@@ -79,11 +86,17 @@ class AutoSoftirqTune(CPUBasedTune):
         2. --cpus
         3. topology.layout
         """
+        mask = None
         if self.options.cpu_mask:
             return
         if not self.options.cpus:
-            self.options.cpus = self.cpus_detect_real()
-        self.options.cpu_mask = self.cpus2mask(self.options.cpus, len(self.topology.socket_layout.keys()))
+            mask = self.cpus_sys_local()
+            if mask:
+                self.options.cpu_mask = mask
+            else:
+                self.options.cpus = self.cpus_detect_real()
+        if not mask:
+            self.options.cpu_mask = self.cpus2mask(self.options.cpus, len(self.topology.socket_layout.keys()))
 
     def detect_queues_real(self):
         """
