@@ -1,0 +1,42 @@
+           CPU0       CPU1       CPU2       CPU3       
+  0:        166          0          0          0   IO-APIC-edge      timer
+  1:          2          0          0          0   IO-APIC-edge      i8042
+  8:          1          0          0          0   IO-APIC-edge      rtc0
+  9:          0          0          0          0   IO-APIC-fasteoi   acpi
+ 12:          4          0          0          0   IO-APIC-edge      i8042
+ 14:        195          0          0          0   IO-APIC-edge      ata_piix
+ 15:          0          0          0          0   IO-APIC-edge      ata_piix
+ 16:          0          0          0          0   IO-APIC-fasteoi   uhci_hcd:usb5
+ 17:    1087624          0          0          0   IO-APIC-fasteoi   eth1
+ 18:        302          0          0          0   IO-APIC-fasteoi   uhci_hcd:usb4, radeon
+ 19:     135245          0          0          0   IO-APIC-fasteoi   uhci_hcd:usb3, ata_piix
+ 23:          0          0          0          0   IO-APIC-fasteoi   ehci_hcd:usb1, uhci_hcd:usb2
+ 27:          1          0          0          0   PCI-MSI-edge      mlx5_pages_eq@pci:0000:01:00.0
+ 28:     221496          0          0          0   PCI-MSI-edge      mlx5_cmd_eq@pci:0000:01:00.0
+ 29:          0          0          0          0   PCI-MSI-edge      mlx5_async_eq@pci:0000:01:00.0
+ 30:  127355089          0          0          0   PCI-MSI-edge      mlx5_comp0@pci:0000:01:00.0
+ 31:  120112828    5482507          0          0   PCI-MSI-edge      mlx5_comp1@pci:0000:01:00.0
+ 32:  121978940          0    5524729          0   PCI-MSI-edge      mlx5_comp2@pci:0000:01:00.0
+ 33:  122736116          0          0    5465612   PCI-MSI-edge      mlx5_comp3@pci:0000:01:00.0
+ 34:          1          0          0          0   PCI-MSI-edge      mlx5_pages_eq@pci:0000:01:00.1
+ 35:     208713          0          0          0   PCI-MSI-edge      mlx5_cmd_eq@pci:0000:01:00.1
+ 36:          0          0          0          0   PCI-MSI-edge      mlx5_async_eq@pci:0000:01:00.1
+ 37:          1          0          0          0   PCI-MSI-edge      mlx5_comp0@pci:0000:01:00.1
+ 38:          1          0          0          0   PCI-MSI-edge      mlx5_comp1@pci:0000:01:00.1
+ 39:          1          0          0          0   PCI-MSI-edge      mlx5_comp2@pci:0000:01:00.1
+ 40:          1          0          0          0   PCI-MSI-edge      mlx5_comp3@pci:0000:01:00.1
+ 41:   15573731          0          0          0   PCI-MSI-edge      eth0
+NMI:      13767       6976       2066       6238   Non-maskable interrupts
+LOC:    6714889    6309050    2414331    5652397   Local timer interrupts
+SPU:          0          0          0          0   Spurious interrupts
+PMI:      13767       6976       2066       6238   Performance monitoring interrupts
+IWI:          0          0          0          0   IRQ work interrupts
+RES:     216058     412432     563703     302262   Rescheduling interrupts
+CAL:        121      78869        169        207   Function call interrupts
+TLB:      30449      33578      52341      37224   TLB shootdowns
+TRM:          0          0          0          0   Thermal event interrupts
+THR:          0          0          0          0   Threshold APIC interrupts
+MCE:          0          0          0          0   Machine check exceptions
+MCP:         40         40         40         40   Machine check polls
+ERR:          0
+MIS:          0
