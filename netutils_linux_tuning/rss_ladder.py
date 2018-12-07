@@ -77,6 +77,17 @@ class RSSLadder(CPUBasedTune):
             with open(filename, 'w') as irq_file:
                 irq_file.write(str(socket_cpu))
 
+    def queue_name_regex(self, queue_pattern):
+        """
+        :param queue_pattern: -TxRx- or mlx5_comp
+        :return: regex to much entire queue name
+        """
+        if 'pci' in self.options.dev:
+            # mlx5_comp0@pci:0000:01:00.0
+            return r'{1}[0-9]+@{0}'.format(self.options.dev, queue_pattern)
+        # eth0-TxRx-[^ \n]+
+        return r'{0}{1}[^ \n]+'.format(self.options.dev, queue_pattern)
+
     def __eval(self, queue_pattern, interrupts):
         """
         :param queue_pattern: '-TxRx-'
@@ -84,12 +95,7 @@ class RSSLadder(CPUBasedTune):
         """
         print_('- distribute interrupts of {0} ({1}) on socket {2}'.format(
             self.options.dev, queue_pattern, self.options.socket))
-        if 'pci' in self.options.dev:
-            # mlx5_comp0@pci:0000:01:00.0
-            queue_regex = r'{0}[0-9]+@{1}'.format(queue_pattern, self.options.dev)
-        else:
-            # eth0-TxRx-[^ \n]+
-            queue_regex = r'{0}{1}[^ \n]+'.format(self.options.dev, queue_pattern)
+        queue_regex = self.queue_name_regex(queue_pattern)
         rss_cpus = self.rss_cpus_detect()
         for _ in xrange(self.options.offset):
             rss_cpus.pop()
