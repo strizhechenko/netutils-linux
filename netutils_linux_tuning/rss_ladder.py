@@ -51,8 +51,9 @@ class RSSLadder(CPUBasedTune):
     def eval(self):
         """ Top of all the logic, decide what to do and then apply new settings """
         interrupts = open(self.interrupts_file).readlines()
-        for postfix in sorted(self.queue_postfixes_detect(interrupts)):
-            self.apply(self.__eval(postfix, interrupts))
+        func = self.queue_suffixes_detect if 'pci' in self.options.dev else self.queue_postfixes_detect
+        for queue_pattern in sorted(func(interrupts)):
+            self.apply(self.__eval(queue_pattern, interrupts))
 
     def apply(self, decision):
         """
@@ -76,14 +77,19 @@ class RSSLadder(CPUBasedTune):
             with open(filename, 'w') as irq_file:
                 irq_file.write(str(socket_cpu))
 
-    def __eval(self, postfix, interrupts):
+    def __eval(self, queue_pattern, interrupts):
         """
-        :param postfix: '-TxRx-'
+        :param queue_pattern: '-TxRx-'
         :return: list of tuples(irq, queue_name, cpu)
         """
         print_('- distribute interrupts of {0} ({1}) on socket {2}'.format(
-            self.options.dev, postfix, self.options.socket))
-        queue_regex = r'{0}{1}[^ \n]+'.format(self.options.dev, postfix)
+            self.options.dev, queue_pattern, self.options.socket))
+        if 'pci' in self.options.dev:
+            # mlx5_comp0@pci:0000:01:00.0
+            queue_regex = r'{0}[0-9]+@{1}'.format(queue_pattern, self.options.dev)
+        else:
+            # eth0-TxRx-[^ \n]+
+            queue_regex = r'{0}{1}[^ \n]+'.format(self.options.dev, queue_pattern)
         rss_cpus = self.rss_cpus_detect()
         for _ in xrange(self.options.offset):
             rss_cpus.pop()
@@ -117,9 +123,17 @@ class RSSLadder(CPUBasedTune):
     def queue_postfixes_detect(self, interrupts):
         """
         self.dev: eth0
-        :return: '-TxRx-'
+        :return: set(['-TxRx-'])
         """
         return set([line for line in [self.queue_postfix_extract(line) for line in interrupts] if line])
+
+    def queue_suffixes_detect(self, interrupts):
+        """
+        self.dev: pci:0000:01:00.0
+        :return: set(['mlx5_comp'])
+        """
+        # return set([line for line in [self.queue_suffix_extract(line) for line in interrupts] if line])
+        return set(['mlx5_comp'])
 
     def rss_cpus_detect(self):
         """
