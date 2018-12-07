@@ -1,0 +1,8 @@
+- distribute interrupts of pci:0000:01:00.0 (mlx5_async_eq) on socket 0
+- distribute interrupts of pci:0000:01:00.0 (mlx5_cmd_eq) on socket 0
+- distribute interrupts of pci:0000:01:00.0 (mlx5_comp) on socket 0
+  - pci:0000:01:00.0: queue mlx5_comp0@pci:0000:01:00.0 (irq 30) bound to CPU0
+  - pci:0000:01:00.0: queue mlx5_comp1@pci:0000:01:00.0 (irq 31) bound to CPU1
+  - pci:0000:01:00.0: queue mlx5_comp2@pci:0000:01:00.0 (irq 32) bound to CPU2
+  - pci:0000:01:00.0: queue mlx5_comp3@pci:0000:01:00.0 (irq 33) bound to CPU3
+- distribute interrupts of pci:0000:01:00.0 (mlx5_pages_eq) on socket 0

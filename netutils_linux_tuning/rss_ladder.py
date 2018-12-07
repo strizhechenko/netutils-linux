@@ -51,8 +51,9 @@ class RSSLadder(CPUBasedTune):
     def eval(self):
         """ Top of all the logic, decide what to do and then apply new settings """
         interrupts = open(self.interrupts_file).readlines()
-        for postfix in sorted(self.queue_postfixes_detect(interrupts)):
-            self.apply(self.__eval(postfix, interrupts))
+        extract_func = self.queue_suffix_extract if 'pci' in self.options.dev else self.queue_postfix_extract
+        for queue_pattern in sorted(self.queue_pattern_detect(interrupts, extract_func)):
+            self.apply(self.__eval(queue_pattern, interrupts))
 
     def apply(self, decision):
         """
@@ -76,14 +77,25 @@ class RSSLadder(CPUBasedTune):
             with open(filename, 'w') as irq_file:
                 irq_file.write(str(socket_cpu))
 
-    def __eval(self, postfix, interrupts):
+    def queue_name_regex(self, queue_pattern):
         """
-        :param postfix: '-TxRx-'
-        :return: list of tuples(irq, queue_name, socket)
+        :param queue_pattern: -TxRx- or mlx5_comp
+        :return: regex to much entire queue name
+        """
+        if 'pci' in self.options.dev:
+            # mlx5_comp0@pci:0000:01:00.0
+            return r'{1}[0-9]+@{0}'.format(self.options.dev, queue_pattern)
+        # eth0-TxRx-[^ \n]+
+        return r'{0}{1}[^ \n]+'.format(self.options.dev, queue_pattern)
+
+    def __eval(self, queue_pattern, interrupts):
+        """
+        :param queue_pattern: '-TxRx-'
+        :return: list of tuples(irq, queue_name, cpu)
         """
         print_('- distribute interrupts of {0} ({1}) on socket {2}'.format(
-            self.options.dev, postfix, self.options.socket))
-        queue_regex = r'{0}{1}[^ \n]+'.format(self.options.dev, postfix)
+            self.options.dev, queue_pattern, self.options.socket))
+        queue_regex = self.queue_name_regex(queue_pattern)
         rss_cpus = self.rss_cpus_detect()
         for _ in xrange(self.options.offset):
             rss_cpus.pop()
@@ -106,6 +118,7 @@ class RSSLadder(CPUBasedTune):
 
     def queue_postfix_extract(self, line):
         """
+        used for device based queue-naming
         :param line: '31312 0 0 0 blabla eth0-TxRx-0'
         :return: '-TxRx-'
         """
@@ -114,12 +127,29 @@ class RSSLadder(CPUBasedTune):
         if queue_name:
             return re.sub(r'({0}|[0-9])'.format(self.options.dev), '', queue_name[0])
 
-    def queue_postfixes_detect(self, interrupts):
+    def queue_suffix_extract(self, line):
         """
-        self.dev: eth0
-        :return: '-TxRx-'
+        used for pci-bus-id based queue-naming
+        :param line: '33:  122736116 0 0 5465612 PCI-MSI-edge mlx5_comp3@pci:0000:01:00.0'
+        :return: mlx5_comp
         """
-        return set([line for line in [self.queue_postfix_extract(line) for line in interrupts] if line])
+        queue_regex = r'[^ ]*{0}'.format(self.options.dev)
+        queue_name = re.findall(queue_regex, line)
+        if not queue_name:
+            return
+        if '@' in queue_name[0]:
+            queue_name = queue_name[0].split('@')  # ['mlx5_comp3', 'pci:0000:01:00.0']
+        return re.sub(r'({0}|[0-9]+$)'.format(self.options.dev), '', queue_name[0])
+
+    @staticmethod
+    def queue_pattern_detect(interrupts, extract_func):
+        """
+        self.dev: eth0 or pci:0000:01:00.0
+        :param interrupts: lines of /proc/interrupts
+        :param extract_func: function to extract queue pattern from lines
+        :return: set(['-TxRx-']) or set(['mlx5_comp'])
+        """
+        return set([line for line in [extract_func(line) for line in interrupts] if line])
 
     def rss_cpus_detect(self):
         """
