@@ -72,8 +72,9 @@ build: clean
 	python setup.py bdist_wheel
 
 upload: test3 lint clean
-	python setup.py sdist upload
+	python setup.py sdist
 	# python setup.py bdist_wheel upload
+	twine upload dist/*.tar.gz
 
 mac_run: env
 	. env/bin/activate && \
