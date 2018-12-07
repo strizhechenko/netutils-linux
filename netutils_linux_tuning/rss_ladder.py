@@ -79,7 +79,7 @@ class RSSLadder(CPUBasedTune):
     def __eval(self, postfix, interrupts):
         """
         :param postfix: '-TxRx-'
-        :return: list of tuples(irq, queue_name, socket)
+        :return: list of tuples(irq, queue_name, cpu)
         """
         print_('- distribute interrupts of {0} ({1}) on socket {2}'.format(
             self.options.dev, postfix, self.options.socket))
