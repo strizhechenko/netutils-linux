@@ -1,24 +1,48 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -euo pipefail
+set -euE
+
+if [ -f /usr/local/Reductor/etc/const ]; then
+	. /usr/local/Reductor/etc/const
+elif [ -f /app/reductor/usr/local/Reductor/etc/const ]; then
+	. /app/reductor/usr/local/Reductor/etc/const
+else
+	echo "$0 $@ [$$] FAILURE no etc/const" >&2
+	exit 1
+fi
+
+echo "$0 $@ [$$] START" >&2
+
+
+if [ "${1:-}" = "--help" ]; then
+	echo "Info: автоматические настраивает сетевые карты для приёма зеркала"
+	echo "Usage: $0 без аргументов"
+	echo "Example: $0 без аргументов"
+	exit 0
+fi
 
 find_mirror_conf() {
-	local CR7=/usr/local/Reductor/userinfo/mirror_info.conf
-	local CR8_INNER=/cfg/userinfo/mirror_info.conf
-	local CR8_OUTER=/app/reductor/$CR8_INNER
+	set -e
+	local cr7="/usr/local/Reductor/userinfo/mirror_info.conf"
+	local cr8_inner="/cfg/userinfo/mirror_info.conf"
+	local cr8_outer="/app/reductor/$cr8_inner"
 	local conf
-	for conf in $CR7 $CR8_INNER $CR8_OUTER; do
-		[ -f $conf ] || continue
-		echo $conf
+	for conf in "$cr7" "$cr8_inner" "$cr8_outer"; do
+		[ ! -f "$conf" ] && continue
+		echo "$conf"
 		break
 	done
+	return 0
 }
 
 mirror_devices_bridge() {
-	brctl show | tail -n +2 | awk '{print $4}'
+	# skip strongbash034
+	brctl show | tail -n +2 | awk '{print $4}' | cut -d '.' -f1 | sort -u
+	return 0
 }
 
 mirror_devices() {
+	set -e
 	local mirror_conf
 	mirror_conf="$(find_mirror_conf)"
 	if [ -n "${mirror_conf:-}" ]; then
@@ -26,14 +50,35 @@ mirror_devices() {
 	else
 		mirror_devices_bridge
 	fi
+	return 0
 }
 
 main() {
-	maximize-cpu-freq
+	local device
+	# virtualenv нужен только для CR7
+	if [ ! -f /cfg/config ]; then
+		if [ ! -f ${VENVBIN}/activate ]; then
+			echo "$0 $@ [$$] FAILURE no virtualenv" >&2
+			exit 2
+		fi
+		set +eu
+		. ${VENVBIN}/activate
+		set -eu
+	fi
+	maximize-cpu-freq || true
 	for device in $(mirror_devices); do
-		autorps "$device" || true
+		echo "$0 $@ [$$] Настройка $device" >&2
+		autorps "$device" 2>/dev/null || true
 		rx-buffers-increase "$device" || true
 	done
+	if [ ! -f /cfg/config ]; then
+		set +eu
+		deactivate
+		set -eu
+	fi
+	return 0
 }
 
 main "$@"
+echo "$0 $@ [$$] SUCCESS" >&2
+exit 0
