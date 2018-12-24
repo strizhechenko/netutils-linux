@@ -12,6 +12,8 @@ if [ "{1:-}" == '--help' ]; then
 fi
 
 rx_buf() {
+	set -e
+	# skip strongbash034
 	ethtool -g "$1" 2>/dev/null | tac | grep "RX:" | egrep -o "[0-9]+" | tr '\n' '/'| sed 's|/$||g'
 	return 0
 }
@@ -19,13 +21,12 @@ rx_buf() {
 show_device() {
 	local eth="$1"
 	local id="$2"
-	is_vlan=0
-	if ethtool -i "$eth" | grep -q '802.1Q VLAN Support'; then
-		is_vlan=1
-	fi
+	local is_vlan=0
+	local output
+	output="$(ethtool -i "$eth")"
+	grep -q '802.1Q VLAN Support' <<< "$output" && is_vlan=1
 	if [ "$is_vlan" = 0 ]; then
-
-		echo "$eth: $(grep -w $id /tmp/lspci.tmp) rx: $(rx_buf "$eth")"
+		echo "$eth: $(grep -w "$id" /tmp/lspci.tmp) rx: $(rx_buf "$eth")"
 	else
 		echo "$eth: VLAN interface"
 	fi
@@ -35,8 +36,8 @@ show_device() {
 main() {
 	local eth
 	local id
-	for eth in $(egrep -o "$DEVICE_REGEX" /proc/net/dev | sort -u); do
-		for id in $(ethtool -i "$eth" | grep bus-info | sed 's/.*0000://'); do
+	for eth in $(egrep -o "$DEVICE_REGEX" /proc/net/dev | sort -u || true); do
+		for id in $(ethtool -i "$eth" | grep bus-info | sed 's/.*0000://' || true); do
 			show_device "$eth" "$id"
 		done
 	done
