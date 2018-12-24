@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -eu
+# echo "$0 $@ [$$] START" >&2
+declare DEVICE_REGEX="(eth|em|en|bond|p[0-9]*p)[0-9\.]+"
+
+if [ "{1:-}" == '--help' ]; then
+	echo "Info: $0 показывает модели сетевых карт в системе"
+	echo "Usage: $0 без параметров"
+	echo "Example: $0"
+	exit 0
+fi
+
+rx_buf() {
+	ethtool -g "$1" 2>/dev/null | tac | grep "RX:" | egrep -o "[0-9]+" | tr '\n' '/'| sed 's|/$||g'
+	return 0
+}
+
+show_device() {
+	local eth="$1"
+	local id="$2"
+	is_vlan=0
+	if ethtool -i "$eth" | grep -q '802.1Q VLAN Support'; then
+		is_vlan=1
+	fi
+	if [ "$is_vlan" = 0 ]; then
+
+		echo "$eth: $(grep -w $id /tmp/lspci.tmp) rx: $(rx_buf "$eth")"
+	else
+		echo "$eth: VLAN interface"
+	fi
+	return 0
+}
+
+main() {
+	local eth
+	local id
+	for eth in $(egrep -o "$DEVICE_REGEX" /proc/net/dev | sort -u); do
+		for id in $(ethtool -i "$eth" | grep bus-info | sed 's/.*0000://'); do
+			show_device "$eth" "$id"
+		done
+	done
+	return 0
+}
+
+lspci > /tmp/lspci.tmp
+main
+
+# echo "$0 $@ [$$] SUCCESS"
+exit 0
