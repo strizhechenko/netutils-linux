@@ -66,9 +66,13 @@ main() {
 		set -eu
 	fi
 	maximize-cpu-freq || true
+	. "$CONFIG"
 	for device in $(mirror_devices); do
 		echo "$0 $@ [$$] Настройка $device" >&2
-		autorps "$device" 2>/dev/null || true
+		autorps "$device" || true
+		if [ "${misc['rss']:-0}" = '1' ]; then
+			rss-ladder "$device" || true
+		fi
 		rx-buffers-increase "$device" || true
 	done
 	if [ ! -f /cfg/config ]; then
