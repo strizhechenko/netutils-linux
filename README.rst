@@ -312,6 +312,12 @@ Device's detailed rating
     Hypervisor vendor: 1
     Virtualization type: 1
 
+FAQ
+===
+
+Q: I see that workload is distributed fine, but there is a lot of workload. How to go deeper, how to understand what my system doing right now?
+A: Try `perf top`
+
 How to contribute?
 ==================
 
