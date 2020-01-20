@@ -1,6 +1,6 @@
 prettytable
 setuptools
-pyyaml
+pyyaml==5.3
 ipaddress
 six
 colorama==0.4.3
