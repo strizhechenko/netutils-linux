@@ -3,7 +3,7 @@ setuptools
 pyyaml
 ipaddress
 six
-colorama
+colorama==0.4.3
 flake8
 pytest
 collective.checkdocs
