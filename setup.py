@@ -28,7 +28,8 @@ setuptools.setup(
     scripts=[os.path.join('utils/', script) for script in os.listdir('utils/')],
     install_requires=['pyyaml', 'ipaddress', 'six', 'colorama', 'prettytable', 'argparse'],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
+        'Environment :: Console',
         'Intended Audience :: Developers',
         'Operating System :: MacOS',
         'Operating System :: POSIX',
