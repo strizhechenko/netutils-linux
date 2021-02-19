@@ -25,4 +25,4 @@ class Parser(object):
 class YAMLLike(Parser):
     @staticmethod
     def parse(text):
-        return yaml.load(text)
+        return yaml.load(text, yaml.loader.SafeLoader)
