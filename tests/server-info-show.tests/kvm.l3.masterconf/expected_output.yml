@@ -40,6 +40,7 @@ net:
     driver:
       driver: e1000
       version: 7.3.21-k8-NAPI
+    numa_node: -1
     queues:
       own: []
       rx: []
@@ -48,3 +49,4 @@ net:
       - uhci_hcd:usb1, eth0, eth1
       tx: []
       unknown: []
+    queues_ethtool: null

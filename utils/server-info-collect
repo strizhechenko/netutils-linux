@@ -6,7 +6,7 @@ SYSCONFIG=/etc/sysconfig/network-scripts/
 TMPDIR="$1"
 
 prepare() {
-	mkdir -p $TMPDIR/ethtool/{g,i,c} $TMPDIR/network-scripts/
+	mkdir -p $TMPDIR/ethtool/{g,i,c,l} $TMPDIR/network-scripts/
 }
 
 server_info() {
@@ -51,7 +51,7 @@ network_info() {
 
 	for netdev in $(grep : /proc/net/dev | awk '{print $1}' | tr -d :); do
 		ethtool -i "$netdev" &>/dev/null || continue
-		for action in i g c; do
+		for action in i g c l; do
 			if ! ethtool -"$action" "$netdev" &>"$TMPDIR/ethtool/$action/$netdev"; then
 				rm -f "$TMPDIR/ethtool/$action/$netdev"
 			fi
@@ -59,6 +59,11 @@ network_info() {
 		[ -f "$SYSCONFIG/ifcfg-$netdev" ] || continue
 		# avoiding collection of identification/privacy info
 		grep ETHTOOL "$SYSCONFIG/ifcfg-$netdev" > "$TMPDIR/network-scripts/ifcfg-$netdev" || true
+		numa_node="/sys/class/net/$netdev/device/numa_node"
+		if [ -f "$numa_node" ]; then
+			mkdir -p "$TMPDIR${numa_node%/*}"
+			cat "$numa_node" > "${TMPDIR}${numa_node}"
+		fi
 	done
 }
 
