@@ -1,0 +1,6 @@
+pytest
+flake8
+collective.checkdocs
+coverage
+pytest-cov
+twine

@@ -1,14 +1,7 @@
 prettytable
+pyyaml
 setuptools
-pyyaml==5.2
 ipaddress
 six
-colorama==0.4.1
-flake8
-pytest
-collective.checkdocs
-Pygments
+colorama
 argparse
-coverage
-pytest-cov
-twine
