@@ -73,9 +73,8 @@ class LinkRateTop(BaseTop):
     def make_header(self):
         return ['Device'] + [stat.shortname for stat in self.stats]
 
-    @staticmethod
-    def colorize_stat(stat, value):
-        return Color.colorize(value, 1, 1) if 'errors' in stat.filename or 'dropped' in stat.filename else value
+    def colorize_stat(self, stat, value):
+        return self.color.colorize(value, 1, 1) if 'errors' in stat.filename or 'dropped' in stat.filename else value
 
     def colorize_stats(self, dev, repr_source):
         return [self.colorize_stat(stat, repr_source[dev][stat]) for stat in self.stats]
@@ -86,7 +85,7 @@ class LinkRateTop(BaseTop):
         repr_source = self.repr_source()
         for dev in self.options.devices:
             dev_node = self.pci.devices.get(dev)
-            dev_color = self.color.COLORS_NODE.get(dev_node)
+            dev_color = self.color.COLORS_NODE.get(dev_node) if self.options.color else ""
             _dev = self.color.wrap(dev, dev_color)
             yield [_dev] + self.colorize_stats(dev, repr_source)
 

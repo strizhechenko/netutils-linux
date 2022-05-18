@@ -59,10 +59,9 @@ class IrqTop(BaseTop):
             output_lines.append(line)
         return output_lines, cpu_count
 
-    @staticmethod
-    def colorize_irq_per_cpu(irq_per_cpu):
+    def colorize_irq_per_cpu(self, irq_per_cpu):
         """ :returns: highlighted by warning/error irq string """
-        return Color.colorize(irq_per_cpu, 40000, 80000)
+        return self.color.colorize(irq_per_cpu, 40000, 80000)
 
     def __repr__(self):
         output_lines, cpu_count = self.make_rows()

@@ -65,7 +65,7 @@ class RSSLadder(CPUBasedTune):
         if len(set(cpus)) != len(cpus):
             warning = 'WARNING: some CPUs process multiple queues, consider reduce queue count for this network device'
             if self.options.color:
-                print_(self.color.wrap(warning, Color.YELLOW))
+                print_(self.color.wrap(warning, self.color.YELLOW))
             else:
                 print_(warning)
         for irq, queue_name, socket_cpu in affinity:

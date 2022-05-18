@@ -23,7 +23,7 @@ class NetworkTop(BaseTop):
         }
         self.parse_options()
         self.topology = Topology(fake=self.options.random, lscpu_output=self.options.lscpu_output)
-        self.color = Color(self.topology)
+        self.color = Color(self.topology, self.options.color)
         for top in self.tops.values():
             top.topology = self.topology
             top.color = self.color
@@ -50,7 +50,7 @@ class NetworkTop(BaseTop):
 
     def __repr__(self):
         output = [
-            BaseTop.header,
+            self.header,
             self.__repr_irq(),
             self.__repr_cpu(),
             self.__repr_dev(),
@@ -71,6 +71,7 @@ class NetworkTop(BaseTop):
             top.options = self.options
             if hasattr(top, 'post_optparse'):
                 top.post_optparse()
+        self.default_post_optparse()
 
     def __repr_dev(self):
         top = self.tops.get('link-rate')

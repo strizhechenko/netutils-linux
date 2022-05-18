@@ -84,29 +84,9 @@ class SoftnetStatTop(BaseTop):
     def make_rows(self):
         return [[
             self.color.wrap('CPU{0}'.format(stat.cpu), self.color.colorize_cpu(stat.cpu)),
-            self.colorize_total(stat.total),
-            self.colorize_dropped(stat.dropped),
-            self.colorize_time_squeeze(stat.time_squeeze),
-            self.colorize_cpu_collision(stat.cpu_collision),
+            self.color.colorize(stat.total, 300000, 900000),
+            self.color.colorize(stat.dropped, 1, 1),
+            self.color.colorize(stat.time_squeeze, 1, 300),
+            self.color.colorize(stat.cpu_collision, 1, 1000),
             stat.received_rps
         ] for stat in self.repr_source()]
-
-    @staticmethod
-    def colorize_total(total):
-        """ :returns: highlighted by warning/error total string """
-        return Color.colorize(total, 300000, 900000)
-
-    @staticmethod
-    def colorize_dropped(dropped):
-        """ :returns: highlighted by warning/error dropped string """
-        return Color.colorize(dropped, 1, 1)
-
-    @staticmethod
-    def colorize_time_squeeze(time_squeeze):
-        """ :returns: highlighted by warning/error time_squeeze string """
-        return Color.colorize(time_squeeze, 1, 300)
-
-    @staticmethod
-    def colorize_cpu_collision(cpu_collision):
-        """ :returns: highlighted by warning/error cpu_collision string """
-        return Color.colorize(cpu_collision, 1, 1000)

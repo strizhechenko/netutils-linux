@@ -41,15 +41,13 @@ class Softirqs(BaseTop):
         table = make_table(header, ['l', 'r', 'r'], rows)
         return self.__repr_table__(table)
 
-    @staticmethod
-    def colorize_net_rx(net_rx):
+    def colorize_net_rx(self, net_rx):
         """ :returns: highlighted by warning/error net_rx string """
-        return Color.colorize(net_rx, 40000, 80000)
+        return self.color.colorize(net_rx, 40000, 80000)
 
-    @staticmethod
-    def colorize_net_tx(net_tx):
+    def colorize_net_tx(self, net_tx):
         """ :returns: highlighted by warning/error net_tx string """
-        return Color.colorize(net_tx, 20000, 30000)
+        return self.color.colorize(net_tx, 20000, 30000)
 
     @staticmethod
     def __active_cpu_count__(data):

@@ -16,7 +16,7 @@ class BaseTop(object):
     current = None
     previous = None
     diff = None
-    header = Color.wrap('Press CTRL-C to exit...\n', Color.GREY)
+    header = None
     options = None
     file_arg = None
     file_value = None
@@ -113,7 +113,7 @@ class BaseTop(object):
 
     def __repr_table__(self, table):
         if self.options.clear:
-            return BaseTop.header + str(table)
+            return self.header + str(table)
         return str(table)
 
     def default_init(self, topology=None):
@@ -125,6 +125,7 @@ class BaseTop(object):
         if not self.topology:
             self.topology = Topology(fake=self.options.random)
             self.color = Color(self.topology, self.options.color)
+        self.header = self.color.wrap('Press CTRL-C to exit...\n', self.color.GREY)
 
     @abstractmethod
     def parse(self):
