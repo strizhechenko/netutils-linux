@@ -24,6 +24,7 @@ setuptools.setup(
     keywords='linux network performanse utils troubleshooting irq interrupts softirqs proc',
     description='Bunch of utils to simplify linux network troubleshooting and performance tuning.',
     long_description=(read('README.rst')),
+    long_description_content_type='text/x-rst',
     packages=setuptools.find_packages(exclude=['tests*']),
     scripts=[os.path.join('utils/', script) for script in os.listdir('utils/')],
     install_requires=['pyyaml', 'ipaddress', 'six', 'colorama', 'prettytable', 'argparse'],

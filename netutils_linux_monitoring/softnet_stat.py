@@ -2,7 +2,6 @@
 from random import randint
 
 from netutils_linux_monitoring.base_top import BaseTop
-from netutils_linux_monitoring.colors import Color
 from netutils_linux_monitoring.layout import make_table
 
 
