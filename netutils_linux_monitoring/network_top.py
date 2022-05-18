@@ -102,21 +102,22 @@ class NetworkTop(BaseTop):
             'total', 'dropped', 'time_squeeze', 'cpu_collision', 'received_rps',
         ]
         fields = [self.color.bright(word) for word in fields]
-        rows = self.__repr_cpu_make_rows(irqtop, network_output, softirq_top, softnet_stat_top)
+        rows = self.__repr_cpu_make_rows(irqtop, network_output, softirq_top)
         table = make_table(fields, ['l'] + ['r'] * (len(fields) - 1), rows)
         return self.color.wrap_header('Load per cpu:') + str(table)
 
-    def __repr_cpu_make_rows(self, irqtop, network_output, softirq_top, softnet_stat_top):
+    def __repr_cpu_make_rows(self, irqtop, network_output, softirq_top):
         return [
             [
                 self.color.wrap('CPU{0}'.format(stat.cpu), self.color.colorize_cpu(stat.cpu)),
                 irqtop.colorize_irq_per_cpu(irq),
                 softirq_top.colorize_net_rx(net_rx),
                 softirq_top.colorize_net_tx(net_tx),
-                softnet_stat_top.colorize_total(stat.total),
-                softnet_stat_top.colorize_dropped(stat.dropped),
-                softnet_stat_top.colorize_time_squeeze(stat.time_squeeze),
-                softnet_stat_top.colorize_cpu_collision(stat.cpu_collision),
+                # Теперь я вспомнил зачем там были семантичные функции, чтобы не было дублирования
+                self.color.colorize(stat.total, 300000, 900000),
+                self.color.colorize(stat.dropped, 1, 1),
+                self.color.colorize(stat.time_squeeze, 1, 300),
+                self.color.colorize(stat.cpu_collision, 1, 1000),
                 stat.received_rps
             ]
             for irq, net_rx, net_tx, stat in network_output

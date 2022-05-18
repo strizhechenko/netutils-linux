@@ -119,7 +119,7 @@ class BaseTop(object):
     def default_init(self, topology=None):
         BaseTop.__init__(self)
         self.topology = topology
-        self.color = Color(self.topology)
+        # self.color = Color(self.topology, self.options.color)
 
     def default_post_optparse(self):
         if not self.topology:
