@@ -52,7 +52,7 @@ maximize_freq() {
 main() {
 	local cpu
 	parse_params "$@"
-	for cpu in $(find /sys/devices/system/cpu/ -maxdepth 1 -type d | egrep 'cpu[0-9]+'); do
+	for cpu in $(find /sys/devices/system/cpu/ -maxdepth 1 -type d -name "cpu[0-9]*" | sort -V); do
 		set_governor_performance "$cpu"
 		maximize_freq "$cpu"
 	done
