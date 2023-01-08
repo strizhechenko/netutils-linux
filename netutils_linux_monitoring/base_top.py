@@ -112,8 +112,6 @@ class BaseTop(object):
         return (str(number % 1000) + sep + output).strip()
 
     def __repr_table__(self, table):
-        if self.options.clear:
-            return self.header + str(table)
         return str(table)
 
     def default_init(self, topology=None):

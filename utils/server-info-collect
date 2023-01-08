@@ -20,7 +20,7 @@ server_info() {
 		echo "Consider install lspci" >&2
 		echo "	yum -y install pciutils" >&2
 	fi
-	LANG= lscpu > $TMPDIR/lscpu_info
+	LANG= lscpu | awk -F: '{gsub(/[[:blank:]]+/, " ", $0); print $0}' | awk -F': ' '{print $1 ": \"" $2 "\""}' > $TMPDIR/lscpu_info
 	LANG= lscpu -p | grep -v '^#' | awk -F ',' '{print $1" "$3}' > $TMPDIR/lscpu_layout
 	if ! LANG= dmidecode --type memory 2>/dev/null > $TMPDIR/dmidecode; then
 		echo "Consider installing dmidecode:" >&2

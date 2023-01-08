@@ -75,7 +75,7 @@ class RxBuffersTune(BaseTune):
         stdout, _ = process.communicate()
         if process.returncode != 0:
             exit(exit_code)
-        return stdout
+        return str(stdout, 'UTF-8')
 
     def parse_ethtool_buffers(self):
         """

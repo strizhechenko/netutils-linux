@@ -105,7 +105,7 @@ class EthtoolBuffers(Parser):
     def parse(text):
         buffers = [int(line.split()[1])
                    for line in text.strip().split('\n')
-                   if line.startswith('RX:')]
+                   if line.startswith('RX:') and line.split()[1].isdigit()]
         if buffers and len(buffers) == 2:
             return {
                 'max': buffers[0],

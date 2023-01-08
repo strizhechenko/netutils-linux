@@ -30,7 +30,7 @@ class CPU(Subsystem):
         }
         for key in ('CPU MHz', 'BogoMIPS'):
             if output.get('info', {}).get(key):
-                output['info'][key] = int(output['info'][key])
+                output['info'][key] = int(float(output['info'][key]))
         return output
 
 
