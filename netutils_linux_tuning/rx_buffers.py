@@ -9,6 +9,7 @@
 
 from os import system, path
 from subprocess import Popen, PIPE
+from sys import version_info
 
 from six import print_
 
@@ -73,9 +74,14 @@ class RxBuffersTune(BaseTune):
         """
         process = Popen(['ethtool', key, self.options.dev], stdout=PIPE, stderr=PIPE)
         stdout, _ = process.communicate()
+        if isinstance(stdout, bytes):
+            if version_info[0] == 3:
+                stdout = stdout.decode()
+            else:
+                stdout = str(stdout)
         if process.returncode != 0:
             exit(exit_code)
-        return str(stdout, 'UTF-8')
+        return stdout
 
     def parse_ethtool_buffers(self):
         """

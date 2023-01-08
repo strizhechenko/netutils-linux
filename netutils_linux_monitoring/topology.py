@@ -51,11 +51,6 @@ class Topology(object):
         if return_code != 0:
             self.detect_layouts_fallback()
             return
-        if isinstance(stdout, bytes):
-            if version_info[0] == 3:
-                stdout = stdout.decode()
-            else:
-                stdout = str(stdout)
         return stdout
 
     def detect_layouts_fallback(self):
@@ -64,6 +59,11 @@ class Topology(object):
         """
         process = Popen(['nproc'], stdout=PIPE, stderr=PIPE)
         stdout, _ = process.communicate()
+        if isinstance(stdout, bytes):
+            if version_info[0] == 3:
+                stdout = stdout.decode()
+            else:
+                stdout = str(stdout)
         if process.returncode == 0:
             cpu_count = int(stdout.strip())
             self.socket_layout = self.numa_layout = dict(enumerate([0] * cpu_count))
@@ -72,6 +72,11 @@ class Topology(object):
     def __detect_layout_lscpu():
         process = Popen(['lscpu', '-p'], stdout=PIPE, stderr=PIPE)
         stdout, _ = process.communicate()
+        if isinstance(stdout, bytes):
+            if version_info[0] == 3:
+                stdout = stdout.decode()
+            else:
+                stdout = str(stdout)
         return stdout, process.returncode
 
 
