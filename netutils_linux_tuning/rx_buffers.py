@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-0. Check if buffers already been setted up in ifcfg-ethX
-1. Determines what size of buffers available
-2. Evaluate one that fits for our purposes
+0. Check if buffers have already been set up in ifcfg-ethX
+1. Determine what sizes of buffers are available
+2. Evaluate one that fits our purposes
 3. Apply it
 """
 
@@ -19,7 +19,7 @@ from netutils_linux_tuning.base_tune import BaseTune
 class RxBuffersTune(BaseTune):
     """ Tune utility for RX buffers of NIC """
 
-    prefered = None
+    preferred = None
     current = 0
     maximum = 0
     manual_tuned = False
@@ -32,7 +32,7 @@ class RxBuffersTune(BaseTune):
         self.apply(self.eval())
 
     def __str__(self):
-        attrs = ('dev', 'upper_bound', 'current', 'maximum', 'prefered')
+        attrs = ('dev', 'upper_bound', 'current', 'maximum', 'preferred')
         return str(dict((attr, self.__getattribute__(attr)) for attr in attrs))
 
     def parse(self):
@@ -43,14 +43,14 @@ class RxBuffersTune(BaseTune):
 
     def eval(self):
         """ Just wrapper for static function """
-        return self.eval_prefered_size(self.current, self.maximum, self.options.upper_bound)
+        return self.eval_preferred_size(self.current, self.maximum, self.options.upper_bound)
 
     def apply(self, decision):
         """ doing all the job, applying new buffer's size if required """
         if decision == self.current:
             print_("{0}'s RX ring buffer already has fine size {1}.".format(self.options.dev, self.current))
             return
-        assert decision, "Can't eval prefered RX ring buffer size."
+        assert decision, "Can't eval preferred RX ring buffer size."
         command = 'ethtool -G {0} rx {1}'.format(self.options.dev, decision)
         print_('run:', command)
         if not self.options.dry_run:
@@ -114,9 +114,9 @@ class RxBuffersTune(BaseTune):
         exit(0)
 
     @staticmethod
-    def eval_prefered_size(current, maximum, upper_bound):
+    def eval_preferred_size(current, maximum, upper_bound):
         """
-        :return: really calculates the prefered size of RX buffers
+        :return: really calculates the preferred size of RX buffers
         """
         if current > upper_bound:
             return current

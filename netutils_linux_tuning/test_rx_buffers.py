@@ -22,7 +22,7 @@ class RxBuffersTuneTest(unittest.TestCase):
     def test_all(self):
         for max_buffer in self.dataset:
             for current, expected in self.dataset[max_buffer]:
-                self.assertEqual(self.tune.eval_prefered_size(current, max_buffer, self.default_upper_bound), expected)
+                self.assertEqual(self.tune.eval_preferred_size(current, max_buffer, self.default_upper_bound), expected)
 
 
 if __name__ == '__main__':

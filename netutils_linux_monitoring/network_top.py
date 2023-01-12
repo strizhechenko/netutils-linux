@@ -113,7 +113,6 @@ class NetworkTop(BaseTop):
                 irqtop.colorize_irq_per_cpu(irq),
                 softirq_top.colorize_net_rx(net_rx),
                 softirq_top.colorize_net_tx(net_tx),
-                # Теперь я вспомнил зачем там были семантичные функции, чтобы не было дублирования
                 self.color.colorize(stat.total, 300000, 900000),
                 self.color.colorize(stat.dropped, 1, 1),
                 self.color.colorize(stat.time_squeeze, 1, 300),
