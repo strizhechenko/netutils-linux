@@ -14,6 +14,11 @@ netutils-linux
 
 |pypi| |license| |pyversions| |codeclimate| |issues|
 
+Project is frozen
+=================
+
+I will not receive any patches or do any changes for no reason. Feel free to fork, name it `netutils-linux-ng`, drop py2 support, etc.
+
 It's a useful utils to simplify Linux network troubleshooting and performance tuning, developed in order to help `Carbon Reductor`_ techsupport and automate the whole linux performance tuning process out of box (ok, except the best RSS layout detection with multiple network devices). These utils may be useful for datacenters and internet service providers with heavy network workload (you probably wouldn't see an effect at your desktop computer). It's now in production usage with 2000+ deployment and save us a lot of time with hardware and software settings debugging. Inspired by `packagecloud's blog post`_.
 
 .. _packagecloud's blog post: https://blog.packagecloud.io/eng/2016/06/22/monitoring-tuning-linux-networking-stack-receiving-data/
