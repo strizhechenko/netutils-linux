@@ -1,0 +1,7 @@
+Attached devices:
+Host: scsi5 Channel: 00 Id: 00 Lun: 00
+  Vendor: ATA      Model: ST1000DM003-1ER1 Rev: CC45
+  Type:   Direct-Access                    ANSI  SCSI revision: 05
+Host: scsi6 Channel: 00 Id: 00 Lun: 00
+  Vendor: JetFlash Model: Transcend 8GB    Rev: 8.07
+  Type:   Direct-Access                    ANSI  SCSI revision: 04

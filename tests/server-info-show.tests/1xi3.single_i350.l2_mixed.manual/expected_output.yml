@@ -42,6 +42,7 @@ net:
     driver:
       driver: igb
       version: 5.3.5.4
+    numa_node: -1
     queues:
       own:
       - eth6
@@ -54,3 +55,4 @@ net:
       shared: []
       tx: []
       unknown: []
+    queues_ethtool: null

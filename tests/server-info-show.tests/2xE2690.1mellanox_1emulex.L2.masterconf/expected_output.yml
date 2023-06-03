@@ -97,6 +97,7 @@ net:
     driver:
       driver: tg3
       version: 3.137
+    numa_node: -1
     queues:
       own: []
       rx:
@@ -109,6 +110,7 @@ net:
       tx:
       - eth1-tx-0
       unknown: []
+    queues_ethtool: null
   eth6:
     buffers:
       cur: 8192
@@ -119,6 +121,7 @@ net:
     driver:
       driver: mlx4_en
       version: 2.2-1 (Feb 2014)
+    numa_node: -1
     queues:
       own: []
       rx: []
@@ -134,6 +137,7 @@ net:
       shared: []
       tx: []
       unknown: []
+    queues_ethtool: null
   eth7:
     buffers:
       cur: 8192
@@ -144,6 +148,7 @@ net:
     driver:
       driver: mlx4_en
       version: 2.2-1 (Feb 2014)
+    numa_node: -1
     queues:
       own: []
       rx: []
@@ -159,3 +164,4 @@ net:
       shared: []
       tx: []
       unknown: []
+    queues_ethtool: null

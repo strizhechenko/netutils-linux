@@ -46,6 +46,7 @@ net:
     driver:
       driver: e1000e
       version: 3.2.6-k
+    numa_node: -1
     queues:
       own:
       - eth0
@@ -54,3 +55,4 @@ net:
       shared: []
       tx: []
       unknown: []
+    queues_ethtool: null

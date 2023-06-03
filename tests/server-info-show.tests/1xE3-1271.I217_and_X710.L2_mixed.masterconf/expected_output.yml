@@ -50,6 +50,7 @@ net:
     driver:
       driver: i40e
       version: 1.5.10-k
+    numa_node: -1
     queues:
       own: []
       rx: []
@@ -61,3 +62,4 @@ net:
       - i40e-eth0-TxRx-1
       - i40e-eth0-TxRx-2
       - i40e-eth0-TxRx-3
+    queues_ethtool: null
